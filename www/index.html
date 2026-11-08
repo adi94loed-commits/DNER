@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F6F7F2">
 <title>Döner-Tracker</title>
-<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
 <style>
 @font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-grotesque-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-grotesque-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
@@ -120,14 +120,15 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .pin.s{background:var(--kohl)}
 .pin.n{background:var(--tomate)}
 .pin.me{background:#3B6EA8;box-shadow:0 0 0 8px rgba(59,110,168,.2)}
-.leaflet-container{font-family:inherit}
-.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--card);color:var(--ink);border-radius:14px}
-.leaflet-popup-content{margin:12px 14px;font-size:15px;line-height:1.4}
 .pop b{display:block;font-size:16px}
 .pop .m{color:var(--muted);font-size:14px;margin:2px 0 10px}
 .pop a{display:inline-block;padding:7px 12px;font-size:14px}
-.leaflet-control-attribution{font-size:10px;background:color-mix(in srgb,var(--card) 80%,transparent)!important;color:var(--muted)}
-.leaflet-control-attribution a{color:var(--muted)}
+.maplibregl-map{font-family:inherit}
+.maplibregl-popup-content{background:var(--card);color:var(--ink);border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.4;box-shadow:0 4px 18px rgba(40,30,20,.18)}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip{border-top-color:var(--card)}
+.maplibregl-popup-anchor-top .maplibregl-popup-tip{border-bottom-color:var(--card)}
+.maplibregl-ctrl-attrib{font-size:10px}
+.maplibregl-ctrl-bottom-right{bottom:64px}
 
 
 /* Döner/Dürüm-Auswahl */
@@ -398,7 +399,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 </div>
 
 <div class="toast" id="toast" role="status"><span id="toastText"></span><button id="undo" type="button">Rückgängig</button></div>
-<script src="vendor/leaflet.js"></script>
+<script src="vendor/maplibre-gl.js"></script>
 <script>
 (function(){
   const KEY="doener-tracker-v2", OLD="doener-tracker-v1";
@@ -477,7 +478,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const q=`[out:json][timeout:15];(${k}${kebabOnly?"":`nwr(around:${radius},${p.lat},${p.lon})["amenity"="fast_food"];`});out center tags 80;`;
     for(const host of["https://overpass-api.de/api/interpreter","https://overpass.kumi.systems/api/interpreter"]){
       try{
-        const ac=new AbortController();const t=setTimeout(()=>ac.abort(),15000);
+        const ac=new AbortController();const t=setTimeout(()=>ac.abort(),10000);
         const r=await fetch(host,{method:"POST",body:"data="+encodeURIComponent(q),signal:ac.signal,
           headers:{"Content-Type":"application/x-www-form-urlencoded"}});
         clearTimeout(t);if(!r.ok)throw 0;
@@ -773,11 +774,15 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
 
   // ---------- Karte ----------
-  let map=null, layer=null, mapShops=[], mapPos=null, mapBusy=false;
+  let map=null, markers=[], mapShops=[], mapPos=null, mapBusy=false;
   const dark=()=>window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
-  function pinIcon(cls,label,size){
-    return L.divIcon({className:"",html:`<div class="pin ${cls}" style="width:${size}px;height:${size}px">${label}</div>`,
-      iconSize:[size,size],iconAnchor:[size/2,size/2],popupAnchor:[0,-size/2]});
+  const STYLE=()=>"https://tiles.openfreemap.org/styles/"+(dark()?"dark":"positron");
+  function pinEl(cls,label,size){
+    const d=document.createElement("div");d.className="pin "+cls;d.style.width=d.style.height=size+"px";d.textContent=label;return d}
+  function addMarker(lat,lon,el,html){
+    const m=new maplibregl.Marker({element:el}).setLngLat([lon,lat]);
+    if(html)m.setPopup(new maplibregl.Popup({offset:18,closeButton:false,maxWidth:"260px"}).setHTML(html));
+    m.addTo(map);markers.push(m);
   }
   function popup(s,visited){
     const meta=[];
@@ -788,18 +793,15 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   function drawMap(){
     if(!map)return;
-    layer.clearLayers();
+    markers.forEach(m=>m.remove());markers=[];
     const stats=Object.values(shopStats()).filter(s=>s.lat!=null);
     const near=(a,b)=>dist(a,b)<40&&a.name.toLowerCase()===b.name.toLowerCase();
     mapShops.forEach(s=>{
       if(stats.some(v=>v.id===s.id||near(v,s)))return;
-      L.marker([s.lat,s.lon],{icon:pinIcon("n","",16)}).bindPopup(popup(s,false)).addTo(layer);
+      addMarker(s.lat,s.lon,pinEl("n","",16),popup(s,false));
     });
-    stats.forEach(s=>{
-      L.marker([s.lat,s.lon],{icon:pinIcon(s.stamm?"s":"v",s.visits,s.stamm?32:28),zIndexOffset:500}).bindPopup(popup(s,true)).addTo(layer);
-    });
-    if(mapPos)L.marker([mapPos.lat,mapPos.lon],{icon:pinIcon("me","",16),interactive:false,zIndexOffset:1000}).addTo(layer);
-    // nächster Döner
+    stats.forEach(s=>addMarker(s.lat,s.lon,pinEl(s.stamm?"s":"v",s.visits,s.stamm?32:28),popup(s,true)));
+    if(mapPos)addMarker(mapPos.lat,mapPos.lon,pinEl("me","",16));
     const cand=[...mapShops.filter(s=>s.kebab),...stats];
     if(mapPos&&cand.length){
       const n=cand.map(s=>({...s,d:dist(mapPos,s)})).sort((a,b)=>a.d-b.d)[0];
@@ -817,29 +819,30 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       $("mcName").textContent="Standort nicht verfügbar";$("mcMeta").textContent="Gezeigt werden deine besuchten Läden";
       drawMap();fitVisited();return;
     }
-    updateGmaps();map.setView([mapPos.lat,mapPos.lon],15);
+    updateGmaps();map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});
     drawMap();
     const r=await overpass(mapPos,MAP_RADIUS,true);
     mapShops=r.list;mapBusy=false;
     drawMap();
-    if(!mapShops.length&&!Object.values(shopStats()).some(s=>s.lat!=null)){
-      $("mcName").textContent=r.failed?"Suche gerade nicht möglich":"Kein Döner im Umkreis von 1,5 km";$("mcMeta").textContent="";
+    if($("mcName").textContent.startsWith("Suche")){
+      $("mcName").textContent=r.failed?"Ladensuche gerade nicht erreichbar":"Kein Döner im Umkreis von 1,5 km";
+      $("mcMeta").textContent="Tipp: unten auf „Google Maps“";
     }
   }
   function fitVisited(){
-    const pts=Object.values(shopStats()).filter(s=>s.lat!=null).map(s=>[s.lat,s.lon]);
-    if(pts.length)map.fitBounds(pts,{padding:[60,60],maxZoom:15});
+    const pts=Object.values(shopStats()).filter(s=>s.lat!=null);
+    if(!pts.length)return;
+    const b=new maplibregl.LngLatBounds();pts.forEach(p=>b.extend([p.lon,p.lat]));
+    map.fitBounds(b,{padding:70,maxZoom:15,duration:0});
   }
   function initMap(){
-    map=L.map("map",{zoomControl:false}).setView([51.16,10.45],6);
-    L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark()?"dark_all":"light_all"}/{z}/{x}/{y}{r}.png`,{
-      subdomains:"abcd",maxZoom:20,
-      attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende © <a href="https://carto.com/attributions">CARTO</a>'
-    }).addTo(map);
-    layer=L.layerGroup().addTo(map);
+    map=new maplibregl.Map({container:"map",style:STYLE(),center:[10.45,51.16],zoom:5,
+      attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false});
+    map.touchZoomRotate.disableRotation();
+    map.on("error",e=>{console.warn("Karte:",e&&e.error&&e.error.message)});
     fitVisited();
   }
-  $("recenter").onclick=()=>{if(mapPos)map.setView([mapPos.lat,mapPos.lon],15);refreshMap()};
+  $("recenter").onclick=()=>{if(mapPos)map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});refreshMap()};
 
   // ---------- Navigation ----------
   function show(view){
@@ -849,9 +852,9 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     $("tabMap").setAttribute("aria-selected",isMap);
     if(view==="stats"){renderStats();window.scrollTo(0,0)}
     if(isMap){
-      if(!window.L){$("mcName").textContent="Karte konnte nicht geladen werden";return}
+      if(!window.maplibregl){$("mcName").textContent="Karte konnte nicht geladen werden";return}
       if(!map)initMap();
-      setTimeout(()=>map.invalidateSize(),30);
+      setTimeout(()=>map.resize(),30);
       drawMap();
       if(!mapPos||!mapShops.length)refreshMap();
     }else if(view==="tracker")window.scrollTo(0,0);
