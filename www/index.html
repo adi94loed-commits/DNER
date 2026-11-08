@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F6F7F2">
 <title>Döner-Tracker</title>
+<link rel="stylesheet" href="vendor/leaflet.css">
 <style>
 @font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-grotesque-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-grotesque-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
@@ -12,41 +13,47 @@
 :root{
   --bg:#F6F7F2;--card:#FFFFFF;--ink:#2F2622;--muted:#7D736C;--line:#E2E2D8;
   --brot:#E6CB9C;--brotHell:#F1E1C2;--kruste:#C99B62;
-  --salat:#8DAA7B;--salatHell:#E1EAD7;
+  --salat:#8DAA7B;--salatHell:#E1EAD7;--salatDunkel:#5F7F4F;
   --kohl:#7E5C7C;--kohlHell:#ECE2EB;
-  --tomate:#BC5840;--tomateHell:#F4DFD6;
-  --zwiebel:#B88DA8;
+  --tomate:#BC5840;--tomateHell:#F4DFD6;--zwiebel:#B88DA8;
+  --pattern:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22112%22 height=%22112%22 viewBox=%220 0 112 112%22%3E%3Cg fill=%22%23E3E5DB%22%3E %3Cg transform=%22translate%2812 14%29 rotate%28-14%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2866 22%29 rotate%2832%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Cg transform=%22translate%2836 70%29 rotate%28168%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2880 80%29 rotate%28-28%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Ccircle cx=%2250%22 cy=%2240%22 r=%221.6%22/%3E%3Ccircle cx=%2298%22 cy=%2252%22 r=%221.6%22/%3E%3Ccircle cx=%2216%22 cy=%2296%22 r=%221.6%22/%3E%3C/g%3E%3C/svg%3E");
+  --safeT:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));
+  --safeB:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));
+  --nav:62px;
   box-sizing:border-box;color-scheme:light;
-  padding-top:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));
-  padding-bottom:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#1C1916;--card:#25211D;--ink:#F1EBE4;--muted:#A39990;--line:#37312B;
   --brot:#C9A877;--brotHell:#3A3126;--kruste:#A07A4A;
-  --salat:#87A577;--salatHell:#2B3327;--kohl:#A585A2;--kohlHell:#352B34;
-  --tomate:#D2715A;--tomateHell:#3D2A24;--zwiebel:#C7A3BB;color-scheme:dark}}
+  --salat:#87A577;--salatHell:#2B3327;--salatDunkel:#6E9160;--kohl:#A585A2;--kohlHell:#352B34;
+  --tomate:#D2715A;--tomateHell:#3D2A24;--zwiebel:#C7A3BB;
+  --pattern:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22112%22 height=%22112%22 viewBox=%220 0 112 112%22%3E%3Cg fill=%22%232A2520%22%3E %3Cg transform=%22translate%2812 14%29 rotate%28-14%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2866 22%29 rotate%2832%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Cg transform=%22translate%2836 70%29 rotate%28168%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2880 80%29 rotate%28-28%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Ccircle cx=%2250%22 cy=%2240%22 r=%221.6%22/%3E%3Ccircle cx=%2298%22 cy=%2252%22 r=%221.6%22/%3E%3Ccircle cx=%2216%22 cy=%2296%22 r=%221.6%22/%3E%3C/g%3E%3C/svg%3E");color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#1C1916;--card:#25211D;--ink:#F1EBE4;--muted:#A39990;--line:#37312B;
   --brot:#C9A877;--brotHell:#3A3126;--kruste:#A07A4A;
-  --salat:#87A577;--salatHell:#2B3327;--kohl:#A585A2;--kohlHell:#352B34;
-  --tomate:#D2715A;--tomateHell:#3D2A24;--zwiebel:#C7A3BB;color-scheme:dark}
+  --salat:#87A577;--salatHell:#2B3327;--salatDunkel:#6E9160;--kohl:#A585A2;--kohlHell:#352B34;
+  --tomate:#D2715A;--tomateHell:#3D2A24;--zwiebel:#C7A3BB;
+  --pattern:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22112%22 height=%22112%22 viewBox=%220 0 112 112%22%3E%3Cg fill=%22%232A2520%22%3E %3Cg transform=%22translate%2812 14%29 rotate%28-14%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2866 22%29 rotate%2832%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Cg transform=%22translate%2836 70%29 rotate%28168%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2880 80%29 rotate%28-28%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Ccircle cx=%2250%22 cy=%2240%22 r=%221.6%22/%3E%3Ccircle cx=%2298%22 cy=%2252%22 r=%221.6%22/%3E%3Ccircle cx=%2216%22 cy=%2296%22 r=%221.6%22/%3E%3C/g%3E%3C/svg%3E");color-scheme:dark}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--ink);user-select:none;-webkit-user-select:none;
+html,body{height:100%}
+body{margin:0;background:var(--bg) var(--pattern) repeat;background-attachment:fixed;color:var(--ink);user-select:none;-webkit-user-select:none;
   font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.4;
   -webkit-tap-highlight-color:transparent}
-main{max-width:460px;margin:0 auto;padding:10px 18px 56px}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--kohl);outline-offset:2px}
+[hidden]{display:none!important}
 
-/* Döner-Hero */
+/* Tracker-Ansicht */
+#viewTracker{position:relative;min-height:100%;padding-top:var(--safeT);padding-bottom:calc(var(--nav) + var(--safeB) + 24px)}
+main{position:relative;max-width:460px;margin:0 auto;padding:10px 18px 0}
+
 .hero{text-align:center}
 .hero svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
-.hero .num{font-weight:800;font-size:88px;letter-spacing:-3px;fill:#2F2622;font-variant-numeric:tabular-nums}
-.hero .mon{font-weight:600;font-size:16px;fill:#2F2622;opacity:.7}
-.hero .sub{margin:4px 0 0;font-size:15px;color:var(--muted)}
-
-/* Laden */
-.shop{margin-top:20px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+.hero .num{font-weight:800;font-size:84px;letter-spacing:-3px;fill:#2F2622;font-variant-numeric:tabular-nums}
+.hero .mon{font-weight:600;font-size:16px;fill:#2F2622;opacity:.72}
+.hero .spl{font-size:13px;fill:#2F2622;opacity:.6}
+.sub{margin:10px 2px 0;font-size:14px;color:var(--muted)}
+.shop{margin-top:10px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;
   background:var(--salatHell);border:0;border-radius:16px;padding:14px 16px;cursor:pointer;min-height:70px}
 .shop svg{flex:none}
 .shop .txt{flex:1;min-width:0}
@@ -58,154 +65,362 @@ button,input{font:inherit;color:inherit}
 .price{display:flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:0 14px;width:116px;flex:none}
 .price:focus-within{border-color:var(--kruste)}
 .price input{border:0;background:transparent;width:100%;padding:15px 0;outline:none;font-variant-numeric:tabular-nums}
-.go{flex:1;border:0;border-radius:16px;background:var(--tomate);color:#fff;font-size:19px;font-weight:800;cursor:pointer;transition:transform .08s}
+.go{flex:1;border:0;border-radius:16px;background:#9A3E31;color:#FFF7F2;font-size:19px;font-weight:800;cursor:pointer;transition:transform .08s}
 .go:active{transform:scale(.97)}
 
-/* Zahlen */
 .stats{display:flex;margin-top:26px;background:var(--card);border-radius:16px}
 .stat{flex:1;padding:14px 0 12px;text-align:center}
 .stat+.stat{border-left:1px solid var(--line)}
 .stat b{display:block;font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
 .stat small{font-size:13px;color:var(--muted)}
 
-h2{font-size:18px;font-weight:800;margin:30px 0 10px}
+h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .empty{color:var(--muted);font-size:15px;margin:4px 0}
 
 .top{list-style:none;margin:0;padding:0}
-.top li{position:relative;isolation:isolate;display:flex;justify-content:space-between;gap:12px;padding:10px 14px;margin-bottom:6px;border-radius:12px;overflow:hidden;background:var(--card)}
+.top li{position:relative;isolation:isolate;display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:6px;border-radius:12px;overflow:hidden;background:var(--card)}
 .top li::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--c);z-index:-1;border-radius:0 12px 12px 0}
-.top .c{font-weight:800;font-variant-numeric:tabular-nums}
+.top .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .r{font-size:14px;color:var(--muted);white-space:nowrap}
+.top .c{font-weight:800;font-variant-numeric:tabular-nums;min-width:1.4em;text-align:right}
+.badge{display:inline-block;margin-left:6px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--kohl);color:#fff;vertical-align:2px}
 
 .log{list-style:none;margin:0;padding:0}
-.log li{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
-.log li::before{content:"";flex:none;width:14px;height:12px;background:var(--brot);clip-path:path("M1 6.5 L6 1.5 Q7 .6 8 1.5 L13 6.5 Q13.5 7 13 8 C11 12 3 12 1 8 Q.5 7 1 6.5Z")}
+.log li{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.log li::before{content:"";flex:none;width:14px;height:12px;background:var(--kruste);clip-path:path("M1 6.5 L6 1.5 Q7 .6 8 1.5 L13 6.5 Q13.5 7 13 8 C11 12 3 12 1 8 Q.5 7 1 6.5Z")}
 .log .w{flex:1;min-width:0}
 .log .s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .log .d{font-size:14px;color:var(--muted)}
+.log .rt{display:flex;gap:2px;margin-top:3px}
+.log .rt span{width:11px;height:9px;background:var(--line);clip-path:path("M.8 4.8 L4.6 1.1 Q5.5 .4 6.4 1.1 L10.2 4.8 Q10.6 5.3 10.2 6 C8.6 9 2.4 9 .8 6 Q.4 5.3 .8 4.8Z")}
+.log .rt span.on{background:var(--kruste)}
+.log .rt em{font-style:normal;font-size:13px;color:var(--muted)}
 .log .e{font-variant-numeric:tabular-nums}
 .log button{border:0;background:none;color:var(--muted);font-size:17px;padding:8px;cursor:pointer;border-radius:8px}
 .more{border:0;background:none;color:var(--muted);text-decoration:underline;padding:8px 0;cursor:pointer}
 .foot{margin-top:32px;font-size:13px;color:var(--muted)}
 
-/* Auswahl-Sheet */
-.scrim{position:fixed;inset:0;background:rgba(30,24,20,.35);opacity:0;pointer-events:none;transition:opacity .2s}
-.sheet{position:fixed;left:0;right:0;bottom:0;max-width:460px;margin:0 auto;background:var(--bg);
-  border-radius:22px 22px 0 0;padding:20px 18px calc(18px + max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px)));
+/* Karten-Ansicht */
+#viewMap{position:fixed;left:0;right:0;top:0;bottom:calc(var(--nav) + var(--safeB))}
+#map{position:absolute;inset:0;background:var(--bg)}
+.mapcard{position:absolute;z-index:500;left:12px;right:12px;top:calc(var(--safeT) + 12px);max-width:436px;margin:0 auto;
+  background:var(--card);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 6px 24px rgba(40,30,20,.16)}
+.mapcard .t{flex:1;min-width:0}
+.mapcard .k{font-size:13px;color:var(--muted)}
+.mapcard .v{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mapcard .m{font-size:14px;color:var(--muted)}
+.mapcard a,.pop a{flex:none;background:#9A3E31;color:#FFF7F2;text-decoration:none;font-weight:700;padding:10px 14px;border-radius:12px}
+.legend{position:absolute;z-index:500;left:12px;bottom:12px;display:flex;gap:6px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:6px;background:var(--card);border-radius:999px;padding:5px 10px;font-size:13px;box-shadow:0 2px 10px rgba(40,30,20,.12)}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.recenter{position:absolute;z-index:500;right:12px;bottom:12px;width:46px;height:46px;border-radius:50%;border:0;background:var(--card);box-shadow:0 2px 10px rgba(40,30,20,.16);cursor:pointer;display:grid;place-items:center}
+.pin{display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:800;font-size:13px;border:2.5px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.25)}
+.pin.v{background:var(--salatDunkel)}
+.pin.s{background:var(--kohl)}
+.pin.n{background:var(--tomate)}
+.pin.me{background:#3B6EA8;box-shadow:0 0 0 8px rgba(59,110,168,.2)}
+.leaflet-container{font-family:inherit}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--card);color:var(--ink);border-radius:14px}
+.leaflet-popup-content{margin:12px 14px;font-size:15px;line-height:1.4}
+.pop b{display:block;font-size:16px}
+.pop .m{color:var(--muted);font-size:14px;margin:2px 0 10px}
+.pop a{display:inline-block;padding:7px 12px;font-size:14px}
+.leaflet-control-attribution{font-size:10px;background:color-mix(in srgb,var(--card) 80%,transparent)!important;color:var(--muted)}
+.leaflet-control-attribution a{color:var(--muted)}
+
+
+/* Döner/Dürüm-Auswahl */
+.kind{display:flex;gap:6px;margin-top:10px;background:var(--card);border-radius:16px;padding:5px}
+.kind button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:none;border-radius:12px;padding:8px;cursor:pointer;font-weight:600;color:var(--muted)}
+.kind button[aria-pressed="true"]{background:var(--brotHell);color:var(--ink)}
+.kind.small{max-width:260px;margin:4px auto 6px}
+.split{display:flex;height:14px;border-radius:8px;overflow:hidden;margin:12px 0 10px;background:var(--bg)}
+.split i:first-child{background:var(--kruste)}.split i:last-child{background:var(--brot)}
+.ktab{width:100%;border-collapse:collapse;font-size:15px}
+.ktab th{text-align:left;font-weight:600;padding:6px 0}
+.ktab td{text-align:right;padding:6px 0;font-variant-numeric:tabular-nums;border-top:1px solid var(--line)}
+.ktab td:first-child{text-align:left;color:var(--muted)}
+.ktab th+th{text-align:right}
+.log li.duerum::before{clip-path:none;width:14px;height:6px;border-radius:3px;transform:rotate(-35deg)}
+
+/* Statistik */
+#viewStats{position:relative;min-height:100%;padding-top:var(--safeT);padding-bottom:calc(var(--nav) + var(--safeB) + 24px)}
+.st-h{font-size:28px;font-weight:800;margin:14px 0 12px;letter-spacing:-.5px}
+.seg{display:flex;background:var(--card);border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:none;border-radius:10px;padding:9px 4px;font-size:15px;color:var(--muted);cursor:pointer;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--salatHell);color:var(--ink)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.kpi{background:var(--card);border-radius:14px;padding:12px 14px}
+.kpi b{display:block;font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpi small{font-size:13px;color:var(--muted)}
+.card{background:var(--card);border-radius:16px;padding:14px 14px 10px;margin-top:10px}
+.card h3{margin:0;font-size:16px;font-weight:800}
+.card .cap{margin:0 0 6px;font-size:13px;color:var(--muted)}
+.card svg{display:block;width:100%;height:auto;margin-top:8px}
+.rrow{display:flex;align-items:center;gap:10px;padding:5px 0}
+.rrow .rt{display:flex;gap:2px;width:62px;flex:none}
+.rrow .rt span{width:11px;height:9px;background:var(--kruste);clip-path:path("M.8 4.8 L4.6 1.1 Q5.5 .4 6.4 1.1 L10.2 4.8 Q10.6 5.3 10.2 6 C8.6 9 2.4 9 .8 6 Q.4 5.3 .8 4.8Z")}
+.rbar{flex:1;height:10px;background:var(--bg);border-radius:6px;overflow:hidden}
+.rbar i{display:block;height:100%;background:var(--brot);border-radius:6px}
+.rrow b{width:2em;text-align:right;font-variant-numeric:tabular-nums}
+.facts{list-style:none;margin:6px 0 0;padding:0}
+.facts li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.facts li:last-child{border-bottom:0}
+.facts span{color:var(--muted)}
+.facts b{text-align:right;font-weight:600}
+.card .top li{background:var(--bg)}
+.when{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 2px;font-size:14px;color:var(--muted)}
+.when input{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);font-size:15px}
+
+.gmaps{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:12px;border-radius:12px;
+  background:var(--card);border:1.5px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+.gmaps.float{position:absolute;z-index:500;right:68px;bottom:12px;margin:0;height:46px;padding:0 14px;border:0;border-radius:23px;box-shadow:0 2px 10px rgba(40,30,20,.16)}
+.legend{max-width:calc(100% - 210px)}
+
+/* Navigation */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:1000;display:flex;justify-content:center;gap:8px;
+  padding:8px 16px calc(8px + var(--safeB));background:var(--bg);border-top:1px solid var(--line)}
+.tabs button{flex:1;max-width:160px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:none;
+  padding:10px;border-radius:12px;cursor:pointer;color:var(--muted);font-weight:600}
+.tabs button[aria-selected="true"]{background:var(--salatHell);color:var(--ink)}
+
+/* Sheets */
+.layer{position:fixed;inset:0;z-index:1100;pointer-events:none}
+.scrim{position:absolute;inset:0;background:rgba(30,24,20,.35);opacity:0;transition:opacity .2s}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-width:460px;margin:0 auto;background:var(--bg);
+  border-radius:22px 22px 0 0;padding:20px 18px calc(18px + var(--safeB));
   transform:translateY(105%);transition:transform .22s ease;max-height:80vh;display:flex;flex-direction:column}
-.open .scrim{opacity:1;pointer-events:auto}.open .sheet{transform:none}
+.layer.open{pointer-events:auto}.layer.open .scrim{opacity:1}.layer.open .sheet{transform:none}
 .sheet h3{margin:0 0 10px;font-size:18px;font-weight:800}
 .opts{list-style:none;margin:0;padding:0;overflow-y:auto}
 .opts button{width:100%;display:flex;justify-content:space-between;gap:10px;text-align:left;border:0;background:none;padding:13px 4px;border-bottom:1px solid var(--line);cursor:pointer}
 .opts button[aria-current="true"]{font-weight:700;color:var(--kohl)}
 .opts .dist{color:var(--muted);font-size:14px;white-space:nowrap}
+.opts .tag{color:var(--kohl);font-size:13px;font-weight:600}
 .manual{display:flex;gap:8px;margin-top:12px}
 .manual input{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--card);min-width:0}
 .manual button{border:0;border-radius:12px;background:var(--kohl);color:#fff;padding:0 16px;font-weight:600;cursor:pointer}
 .hint{font-size:13px;color:var(--muted);margin:10px 0 0}
+.stars{display:flex;justify-content:center;gap:10px;margin:10px 0 6px}
+.stars button{border:0;background:none;padding:4px;cursor:pointer;border-radius:10px}
+.stars svg path{fill:var(--line);transition:fill .1s}
+.stars button.on svg path{fill:var(--kruste)}
+.rlabel{text-align:center;color:var(--muted);font-size:15px;min-height:1.4em;margin:0}
+.skip{border:0;background:none;color:var(--muted);text-decoration:underline;padding:12px;cursor:pointer;margin-top:4px}
 
-.toast{position:fixed;left:50%;bottom:calc(20px + max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px)));transform:translate(-50%,160%);
+.toast{position:fixed;z-index:1200;left:50%;bottom:calc(var(--nav) + var(--safeB) + 14px);transform:translate(-50%,160%);opacity:0;
   background:var(--ink);color:var(--bg);padding:10px 12px 10px 16px;border-radius:14px;display:flex;gap:12px;align-items:center;
-  transition:transform .2s;max-width:calc(100% - 32px)}
-.toast.show{transform:translate(-50%,0)}
+  transition:transform .2s,opacity .2s,visibility .2s;width:max-content;max-width:calc(100% - 32px);visibility:hidden;pointer-events:none}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
 .toast button{border:0;background:none;color:var(--brot);font-weight:800;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.sheet,.scrim,.toast,.go{transition:none}}
 </style>
 </head>
 <body>
-<main>
-  <section class="hero" aria-live="polite">
-    <svg viewBox="0 30 360 266" role="img" aria-labelledby="heroLabel">
-      <title id="heroLabel">Döner diesen Monat</title>
-      <!-- hinteres Brot -->
-      <path d="M116 132 L171 62 Q180 52 189 62 L244 132Z" fill="var(--kruste)"/>
-      <!-- Salat -->
-      <path d="M16 200 C24 170 44 176 56 156 C70 134 92 144 104 122 C118 100 138 112 150 92 C160 76 172 84 180 72 C188 84 200 76 210 92 C222 112 242 100 256 122 C268 144 290 134 304 156 C316 176 336 170 344 200Z" fill="var(--salat)"/>
-      <!-- Rotkohl -->
-      <g fill="var(--kohl)">
-        <rect x="128" y="96" width="30" height="8" rx="4" transform="rotate(-38 143 100)"/>
-        <rect x="196" y="98" width="28" height="8" rx="4" transform="rotate(34 210 102)"/>
-        <rect x="40" y="168" width="26" height="8" rx="4" transform="rotate(-24 53 172)"/>
-        <rect x="292" y="166" width="26" height="8" rx="4" transform="rotate(26 305 170)"/>
-        <rect x="166" y="84" width="24" height="8" rx="4" transform="rotate(80 178 88)"/>
-      </g>
-      <!-- Tomaten -->
-      <g transform="rotate(-31 98 150)"><path d="M70 150 a28 28 0 0 1 56 0Z" fill="var(--tomate)"/><path d="M79 150 a19 19 0 0 1 38 0Z" fill="var(--tomateHell)" opacity=".5"/></g>
-      <g transform="rotate(31 262 150)"><path d="M234 150 a28 28 0 0 1 56 0Z" fill="var(--tomate)"/><path d="M243 150 a19 19 0 0 1 38 0Z" fill="var(--tomateHell)" opacity=".5"/></g>
-      <!-- Zwiebel -->
-      <g fill="none" stroke="var(--zwiebel)" stroke-width="5">
-        <circle cx="146" cy="118" r="10"/><circle cx="226" cy="124" r="9"/><circle cx="58" cy="182" r="8"/>
-      </g>
-      <!-- vorderes Brot -->
-      <path d="M22 196 L166 104 Q180 95 194 104 L338 196 Q346 204 338 216 C300 302 60 302 22 216 Q14 204 22 196Z" fill="var(--brot)"/>
-      <path d="M24 197 L166 106 Q180 97 194 106 L336 197" fill="none" stroke="#F3E4C6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-      <g fill="#F6EBD6" opacity=".85">
-        <ellipse cx="96" cy="222" rx="3" ry="1.8"/><ellipse cx="132" cy="196" rx="3" ry="1.8"/><ellipse cx="250" cy="200" rx="3" ry="1.8"/>
-        <ellipse cx="282" cy="236" rx="3" ry="1.8"/><ellipse cx="74" cy="250" rx="3" ry="1.8"/><ellipse cx="300" cy="214" rx="3" ry="1.8"/>
-        <ellipse cx="230" cy="276" rx="3" ry="1.8"/><ellipse cx="120" cy="272" rx="3" ry="1.8"/>
-      </g>
-      <text class="num" id="mCount" x="180" y="232" text-anchor="middle">0</text>
-      <text class="mon" id="mLabel" x="180" y="258" text-anchor="middle">im Monat</text>
-    </svg>
-    <p class="sub" id="mSub">Noch keiner eingetragen.</p>
-  </section>
+<div id="viewTracker">
+  <main>
+    <section class="hero" aria-live="polite">
+      <svg viewBox="0 44 360 252" role="img" aria-labelledby="heroLabel">
+        <title id="heroLabel">Döner und Dürüm diesen Monat</title>
+        <path d="M9.3 177.6 L25.1 167.8 L40.9 158.0 L56.7 148.2 L72.5 138.4 L88.3 128.6 L104.1 118.8 L119.9 109.0 L135.7 99.2 L151.5 89.4 L167.3 79.6 L192.7 79.6 L208.5 89.4 L224.3 99.2 L240.1 109.0 L255.9 118.8 L271.7 128.6 L287.5 138.4 L303.3 148.2 L319.1 158.0 L334.9 167.8 L350.7 177.6 L338 198 L22 198Z" fill="#8DAA7B"/>
+<circle cx="9.3" cy="177.6" r="13.0" fill="#9DB98B"/>
+<circle cx="15.9" cy="170.5" r="15.4" fill="#8DAA7B"/>
+<circle cx="26.5" cy="170.0" r="14.3" fill="#8DAA7B"/>
+<circle cx="33.0" cy="162.9" r="11.3" fill="#9DB98B"/>
+<circle cx="39.6" cy="155.8" r="10.8" fill="#8DAA7B"/>
+<circle cx="50.2" cy="155.3" r="13.5" fill="#8DAA7B"/>
+<circle cx="56.7" cy="148.1" r="15.5" fill="#9DB98B"/>
+<circle cx="63.3" cy="141.1" r="13.8" fill="#8DAA7B"/>
+<circle cx="74.0" cy="140.7" r="10.9" fill="#8DAA7B"/>
+<circle cx="80.4" cy="133.4" r="11.1" fill="#9DB98B"/>
+<circle cx="87.0" cy="126.5" r="14.1" fill="#8DAA7B"/>
+<circle cx="97.7" cy="126.0" r="15.5" fill="#8DAA7B"/>
+<circle cx="104.0" cy="118.6" r="13.3" fill="#9DB98B"/>
+<circle cx="110.7" cy="111.8" r="10.7" fill="#8DAA7B"/>
+<circle cx="121.4" cy="111.3" r="11.5" fill="#8DAA7B"/>
+<circle cx="127.7" cy="103.9" r="14.5" fill="#9DB98B"/>
+<circle cx="134.5" cy="97.1" r="15.3" fill="#8DAA7B"/>
+<circle cx="145.1" cy="96.6" r="12.7" fill="#8DAA7B"/>
+<circle cx="151.4" cy="89.1" r="10.5" fill="#9DB98B"/>
+<circle cx="158.2" cy="82.4" r="12.0" fill="#8DAA7B"/>
+<circle cx="168.8" cy="81.9" r="14.9" fill="#8DAA7B"/>
+<circle cx="350.7" cy="177.6" r="13.0" fill="#9DB98B"/>
+<circle cx="344.1" cy="170.5" r="15.4" fill="#8DAA7B"/>
+<circle cx="333.5" cy="170.0" r="14.3" fill="#8DAA7B"/>
+<circle cx="327.0" cy="162.9" r="11.3" fill="#9DB98B"/>
+<circle cx="320.4" cy="155.8" r="10.8" fill="#8DAA7B"/>
+<circle cx="309.8" cy="155.3" r="13.5" fill="#8DAA7B"/>
+<circle cx="303.3" cy="148.1" r="15.5" fill="#9DB98B"/>
+<circle cx="296.7" cy="141.1" r="13.8" fill="#8DAA7B"/>
+<circle cx="286.0" cy="140.7" r="10.9" fill="#8DAA7B"/>
+<circle cx="279.6" cy="133.4" r="11.1" fill="#9DB98B"/>
+<circle cx="273.0" cy="126.5" r="14.1" fill="#8DAA7B"/>
+<circle cx="262.3" cy="126.0" r="15.5" fill="#8DAA7B"/>
+<circle cx="256.0" cy="118.6" r="13.3" fill="#9DB98B"/>
+<circle cx="249.3" cy="111.8" r="10.7" fill="#8DAA7B"/>
+<circle cx="238.6" cy="111.3" r="11.5" fill="#8DAA7B"/>
+<circle cx="232.3" cy="103.9" r="14.5" fill="#9DB98B"/>
+<circle cx="225.5" cy="97.1" r="15.3" fill="#8DAA7B"/>
+<circle cx="214.9" cy="96.6" r="12.7" fill="#8DAA7B"/>
+<circle cx="208.6" cy="89.1" r="10.5" fill="#9DB98B"/>
+<circle cx="201.8" cy="82.4" r="12.0" fill="#8DAA7B"/>
+<circle cx="191.2" cy="81.9" r="14.9" fill="#8DAA7B"/>
+<rect x="16.4" y="164.5" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-12 29.4 167.5)"/>
+<rect x="62.7" y="133.4" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-57 75.7 136.4)"/>
+<rect x="104.8" y="109.7" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-12 117.8 112.7)"/>
+<rect x="140.7" y="89.8" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(3 153.7 92.8)"/>
+<rect x="317.6" y="164.5" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-173 330.6 167.5)"/>
+<rect x="271.3" y="133.4" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-173 284.3 136.4)"/>
+<rect x="229.2" y="109.7" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-113 242.2 112.7)"/>
+<rect x="193.3" y="89.8" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-173 206.3 92.8)"/>
+<g transform="translate(94.7 117.6) rotate(-32)"><path d="M-19 6 A19 19 0 0 1 19 6Z" fill="#BC5840"/><path d="M-13 6 A13 13 0 0 1 13 6Z" fill="#E59A84"/><circle cx="-6.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="6.3" cy="-2" r="2" fill="#F4DFD6"/></g>
+<g transform="translate(259.0 113.7) rotate(32)"><path d="M-19 6 A19 19 0 0 1 19 6Z" fill="#BC5840"/><path d="M-13 6 A13 13 0 0 1 13 6Z" fill="#E59A84"/><circle cx="-6.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="6.3" cy="-2" r="2" fill="#F4DFD6"/></g>
+<g transform="translate(34.6 154.9) rotate(-32)"><path d="M-16 6 A16 16 0 0 1 16 6Z" fill="#BC5840"/><path d="M-10 6 A10 10 0 0 1 10 6Z" fill="#E59A84"/><circle cx="-5.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="5.3" cy="-2" r="2" fill="#F4DFD6"/></g>
+<g transform="translate(322.2 152.9) rotate(32)"><path d="M-16 6 A16 16 0 0 1 16 6Z" fill="#BC5840"/><path d="M-10 6 A10 10 0 0 1 10 6Z" fill="#E59A84"/><circle cx="-5.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="5.3" cy="-2" r="2" fill="#F4DFD6"/></g>
+<g transform="translate(22.5 177.7) rotate(-36)"><path d="M-16.2 2 C-16.2 -6 -8.1 -9 0 -7 C8.1 -10 16.2 -6 16.2 1 C13.2 8 -12.2 9 -16.2 2Z" fill="#8C5634"/><path d="M-11.2 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(49.4 157.5) rotate(-32)"><path d="M-16.1 2 C-16.1 -6 -8.1 -9 0 -7 C8.1 -10 16.1 -6 16.1 1 C13.1 8 -12.1 9 -16.1 2Z" fill="#8C5634"/><path d="M-11.1 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(78.9 141.5) rotate(-34)"><path d="M-16.3 2 C-16.3 -6 -8.1 -9 0 -7 C8.1 -10 16.3 -6 16.3 1 C13.3 8 -12.3 9 -16.3 2Z" fill="#8C5634"/><path d="M-11.3 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(105.7 121.4) rotate(-44)"><path d="M-17.7 2 C-17.7 -6 -8.8 -9 0 -7 C8.8 -10 17.7 -6 17.7 1 C14.7 8 -13.7 9 -17.7 2Z" fill="#8C5634"/><path d="M-12.7 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(135.2 105.4) rotate(-22)"><path d="M-16.5 2 C-16.5 -6 -8.2 -9 0 -7 C8.2 -10 16.5 -6 16.5 1 C13.5 8 -12.5 9 -16.5 2Z" fill="#8C5634"/><path d="M-11.5 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(162.1 92.3) rotate(-40)"><path d="M-18.5 2 C-18.5 -6 -9.3 -9 0 -7 C9.3 -10 18.5 -6 18.5 1 C15.5 8 -14.5 9 -18.5 2Z" fill="#8C5634"/><path d="M-13.5 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(337.5 177.7) rotate(-135)"><path d="M-18.3 2 C-18.3 -6 -9.2 -9 0 -7 C9.2 -10 18.3 -6 18.3 1 C15.3 8 -14.3 9 -18.3 2Z" fill="#8C5634"/><path d="M-13.3 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(310.6 157.5) rotate(-151)"><path d="M-19.9 2 C-19.9 -6 -10.0 -9 0 -7 C10.0 -10 19.9 -6 19.9 1 C16.9 8 -15.9 9 -19.9 2Z" fill="#8C5634"/><path d="M-14.9 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(281.1 141.5) rotate(-162)"><path d="M-19.4 2 C-19.4 -6 -9.7 -9 0 -7 C9.7 -10 19.4 -6 19.4 1 C16.4 8 -15.4 9 -19.4 2Z" fill="#8C5634"/><path d="M-14.4 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(254.3 121.4) rotate(-155)"><path d="M-16.6 2 C-16.6 -6 -8.3 -9 0 -7 C8.3 -10 16.6 -6 16.6 1 C13.6 8 -12.6 9 -16.6 2Z" fill="#8C5634"/><path d="M-11.6 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(224.8 105.4) rotate(-160)"><path d="M-17.2 2 C-17.2 -6 -8.6 -9 0 -7 C8.6 -10 17.2 -6 17.2 1 C14.2 8 -13.2 9 -17.2 2Z" fill="#8C5634"/><path d="M-12.2 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<g transform="translate(197.9 92.3) rotate(-139)"><path d="M-16.7 2 C-16.7 -6 -8.4 -9 0 -7 C8.4 -10 16.7 -6 16.7 1 C13.7 8 -12.7 9 -16.7 2Z" fill="#8C5634"/><path d="M-11.7 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
+<path d="M160 96 C164 84 176 80 184 84 C192 80 202 86 200 96Z" fill="#8C5634"/>
+<ellipse cx="61.5" cy="145.3" rx="10" ry="6" transform="rotate(-32 61.5 145.3)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
+<ellipse cx="293.8" cy="142.3" rx="10" ry="6" transform="rotate(-148 293.8 142.3)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
+<ellipse cx="214.8" cy="93.3" rx="10" ry="6" transform="rotate(-148 214.8 93.3)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
+<ellipse cx="119.9" cy="109.0" rx="10" ry="6" transform="rotate(-32 119.9 109.0)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
+<path d="M37.3 173.2 Q42.5 160.6 49.6 161.4 T62.5 150.5" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M94.1 138.0 Q99.4 125.3 106.5 126.2 T119.4 115.2" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M322.7 173.2 Q317.5 160.6 310.4 161.4 T297.5 150.5" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M265.9 138.0 Q260.6 125.3 253.5 126.2 T240.6 115.2" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 196 L166 104 Q180 95 194 104 L338 196 Q346 204 338 216 C300 302 60 302 22 216 Q14 204 22 196Z" fill="#E6CB9C"/>
+<path d="M40 236 C90 286 270 286 320 236" fill="none" stroke="#D2AF78" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+<path d="M24 197 L166 106 Q180 97 194 106 L336 197" fill="none" stroke="#F3E4C6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#F6EBD6" opacity=".9"><ellipse cx="96" cy="222" rx="3" ry="1.8" transform="rotate(34 96 222)"/><ellipse cx="132" cy="196" rx="3" ry="1.8" transform="rotate(33 132 196)"/><ellipse cx="250" cy="200" rx="3" ry="1.8" transform="rotate(-16 250 200)"/><ellipse cx="282" cy="236" rx="3" ry="1.8" transform="rotate(7 282 236)"/><ellipse cx="74" cy="250" rx="3" ry="1.8" transform="rotate(-28 74 250)"/><ellipse cx="300" cy="214" rx="3" ry="1.8" transform="rotate(30 300 214)"/><ellipse cx="230" cy="276" rx="3" ry="1.8" transform="rotate(-32 230 276)"/><ellipse cx="120" cy="272" rx="3" ry="1.8" transform="rotate(32 120 272)"/><ellipse cx="160" cy="160" rx="3" ry="1.8" transform="rotate(-33 160 160)"/><ellipse cx="206" cy="158" rx="3" ry="1.8" transform="rotate(39 206 158)"/></g>
+        <text class="num" id="mCount" x="180" y="208" text-anchor="middle">0</text>
+        <text class="mon" id="mLabel" x="180" y="232" text-anchor="middle">im November</text>
+        <text class="spl" id="mSplit" x="180" y="250" text-anchor="middle"></text>
+      </svg>
+    </section>
 
-  <button class="shop" id="shopBtn" type="button" aria-haspopup="dialog">
-    <svg width="28" height="26" viewBox="0 0 28 26" aria-hidden="true"><path d="M2 12 L13 3 Q14 2.2 15 3 L26 12 Q27 13 26.4 14.4 C23 22 5 22 1.6 14.4 Q1 13 2 12Z" fill="var(--salat)"/><circle cx="14" cy="13" r="3.2" fill="var(--salatHell)"/></svg>
-    <span class="txt"><span class="name" id="shopName">Laden finden</span><span class="meta" id="shopMeta">Tippen, um den Standort zu nutzen</span></span>
-    <span class="chg" id="shopChg" hidden>ändern</span>
-  </button>
+    <button class="shop" id="shopBtn" type="button" aria-haspopup="dialog">
+      <svg width="28" height="26" viewBox="0 0 28 26" aria-hidden="true"><path d="M2 12 L13 3 Q14 2.2 15 3 L26 12 Q27 13 26.4 14.4 C23 22 5 22 1.6 14.4 Q1 13 2 12Z" fill="var(--salat)"/><circle cx="14" cy="13" r="3.2" fill="var(--salatHell)"/></svg>
+      <span class="txt"><span class="name" id="shopName">Laden finden</span><span class="meta" id="shopMeta">Tippen, um den Standort zu nutzen</span></span>
+      <span class="chg" id="shopChg" hidden>ändern</span>
+    </button>
 
-  <div class="row">
-    <label class="price"><input id="price" type="text" inputmode="decimal" placeholder="Preis" aria-label="Preis in Euro"><span>€</span></label>
-    <button class="go" id="go" type="button">Döner eintragen</button>
-  </div>
+    <div class="kind" role="group" aria-label="Was gab es?">
+      <button type="button" data-k="doener" aria-pressed="true"><svg width="26" height="24" viewBox="0 0 48 46" aria-hidden="true"><circle cx="10" cy="22" r="5.5" fill="var(--salat)"/><circle cx="17" cy="15" r="5.5" fill="#8C5634"/><circle cx="31" cy="15" r="5.5" fill="var(--tomate)"/><circle cx="38" cy="22" r="5.5" fill="var(--salat)"/><path d="M3 26 L22 10 Q24 8.5 26 10 L45 26 Q46.5 27.5 45.5 29.5 C40 44 8 44 2.5 29.5 Q1.5 27.5 3 26Z" fill="var(--kruste)"/></svg>Döner</button>
+      <button type="button" data-k="duerum" aria-pressed="false"><svg width="26" height="24" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-35 24 24)"><rect x="16" y="2" width="16" height="44" rx="8" fill="var(--brot)"/><circle cx="20" cy="6" r="3" fill="var(--salat)"/><circle cx="27" cy="5" r="3" fill="#8C5634"/><path d="M15 26 L18.6 23.5 L22.2 26 L25.8 23.5 L29.4 26 L33 23.5 V40 Q33 47 24 47 Q15 47 15 40Z" fill="var(--kruste)"/></g></svg>Dürüm</button>
+    </div>
+    <div class="row">
+      <label class="price"><input id="price" type="text" inputmode="decimal" placeholder="Preis" aria-label="Preis in Euro"><span>€</span></label>
+      <button class="go" id="go" type="button">Döner eintragen</button>
+    </div>
 
-  <div class="stats">
-    <div class="stat"><b id="sWeek">0</b><small>diese Woche</small></div>
-    <div class="stat"><b id="sTotal">0</b><small>insgesamt</small></div>
-    <div class="stat"><b id="sSpent">0 €</b><small>im Monat</small></div>
-  </div>
+    <p class="sub" id="mSub"></p>
+    <h2>Verlauf</h2>
+    <ul class="log" id="log"></ul>
+    <p class="empty" id="logEmpty">Dein erster Döner erscheint hier.</p>
+    <button class="more" id="more" type="button" hidden>Ältere anzeigen</button>
+    <p class="foot">Tippe auf einen Eintrag, um ihn zu bewerten. Ladendaten © OpenStreetMap-Mitwirkende</p>
+  </main>
+</div>
 
-  <h2>Deine Läden</h2>
-  <ul class="top" id="top"></ul>
-  <p class="empty" id="topEmpty">Hier landen deine Stammläden.</p>
+<div id="viewStats" hidden>
+  <main>
+    <h1 class="st-h">Statistik</h1>
+    <div class="seg" role="group" aria-label="Zeitraum">
+      <button type="button" data-r="30" aria-pressed="false">30 Tage</button>
+      <button type="button" data-r="year" aria-pressed="false">Dieses Jahr</button>
+      <button type="button" data-r="all" aria-pressed="true">Alles</button>
+    </div>
+    <p class="empty" id="statsEmpty" style="margin-top:16px" hidden>In diesem Zeitraum gibt es noch keine Döner.</p>
+    <div id="statsBody">
+      <div class="kpis" id="kpis"></div>
+      <section class="card"><h3>Döner oder Dürüm</h3><div id="chKind"></div></section>
+      <section class="card"><h3>Wochentage</h3><div id="chWeek"></div></section>
+      <section class="card"><h3>Tageszeit</h3><div id="chTime"></div></section>
+      <section class="card"><h3>Bewertungen</h3><div id="chRate"></div></section>
+      <section class="card"><h3>Rekorde</h3><ul class="facts" id="facts"></ul></section>
+      <section class="card"><h3>Meistbesucht</h3><ul class="top" id="top" style="margin-top:8px"></ul><p class="empty" id="topEmpty">Ab 3 Besuchen wird ein Laden zum Stammlokal.</p></section>
+      <section class="card" id="cardBest"><h3>Bestbewertete Läden</h3><ul class="top" id="bestShops" style="margin-top:8px"></ul></section>
+    </div>
+    <section class="card"><h3>Döner pro Monat</h3><p class="cap">Letzte 12 Monate</p><div id="chMonth"></div></section>
+    <section class="card" id="cardPrice"><h3>Preis im Schnitt</h3><p class="cap">Letzte 12 Monate</p><div id="chPrice"></div></section>
+  </main>
+</div>
 
-  <h2>Verlauf</h2>
-  <ul class="log" id="log"></ul>
-  <p class="empty" id="logEmpty">Dein erster Döner erscheint hier.</p>
-  <button class="more" id="more" type="button" hidden>Ältere anzeigen</button>
-  <p class="foot">Ladendaten © OpenStreetMap-Mitwirkende</p>
-</main>
+<div id="viewMap" hidden>
+  <div id="map" aria-label="Karte mit Dönerläden"></div>
+  <div class="mapcard" id="mapCard"><div class="t"><div class="k">Nächster Döner</div><div class="v" id="mcName">Suche …</div><div class="m" id="mcMeta"></div></div><a id="mcRoute" href="#" target="_blank" rel="noopener" hidden>Route</a></div>
+  <div class="legend"><span><i style="background:var(--tomate)"></i>Neu</span><span><i style="background:var(--salatDunkel)"></i>Besucht</span><span><i style="background:var(--kohl)"></i>Stammlokal</span></div>
+  <a class="gmaps float" id="gmMap" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Google Maps</a>
+  <button class="recenter" id="recenter" type="button" aria-label="Auf meinen Standort zentrieren"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="var(--ink)"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="var(--ink)" stroke-width="2"/></svg></button>
+</div>
 
-<div id="picker" role="dialog" aria-modal="true" aria-labelledby="pTitle">
-  <div class="scrim" id="scrim"></div>
+<nav class="tabs" role="tablist">
+  <button type="button" role="tab" id="tabTracker" aria-selected="true"><svg width="24" height="22" viewBox="0 0 48 46" aria-hidden="true"><circle cx="10" cy="22" r="5.5" fill="currentColor" opacity=".4"/><circle cx="17" cy="15" r="5.5" fill="currentColor" opacity=".4"/><circle cx="31" cy="15" r="5.5" fill="currentColor" opacity=".4"/><circle cx="38" cy="22" r="5.5" fill="currentColor" opacity=".4"/><path d="M3 26 L22 10 Q24 8.5 26 10 L45 26 Q46.5 27.5 45.5 29.5 C40 44 8 44 2.5 29.5 Q1.5 27.5 3 26Z" fill="currentColor"/></svg>Tracker</button>
+  <button type="button" role="tab" id="tabStats" aria-selected="false"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="12" width="4.5" height="9" rx="1.5" fill="currentColor"/><rect x="9.75" y="4" width="4.5" height="17" rx="1.5" fill="currentColor"/><rect x="16.5" y="8" width="4.5" height="13" rx="1.5" fill="currentColor"/></svg>Statistik</button>
+  <button type="button" role="tab" id="tabMap" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 3v15M15 6v15" stroke="currentColor" stroke-width="2"/></svg>Karte</button>
+</nav>
+
+<div class="layer" id="picker" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+  <div class="scrim" data-close></div>
   <div class="sheet">
     <h3 id="pTitle">Wo gab’s den Döner?</h3>
     <ul class="opts" id="opts"></ul>
+    <a class="gmaps" id="gmPick" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Nicht dabei? In Google Maps suchen</a>
     <form class="manual" id="manual"><input id="manualName" placeholder="Anderer Laden" aria-label="Name des Ladens"><button type="submit">Übernehmen</button></form>
     <p class="hint">Ladendaten © OpenStreetMap-Mitwirkende. Dein Standort wird nur für die Suche an OpenStreetMap gesendet, deine Einträge bleiben auf dem Handy.</p>
   </div>
 </div>
 
-<div class="toast" id="toast" role="status"><span id="toastText"></span><button id="undo" type="button">Rückgängig</button></div>
+<div class="layer" id="rater" role="dialog" aria-modal="true" aria-labelledby="rTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet" style="text-align:center">
+    <h3 id="rTitle">Wie war der Döner?</h3>
+    <div class="kind small" id="rKind" role="group" aria-label="Döner oder Dürüm">
+      <button type="button" data-k="doener" aria-pressed="true">Döner</button>
+      <button type="button" data-k="duerum" aria-pressed="false">Dürüm</button>
+    </div>
+    <div class="stars" id="stars"></div>
+    <p class="rlabel" id="rLabel"></p>
+    <label class="when">Wann? <input type="datetime-local" id="rWhen"></label>
+    <button class="skip" type="button" data-close>Überspringen</button>
+  </div>
+</div>
 
+<div class="toast" id="toast" role="status"><span id="toastText"></span><button id="undo" type="button">Rückgängig</button></div>
+<script src="vendor/leaflet.js"></script>
 <script>
 (function(){
-  const BAR=["var(--salatHell)","var(--tomateHell)","var(--kohlHell)","var(--brotHell)"];
   const KEY="doener-tracker-v2", OLD="doener-tracker-v1";
-  const RADIUS=250;
+  const RADIUS=250, MAP_RADIUS=1500, STAMM=3;
+  const BAR=["var(--salatHell)","var(--tomateHell)","var(--kohlHell)","var(--brotHell)"];
+  const RLABEL=["","Naja","Geht so","Gut","Sehr gut","Bester Döner"];
+  const WEDGE='<svg width="44" height="40" viewBox="0 0 28 26" aria-hidden="true"><path d="M2 12 L13 3 Q14 2.2 15 3 L26 12 Q27 13 26.4 14.4 C23 22 5 22 1.6 14.4 Q1 13 2 12Z"/></svg>';
   const $=id=>document.getElementById(id);
   const eur=n=>n.toLocaleString("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:n%1?2:0});
-
+  const num1=n=>n.toLocaleString("de-DE",{minimumFractionDigits:1,maximumFractionDigits:1});
   const Cap=window.Capacitor&&window.Capacitor.Plugins||{};
   const Prefs=Cap.Preferences, Geo=Cap.Geolocation;
-  let entries=load(), nearby=[], shop=null, pos=null, showAll=false, lastId=null, tTimer;
 
+  const KIND={doener:"Döner",duerum:"Dürüm"};
+  const kindOf=e=>(e.kind==="duerum"||e.kind==="Dürüm")?"duerum":"doener";
+  let kind=(()=>{try{return localStorage.getItem("doener-kind")==="duerum"?"duerum":"doener"}catch(e){return"doener"}})();
+  let entries=load(), nearby=[], shop=null, pos=null, showAll=false, lastId=null, tTimer, lastLoc=0, rateId=null;
+
+  // ---------- Speicher ----------
   function load(){
-    try{
-      const r=localStorage.getItem(KEY); if(r) return JSON.parse(r);
-      const o=localStorage.getItem(OLD); return o?JSON.parse(o):[];
-    }catch(e){return []}
+    try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);
+      const o=localStorage.getItem(OLD);return o?JSON.parse(o):[]}catch(e){return []}
   }
   function save(){const v=JSON.stringify(entries);
     try{localStorage.setItem(KEY,v)}catch(e){}
@@ -214,125 +429,188 @@ h2{font-size:18px;font-weight:800;margin:30px 0 10px}
     if(!Prefs)return;
     try{const r=await Prefs.get({key:KEY});
       if(r&&r.value){entries=JSON.parse(r.value);try{localStorage.setItem(KEY,r.value)}catch(e){}render()}
-      else if(entries.length){save()}
+      else if(entries.length)save();
     }catch(e){}
   }
 
-  // ---------- Standort & Läden ----------
+  // ---------- Helfer ----------
   function dist(a,b){const R=6371e3,r=x=>x*Math.PI/180;
     const dφ=r(b.lat-a.lat),dλ=r(b.lon-a.lon);
     const h=Math.sin(dφ/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dλ/2)**2;
     return 2*R*Math.asin(Math.sqrt(h));}
   const fmtDist=m=>m<1000?Math.round(m/10)*10+" m":(m/1000).toLocaleString("de-DE",{maximumFractionDigits:1})+" km";
+  const shopKey=s=>s.id||("name:"+s.name.toLowerCase());
+  const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const routeUrl=s=>`https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=walking`;
 
-  function setShopUI(state){
-    const n=$("shopName"),m=$("shopMeta");$("shopChg").hidden=!shop;
-    if(shop){n.textContent=shop.name;m.textContent=shop.d!=null?fmtDist(shop.d)+" entfernt":"Manuell gewählt";return}
-    if(state==="loc"){n.textContent="Suche Dönerläden …";m.textContent="Standort wird bestimmt"}
-    else if(state==="denied"){n.textContent="Standort nicht freigegeben";m.textContent="Tippen, um den Laden einzugeben"}
-    else if(state==="none"){n.textContent="Kein Dönerladen in der Nähe";m.textContent="Tippen, um ihn einzugeben"}
-    else if(state==="without"){n.textContent="Ohne Laden";m.textContent="Tippen, um einen Laden zu wählen"}
-    else if(state==="err"){n.textContent="Suche gerade nicht möglich";m.textContent="Tippen, um ihn einzugeben"}
-    else{n.textContent="Laden finden";m.textContent="Tippen, um den Standort zu nutzen"}
+  function shopStats(){
+    const m={};
+    entries.forEach(e=>{ if(!e.shop)return;
+      const k=shopKey(e.shop);
+      const s=m[k]||(m[k]={key:k,id:e.shop.id||null,name:e.shop.name,lat:null,lon:null,visits:0,sum:0,n:0,last:0});
+      s.visits++; if(e.shop.lat!=null){s.lat=e.shop.lat;s.lon=e.shop.lon}
+      if(e.rating){s.sum+=e.rating;s.n++} if(e.t>s.last){s.last=e.t;s.name=e.shop.name}
+    });
+    Object.values(m).forEach(s=>{s.avg=s.n?s.sum/s.n:null;s.stamm=s.visits>=STAMM});
+    return m;
   }
+  function visitsLabel(s){return s.stamm?"Stammlokal":s.visits+"× da"}
 
+  // ---------- Standort ----------
   async function getPos(){
     if(Geo){
       let st=await Geo.checkPermissions();
-      if(st.location!=="granted"&&st.coarseLocation!=="granted") st=await Geo.requestPermissions();
-      if(st.location!=="granted"&&st.coarseLocation!=="granted") throw new Error("denied");
+      if(st.location!=="granted"&&st.coarseLocation!=="granted")st=await Geo.requestPermissions();
+      if(st.location!=="granted"&&st.coarseLocation!=="granted")throw new Error("denied");
       const p=await Geo.getCurrentPosition({enableHighAccuracy:true,timeout:15000,maximumAge:60000});
       return {lat:p.coords.latitude,lon:p.coords.longitude};
     }
     return new Promise((ok,no)=>{
       if(!navigator.geolocation)return no(new Error("denied"));
-      navigator.geolocation.getCurrentPosition(p=>ok({lat:p.coords.latitude,lon:p.coords.longitude}),no,
-        {enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+      navigator.geolocation.getCurrentPosition(p=>ok({lat:p.coords.latitude,lon:p.coords.longitude}),
+        e=>no(new Error(e&&e.code===1?"denied":"error")),{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
     });
+  }
+
+  async function overpass(p,radius,kebabOnly){
+    const k=`nwr(around:${radius},${p.lat},${p.lon})["cuisine"~"kebab|doner|döner|turkish|shawarma",i];`;
+    const q=`[out:json][timeout:15];(${k}${kebabOnly?"":`nwr(around:${radius},${p.lat},${p.lon})["amenity"="fast_food"];`});out center tags 80;`;
+    for(const host of["https://overpass-api.de/api/interpreter","https://overpass.kumi.systems/api/interpreter"]){
+      try{
+        const ac=new AbortController();const t=setTimeout(()=>ac.abort(),15000);
+        const r=await fetch(host,{method:"POST",body:"data="+encodeURIComponent(q),signal:ac.signal,
+          headers:{"Content-Type":"application/x-www-form-urlencoded"}});
+        clearTimeout(t);if(!r.ok)throw 0;
+        const j=await r.json();
+        const list=j.elements.filter(e=>e.tags&&e.tags.name).map(e=>{
+          const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon, c=(e.tags.cuisine||"").toLowerCase();
+          return {id:e.type+"/"+e.id,name:e.tags.name,lat,lon,d:dist(p,{lat,lon}),
+            kebab:/kebab|doner|döner|shawarma/.test(c)?2:/turkish/.test(c)?1:0};
+        });
+        return {list,failed:false};
+      }catch(e){}
+    }
+    return {list:[],failed:true};
+  }
+
+  function gmapsUrl(p){
+    return p?`https://www.google.com/maps/search/D%C3%B6ner/@${p.lat.toFixed(5)},${p.lon.toFixed(5)},16z`
+            :"https://www.google.com/maps/search/?api=1&query=D%C3%B6ner";
+  }
+  function updateGmaps(){const u=gmapsUrl(pos||mapPos);$("gmPick").href=u;$("gmMap").href=u}
+
+  // ---------- Laden-Auswahl ----------
+  function setShopUI(state){
+    const n=$("shopName"),m=$("shopMeta");$("shopChg").hidden=!shop;
+    if(shop){n.textContent=shop.name;
+      const st=shopStats()[shopKey(shop)];
+      m.textContent=[shop.d!=null?fmtDist(shop.d)+" entfernt":"Manuell gewählt",st?visitsLabel(st):null].filter(Boolean).join(" · ");return}
+    const T={loc:["Suche Dönerläden …","Standort wird bestimmt"],denied:["Standort nicht freigegeben","Tippen, um den Laden einzugeben"],
+      none:["Kein Dönerladen in der Nähe","Tippen, um ihn einzugeben"],err:["Suche gerade nicht möglich","Tippen, um ihn einzugeben"],
+      without:["Ohne Laden","Tippen, um einen Laden zu wählen"]}[state]||["Laden finden","Tippen, um den Standort zu nutzen"];
+    n.textContent=T[0];m.textContent=T[1];
   }
   async function locate(){
     setShopUI("loc");
-    try{ pos=await getPos(); }catch(e){ setShopUI(String(e&&e.message).includes("denied")?"denied":"err"); return; }
+    try{pos=await getPos()}catch(e){setShopUI(String(e&&e.message)==="denied"?"denied":"err");return}
     nearby=await findShops(pos);
     shop=nearby[0]||null;
     setShopUI(nearby.length?null:(nearby.err?"err":"none"));
   }
-
   async function findShops(p){
-    // 1) Läden aus dem eigenen Verlauf in der Nähe
-    const own={};
-    entries.forEach(e=>{if(e.shop&&e.shop.lat!=null){const d=dist(p,e.shop);if(d<=RADIUS){
-      const k=e.shop.id||e.shop.name;own[k]=own[k]||{...e.shop,d,visits:0};own[k].visits++;}}});
-    // 2) OpenStreetMap
-    const q=`[out:json][timeout:10];(nwr(around:${RADIUS},${p.lat},${p.lon})["cuisine"~"kebab|doner|döner|turkish|shawarma",i];nwr(around:${RADIUS},${p.lat},${p.lon})["amenity"="fast_food"];);out center tags 40;`;
-    let osm=[],failed=false;
-    for(const host of["https://overpass-api.de/api/interpreter","https://overpass.kumi.systems/api/interpreter"]){
-      try{
-        const ac=new AbortController();const t=setTimeout(()=>ac.abort(),12000);
-        const r=await fetch(host,{method:"POST",body:"data="+encodeURIComponent(q),signal:ac.signal,
-          headers:{"Content-Type":"application/x-www-form-urlencoded"}});
-        clearTimeout(t); if(!r.ok) throw 0;
-        const j=await r.json();
-        osm=j.elements.filter(e=>e.tags&&e.tags.name).map(e=>{
-          const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon;
-          const c=(e.tags.cuisine||"").toLowerCase();
-          return {id:e.type+"/"+e.id,name:e.tags.name,lat,lon,d:dist(p,{lat,lon}),
-            kebab:/kebab|doner|döner|shawarma/.test(c)?2:/turkish/.test(c)?1:0};
-        });
-        failed=false;break;
-      }catch(e){failed=true}
-    }
-    // zusammenführen: eigene Stammläden > Döner-Küche > Rest, dann Entfernung
+    const stats=Object.values(shopStats());
     const map={};
-    osm.forEach(s=>map[s.id]=s);
-    Object.values(own).forEach(s=>{const k=s.id||s.name;map[k]={...(map[k]||{}),...s,own:s.visits}});
+    const r=await overpass(p,RADIUS,false);
+    r.list.forEach(s=>map[s.id]=s);
+    stats.forEach(s=>{ if(s.lat==null)return; const d=dist(p,s); if(d>RADIUS)return;
+      map[s.key]={...(map[s.key]||{}),id:s.id,name:s.name,lat:s.lat,lon:s.lon,d,visits:s.visits,stamm:s.stamm};});
     const list=Object.values(map).sort((a,b)=>
-      ((b.own?3:0)+(b.kebab||0))-((a.own?3:0)+(a.kebab||0)) || a.d-b.d).slice(0,12);
-    if(!list.length&&failed) list.err=true;
+      ((b.stamm?4:b.visits?3:0)+(b.kebab||0))-((a.stamm?4:a.visits?3:0)+(a.kebab||0))||a.d-b.d).slice(0,12);
+    if(!list.length&&r.failed)list.err=true;
     return list;
   }
+  function openLayer(id){$(id).classList.add("open")}
+  function closeLayer(id){$(id).classList.remove("open")}
+  document.querySelectorAll("[data-close]").forEach(el=>el.addEventListener("click",()=>{
+    closeLayer(el.closest(".layer").id)}));
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".layer.open").forEach(l=>l.classList.remove("open"))});
 
-  // ---------- Auswahl ----------
   function openPicker(){
-    if(!pos&&!shop){locate();}
     const ul=$("opts");ul.innerHTML="";
     if(!nearby.length){const li=document.createElement("li");li.className="empty";li.style.padding="6px 4px";
       li.textContent=pos?"Keine Läden gefunden. Trag den Namen unten ein.":"Noch kein Standort. Trag den Namen unten ein.";ul.appendChild(li)}
     nearby.forEach(s=>{
       const li=document.createElement("li"),b=document.createElement("button");b.type="button";
-      b.setAttribute("aria-current",shop&&shop.name===s.name);
-      const a=document.createElement("span");a.textContent=s.name+(s.own?"  ★":"");
+      b.setAttribute("aria-current",!!shop&&shopKey(shop)===shopKey(s));
+      const a=document.createElement("span");a.textContent=s.name+" ";
+      if(s.visits){const t=document.createElement("span");t.className="tag";t.textContent=s.stamm?"Stammlokal":s.visits+"× da";a.appendChild(t)}
       const d=document.createElement("span");d.className="dist";d.textContent=fmtDist(s.d);
-      b.append(a,d);b.onclick=()=>{shop=s;lastLoc=Date.now();setShopUI();closePicker()};li.appendChild(b);ul.appendChild(li);
+      b.append(a,d);b.onclick=()=>{shop=s;lastLoc=Date.now();setShopUI();closeLayer("picker")};li.appendChild(b);ul.appendChild(li);
     });
     const li=document.createElement("li"),b=document.createElement("button");b.type="button";
     b.textContent="Ohne Laden eintragen";b.style.color="var(--muted)";
-    b.onclick=()=>{shop=null;setShopUI("without");closePicker()};
+    b.onclick=()=>{shop=null;setShopUI("without");closeLayer("picker")};
     li.appendChild(b);ul.appendChild(li);
-    $("picker").classList.add("open");
+    updateGmaps();openLayer("picker");
   }
-  function closePicker(){$("picker").classList.remove("open")}
-  $("shopBtn").onclick=()=>{ if(!pos && !shop && $("shopName").textContent==="Laden finden"){locate();return} openPicker(); };
-  $("scrim").onclick=closePicker;
-  document.addEventListener("keydown",e=>{if(e.key==="Escape")closePicker()});
+  $("shopBtn").onclick=()=>{ if(!pos&&!shop&&$("shopName").textContent==="Laden finden"){locate();return} openPicker(); };
+  $("gmPick").addEventListener("click",()=>{setTimeout(()=>$("manualName").focus(),600)});
   $("manual").onsubmit=e=>{e.preventDefault();const v=$("manualName").value.trim();if(!v)return;
-    shop={name:v,lat:pos?.lat??null,lon:pos?.lon??null,id:"manual:"+v.toLowerCase(),d:null};$("manualName").value="";setShopUI();closePicker()};
+    shop={name:v,lat:pos?.lat??null,lon:pos?.lon??null,id:"manual:"+v.toLowerCase(),d:null};
+    $("manualName").value="";setShopUI();closeLayer("picker")};
 
-  // ---------- Eintragen ----------
+  // ---------- Eintragen & Bewerten ----------
   $("go").onclick=()=>{
     const p=parseFloat(String($("price").value).replace(",","."));
     const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),
-      price:isFinite(p)?Math.round(p*100)/100:null,
+      kind,price:isFinite(p)?Math.round(p*100)/100:null,rating:null,
+      loc:pos?{lat:Math.round(pos.lat*1e5)/1e5,lon:Math.round(pos.lon*1e5)/1e5}:null,
       shop:shop?{id:shop.id||null,name:shop.name,lat:shop.lat??null,lon:shop.lon??null}:null};
-    entries.push(e);lastId=e.id;save();render();
-    toast(shop?`Döner bei ${shop.name} eingetragen`:"Döner eingetragen");
+    entries.push(e);lastId=e.id;save();render();setShopUI();
+    openRater(e.id);
   };
+  function openRater(id){
+    rateId=id;const e=entries.find(x=>x.id===id);if(!e)return;
+    titleRater(e);paintKind($("rKind"),kindOf(e));
+    paintStars(e.rating||0);
+    const d=new Date(e.t),z=n=>String(n).padStart(2,"0");
+    $("rWhen").value=`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
+    $("rWhen").max=(()=>{const n=new Date();return `${n.getFullYear()}-${z(n.getMonth()+1)}-${z(n.getDate())}T23:59`})();
+    openLayer("rater");
+  }
+  function titleRater(e){const k=KIND[kindOf(e)];
+    $("rTitle").textContent=e.shop?`Wie war ${k==="Dürüm"?"der Dürüm":"der Döner"} bei ${e.shop.name}?`:`Wie war ${k==="Dürüm"?"der Dürüm":"der Döner"}?`}
+  function paintKind(group,k){group.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k))}
+  function setKind(k){kind=k;try{localStorage.setItem("doener-kind",k)}catch(e){}
+    paintKind(document.querySelector("main .kind"),k);$("go").textContent=KIND[k]+" eintragen"}
+  document.querySelectorAll("main .kind button").forEach(b=>b.onclick=()=>setKind(b.dataset.k));
+  $("rKind").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    const e=entries.find(x=>x.id===rateId);if(!e)return;e.kind=b.dataset.k;paintKind($("rKind"),e.kind);titleRater(e);save();render()});
+  setKind(kind);
+  function paintStars(n){
+    [...$("stars").children].forEach((b,i)=>{b.classList.toggle("on",i<n);b.setAttribute("aria-pressed",i<n)});
+    $("rLabel").textContent=RLABEL[n]||"Tippe auf 1 bis 5";
+  }
+  for(let i=1;i<=5;i++){
+    const b=document.createElement("button");b.type="button";b.innerHTML=WEDGE;b.setAttribute("aria-label",i+" von 5");
+    b.onclick=()=>{const e=entries.find(x=>x.id===rateId);if(!e)return;
+      e.rating=i;paintStars(i);save();render();
+      setTimeout(()=>{closeLayer("rater");if(e.id===lastId)toast(KIND[kindOf(e)]+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")},350)};
+    $("stars").appendChild(b);
+  }
+  $("rWhen").addEventListener("change",()=>{
+    const e=entries.find(x=>x.id===rateId);const t=new Date($("rWhen").value).getTime();
+    if(e&&isFinite(t)){e.t=t;save();render()}
+  });
+  $("rater").querySelector(".skip").addEventListener("click",()=>{
+    if(rateId===lastId){const e=entries.find(x=>x.id===rateId);if(e)toast(KIND[kindOf(e)]+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")}});
   $("undo").onclick=()=>{if(lastId)del(lastId);lastId=null;$("toast").classList.remove("show")};
-  function del(id){entries=entries.filter(e=>e.id!==id);save();render()}
-  function toast(t){$("toastText").textContent=t;$("toast").classList.add("show");clearTimeout(tTimer);tTimer=setTimeout(()=>$("toast").classList.remove("show"),4000)}
+  function del(id){entries=entries.filter(e=>e.id!==id);save();render();if(map)drawMap()}
+  function toast(t){$("toastText").textContent=t;$("toast").classList.add("show");clearTimeout(tTimer);
+    tTimer=setTimeout(()=>{$("toast").classList.remove("show");lastId=null},4500)}
   $("more").onclick=()=>{showAll=true;render()};
 
-  // ---------- Anzeige ----------
+  // ---------- Tracker-Anzeige ----------
   const sod=t=>{const d=new Date(t);d.setHours(0,0,0,0);return d.getTime()};
   function rel(t){const n=Math.round((sod(Date.now())-sod(t))/864e5);
     if(n===0)return"Heute";if(n===1)return"Gestern";
@@ -342,48 +620,254 @@ h2{font-size:18px;font-weight:800;margin:30px 0 10px}
     const now=new Date(),mStart=new Date(now.getFullYear(),now.getMonth(),1).getTime();
     const w=new Date(sod(now));w.setDate(w.getDate()-((w.getDay()+6)%7));
     const all=entries.slice().sort((a,b)=>b.t-a.t),month=all.filter(e=>e.t>=mStart);
-    $("mLabel").textContent=(month.length===1?"Döner":"Döner")+" im "+now.toLocaleDateString("de-DE",{month:"long"});
+    const mD=month.filter(e=>kindOf(e)==="doener").length,mR=month.length-mD,mn=now.toLocaleDateString("de-DE",{month:"long"});
+    $("mLabel").textContent="im "+mn;
+    $("mSplit").textContent=`${mD} Döner · ${mR} Dürüm`;
     $("mCount").textContent=month.length;
     const last=all[0];
     $("mSub").textContent=last?`Zuletzt: ${rel(last.t)}${last.shop?", "+last.shop.name:""}`:"Noch keiner eingetragen.";
-    $("sWeek").textContent=all.filter(e=>e.t>=w.getTime()).length;
-    $("sTotal").textContent=all.length;
-    $("sSpent").textContent=eur(month.reduce((s,e)=>s+(e.price||0),0));
 
-    // Top-Läden
-    const c={};all.forEach(e=>{if(e.shop){c[e.shop.name]=(c[e.shop.name]||0)+1}});
-    const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,5),max=top[0]?.[1]||1;
+    const top=Object.values(shopStats()).sort((a,b)=>b.visits-a.visits||(b.avg||0)-(a.avg||0)).slice(0,5);
+    const max=top[0]?.visits||1;
     $("top").innerHTML="";
-    top.forEach(([n,k])=>{const li=document.createElement("li");li.style.setProperty("--w",(k/max*100)+"%");li.style.setProperty("--c",BAR[top.indexOf(top.find(t=>t[0]===n))%BAR.length]);
-      const a=document.createElement("span");a.textContent=n;const b=document.createElement("span");b.className="c";b.textContent=k;
-      li.append(a,b);$("top").appendChild(li)});
+    top.forEach((s,i)=>{
+      const li=document.createElement("li");li.style.setProperty("--w",(s.visits/max*100)+"%");li.style.setProperty("--c",BAR[i%BAR.length]);
+      const n=document.createElement("span");n.className="n";n.textContent=s.name;
+      if(s.stamm){const b=document.createElement("span");b.className="badge";b.textContent="Stammlokal";n.appendChild(b)}
+      const r=document.createElement("span");r.className="r";r.textContent=s.avg?"Ø "+num1(s.avg):"";
+      const c=document.createElement("span");c.className="c";c.textContent=s.visits;
+      li.append(n,r,c);$("top").appendChild(li);
+    });
     $("topEmpty").hidden=top.length>0;
 
-    // Verlauf
     $("log").innerHTML="";
-    (showAll?all:all.slice(0,12)).forEach(e=>{
+    (showAll?all:all.slice(0,6)).forEach(e=>{
       const li=document.createElement("li"),wr=document.createElement("div");wr.className="w";
-      const s=document.createElement("div");s.className="s";s.textContent=e.shop?e.shop.name:(e.kind||"Döner");
+      if(kindOf(e)==="duerum")li.className="duerum";
+      li.setAttribute("role","button");li.tabIndex=0;li.setAttribute("aria-label","Bewerten: "+(e.shop?e.shop.name:"Döner"));
+      const s=document.createElement("div");s.className="s";s.textContent=e.shop?e.shop.name:KIND[kindOf(e)];
       const d=document.createElement("div");d.className="d";
-      d.textContent=rel(e.t)+", "+new Date(e.t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
-      wr.append(s,d);
+      d.textContent=KIND[kindOf(e)]+" · "+rel(e.t)+", "+new Date(e.t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+      const rt=document.createElement("div");rt.className="rt";
+      if(e.rating){for(let i=1;i<=5;i++){const x=document.createElement("span");if(i<=e.rating)x.className="on";rt.appendChild(x)}}
+      else{const x=document.createElement("em");x.textContent="Noch nicht bewertet";rt.appendChild(x)}
+      wr.append(s,d,rt);
       const p=document.createElement("span");p.className="e";p.textContent=e.price!=null?eur(e.price):"";
       const x=document.createElement("button");x.type="button";x.textContent="✕";x.setAttribute("aria-label","Eintrag löschen");
-      x.onclick=()=>del(e.id);
-      li.append(wr,p,x);$("log").appendChild(li)});
+      x.onclick=ev=>{ev.stopPropagation();del(e.id)};
+      li.onclick=()=>openRater(e.id);
+      li.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();openRater(e.id)}};
+      li.append(wr,p,x);$("log").appendChild(li);
+    });
     $("logEmpty").hidden=all.length>0;
-    $("more").hidden=showAll||all.length<=12;
+    $("more").hidden=showAll||all.length<=6;
+    if(!$("viewStats").hidden)renderStats();
   }
 
+  // ---------- Statistik ----------
+  let range="all";
+  const WD=["Mo","Di","Mi","Do","Fr","Sa","So"], WDL=["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+  const TB=[["Morgens","5–11 Uhr"],["Mittags","11–14 Uhr"],["Nachm.","14–17 Uhr"],["Abends","17–22 Uhr"],["Nachts","22–5 Uhr"]];
+  const wdOf=t=>(new Date(t).getDay()+6)%7;
+  const tbOf=t=>{const h=new Date(t).getHours();return h>=5&&h<11?0:h<14&&h>=11?1:h<17&&h>=14?2:h<22&&h>=17?3:4};
+  const dShort=t=>new Date(t).toLocaleDateString("de-DE",{day:"numeric",month:"short",year:"numeric"});
+  document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{
+    range=b.dataset.r;document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderStats()});
+  function inRange(e){
+    if(range==="all")return true;
+    if(range==="30")return e.t>=Date.now()-30*864e5;
+    return new Date(e.t).getFullYear()===new Date().getFullYear();
+  }
+  function bars(vals,labels,label,fmt){
+    const W=340,H=150,T=20,B=24,n=vals.length,gap=n>8?5:10,bw=(W-gap*(n-1))/n,mx=Math.max(...vals),max=Math.max(1,mx);
+    let o=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">`;
+    vals.forEach((v,i)=>{
+      const h=v/max*(H-T-B),x=i*(bw+gap),y=H-B-h,hi=v>0&&v===mx;
+      o+=v?`<rect x="${x}" y="${y}" width="${bw}" height="${Math.max(h,3)}" rx="${Math.min(6,bw/3)}" fill="${hi?"var(--tomate)":"var(--salat)"}"/>`
+          :`<rect x="${x}" y="${H-B-3}" width="${bw}" height="3" rx="1.5" fill="var(--line)"/>`;
+      if(v)o+=`<text x="${x+bw/2}" y="${y-5}" text-anchor="middle" font-size="${n>8?11:13}" font-weight="700" fill="var(--ink)">${fmt?fmt(v):v}</text>`;
+      o+=`<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" font-size="${n>8?11:13}" fill="var(--muted)">${labels[i]}</text>`;
+    });
+    return o+"</svg>";
+  }
+  function line(vals,labels,label){
+    const W=340,H=140,T=22,B=24,L=6,R=6,pts=vals.map((v,i)=>v==null?null:[i,v]).filter(Boolean);
+    const mn=Math.min(...pts.map(p=>p[1])),mx=Math.max(...pts.map(p=>p[1])),span=Math.max(.5,mx-mn);
+    const X=i=>L+i*(W-L-R)/(vals.length-1),Y=v=>T+(1-(v-mn)/span)*(H-T-B);
+    let o=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">`;
+    o+=`<polyline points="${pts.map(p=>X(p[0])+","+Y(p[1])).join(" ")}" fill="none" stroke="var(--kruste)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach((p,k)=>{o+=`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="4.5" fill="var(--card)" stroke="var(--kruste)" stroke-width="2.5"/>`;
+      if(k===0||k===pts.length-1||p[1]===mx||p[1]===mn)o+=`<text x="${X(p[0])}" y="${Y(p[1])-9}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)">${num1(p[1]).replace(",0","")}</text>`});
+    labels.forEach((l,i)=>{o+=`<text x="${X(i)}" y="${H-6}" text-anchor="middle" font-size="11" fill="var(--muted)">${l}</text>`});
+    return o+"</svg>";
+  }
+  function renderStats(){
+    const now=new Date(), E=entries.filter(inRange).sort((a,b)=>a.t-b.t);
+    $("statsEmpty").hidden=E.length>0;$("statsBody").hidden=!E.length;
+    // 12 Monate (unabhängig vom Filter)
+    const months=[],mLabels=[];
+    for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(d);mLabels.push(d.toLocaleDateString("de-DE",{month:"narrow"}))}
+    const inM=(e,d)=>{const x=new Date(e.t);return x.getFullYear()===d.getFullYear()&&x.getMonth()===d.getMonth()};
+    $("chMonth").innerHTML=bars(months.map(d=>entries.filter(e=>inM(e,d)).length),mLabels,"Döner pro Monat");
+    const pm=months.map(d=>{const p=entries.filter(e=>inM(e,d)&&e.price!=null);return p.length?p.reduce((a,e)=>a+e.price,0)/p.length:null});
+    $("cardPrice").hidden=pm.filter(v=>v!=null).length<2;
+    if(!$("cardPrice").hidden)$("chPrice").innerHTML=line(pm,mLabels,"Durchschnittspreis pro Monat");
+    if(!E.length)return;
+
+    // Kennzahlen
+    const days=range==="30"?30:range==="year"?Math.max(1,(now-new Date(now.getFullYear(),0,1))/864e5):Math.max(1,(now-E[0].t)/864e5);
+    const priced=E.filter(e=>e.price!=null),rated=E.filter(e=>e.rating);
+    const shops=new Set(E.filter(e=>e.shop).map(e=>shopKey(e.shop)));
+    const K=[[E.length,"insgesamt"],[num1(E.length/Math.max(1,days/7)),"pro Woche"],
+      [eur(priced.reduce((a,e)=>a+e.price,0)),"ausgegeben"],[priced.length?eur(priced.reduce((a,e)=>a+e.price,0)/priced.length):"–","Ø Preis"],
+      [rated.length?num1(rated.reduce((a,e)=>a+e.rating,0)/rated.length):"–","Ø Bewertung"],[shops.size,shops.size===1?"Laden":"Läden"]];
+    $("kpis").innerHTML=K.map(k=>`<div class="kpi"><b>${esc(k[0])}</b><small>${k[1]}</small></div>`).join("");
+
+    // Döner vs. Dürüm
+    const part=k=>{const L=E.filter(e=>kindOf(e)===k),P=L.filter(e=>e.price!=null),R=L.filter(e=>e.rating);
+      return {n:L.length,p:P.length?eur(P.reduce((a,e)=>a+e.price,0)/P.length):"–",r:R.length?num1(R.reduce((a,e)=>a+e.rating,0)/R.length):"–"}};
+    const pd=part("doener"),pr=part("duerum"),pct=n=>Math.round(n/E.length*100)+" %";
+    $("chKind").innerHTML=`<div class="split" role="img" aria-label="${pd.n} Döner, ${pr.n} Dürüm"><i style="width:${pd.n/E.length*100}%"></i><i style="width:${pr.n/E.length*100}%"></i></div>
+      <table class="ktab"><tr><th></th><th>Döner</th><th>Dürüm</th></tr>
+      <tr><td>Anzahl</td><td>${pd.n} <small style="color:var(--muted)">(${pct(pd.n)})</small></td><td>${pr.n} <small style="color:var(--muted)">(${pct(pr.n)})</small></td></tr>
+      <tr><td>Ø Preis</td><td>${pd.p}</td><td>${pr.p}</td></tr>
+      <tr><td>Ø Bewertung</td><td>${pd.r}</td><td>${pr.r}</td></tr></table>`;
+
+    // Wochentage & Tageszeit
+    const wd=[0,0,0,0,0,0,0],tb=[0,0,0,0,0];
+    E.forEach(e=>{wd[wdOf(e.t)]++;tb[tbOf(e.t)]++});
+    $("chWeek").innerHTML=bars(wd,WD,"Döner nach Wochentag");
+    $("chTime").innerHTML=bars(tb,TB.map(t=>t[0]),"Döner nach Tageszeit");
+
+    // Bewertungen
+    const rc=[0,0,0,0,0];rated.forEach(e=>rc[e.rating-1]++);const rmax=Math.max(1,...rc);
+    $("chRate").innerHTML=rated.length?[5,4,3,2,1].map(r=>`<div class="rrow"><span class="rt">${"<span></span>".repeat(r)}</span><div class="rbar"><i style="width:${rc[r-1]/rmax*100}%"></i></div><b>${rc[r-1]}</b></div>`).join("")
+      :'<p class="empty">Noch keine Bewertungen in diesem Zeitraum.</p>';
+
+    // Rekorde
+    const F=[];
+    const wmax=Math.max(...wd);F.push(["Lieblingstag",`${WDL[wd.indexOf(wmax)]} (${wmax}×)`]);
+    const tmax=Math.max(...tb),ti=tb.indexOf(tmax);F.push(["Lieblingszeit",`${TB[ti][0].replace("Nachm.","Nachmittags")}, ${TB[ti][1]}`]);
+    const byDay={};E.forEach(e=>{const k=sod(e.t);byDay[k]=(byDay[k]||0)+1});
+    const [dk,dv]=Object.entries(byDay).sort((a,b)=>b[1]-a[1]||b[0]-a[0])[0];
+    if(dv>1)F.push(["Rekordtag",`${dv} Döner am ${dShort(+dk)}`]);
+    const byMon={};E.forEach(e=>{const d=new Date(e.t),k=d.getFullYear()*12+d.getMonth();byMon[k]=(byMon[k]||0)+1});
+    const [mk,mv]=Object.entries(byMon).sort((a,b)=>b[1]-a[1]||b[0]-a[0])[0];
+    F.push(["Rekordmonat",`${mv} im ${new Date(Math.floor(mk/12),mk%12,1).toLocaleDateString("de-DE",{month:"long",year:"numeric"})}`]);
+    const wk=t=>{const d=new Date(sod(t));d.setDate(d.getDate()-wdOf(t));return Math.round(d.getTime()/(7*864e5))};
+    const weeks=[...new Set(E.map(e=>wk(e.t)))].sort((a,b)=>a-b);let run=1,best=1;
+    for(let i=1;i<weeks.length;i++){run=weeks[i]-weeks[i-1]===1?run+1:1;best=Math.max(best,run)}
+    if(weeks.length)F.push(["Längste Serie",best===1?"1 Woche":`${best} Wochen am Stück`]);
+    let gap=0;for(let i=1;i<E.length;i++)gap=Math.max(gap,Math.round((sod(E[i].t)-sod(E[i-1].t))/864e5));
+    if(E.length>1)F.push(["Längste Pause",gap===1?"1 Tag":`${gap} Tage`]);
+    const late=E.slice().sort((a,b)=>{const m=t=>{const d=new Date(t);return (d.getHours()*60+d.getMinutes()+19*60)%1440};return m(b.t)-m(a.t)})[0];
+    F.push(["Spätester Döner",new Date(late.t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})+" Uhr"]);
+    if(priced.length){const ex=priced.slice().sort((a,b)=>b.price-a.price)[0];F.push(["Teuerster",eur(ex.price)+(ex.shop?", "+ex.shop.name:"")])}
+    $("facts").innerHTML=F.map(f=>`<li><span>${f[0]}</span><b>${esc(f[1])}</b></li>`).join("");
+
+    // Bestbewertete Läden
+    const sh={};rated.filter(e=>e.shop).forEach(e=>{const k=shopKey(e.shop);const o=sh[k]||(sh[k]={name:e.shop.name,sum:0,n:0});o.sum+=e.rating;o.n++});
+    const best5=Object.values(sh).map(o=>({...o,avg:o.sum/o.n})).sort((a,b)=>b.avg-a.avg||b.n-a.n).slice(0,5);
+    $("cardBest").hidden=!best5.length;
+    $("bestShops").innerHTML=best5.map((o,i)=>`<li style="--w:${o.avg/5*100}%;--c:${BAR[i%BAR.length]}"><span class="n">${esc(o.name)}</span><span class="r">${o.n} ${o.n===1?"Bewertung":"Bewertungen"}</span><span class="c">${num1(o.avg)}</span></li>`).join("");
+  }
+
+  // ---------- Karte ----------
+  let map=null, layer=null, mapShops=[], mapPos=null, mapBusy=false;
+  const dark=()=>window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
+  function pinIcon(cls,label,size){
+    return L.divIcon({className:"",html:`<div class="pin ${cls}" style="width:${size}px;height:${size}px">${label}</div>`,
+      iconSize:[size,size],iconAnchor:[size/2,size/2],popupAnchor:[0,-size/2]});
+  }
+  function popup(s,visited){
+    const meta=[];
+    if(visited){meta.push(s.stamm?"Stammlokal":s.visits+"× da");if(s.avg)meta.push("Ø "+num1(s.avg)+" von 5")}
+    else meta.push("Noch nicht probiert");
+    if(mapPos&&s.lat!=null)meta.push(fmtDist(dist(mapPos,s)));
+    return `<div class="pop"><b>${esc(s.name)}</b><div class="m">${esc(meta.join(" · "))}</div><a href="${routeUrl(s)}" target="_blank" rel="noopener">Route</a></div>`;
+  }
+  function drawMap(){
+    if(!map)return;
+    layer.clearLayers();
+    const stats=Object.values(shopStats()).filter(s=>s.lat!=null);
+    const near=(a,b)=>dist(a,b)<40&&a.name.toLowerCase()===b.name.toLowerCase();
+    mapShops.forEach(s=>{
+      if(stats.some(v=>v.id===s.id||near(v,s)))return;
+      L.marker([s.lat,s.lon],{icon:pinIcon("n","",16)}).bindPopup(popup(s,false)).addTo(layer);
+    });
+    stats.forEach(s=>{
+      L.marker([s.lat,s.lon],{icon:pinIcon(s.stamm?"s":"v",s.visits,s.stamm?32:28),zIndexOffset:500}).bindPopup(popup(s,true)).addTo(layer);
+    });
+    if(mapPos)L.marker([mapPos.lat,mapPos.lon],{icon:pinIcon("me","",16),interactive:false,zIndexOffset:1000}).addTo(layer);
+    // nächster Döner
+    const cand=[...mapShops.filter(s=>s.kebab),...stats];
+    if(mapPos&&cand.length){
+      const n=cand.map(s=>({...s,d:dist(mapPos,s)})).sort((a,b)=>a.d-b.d)[0];
+      const st=stats.find(v=>v.key===(n.key||shopKey(n)));
+      $("mcName").textContent=n.name;
+      $("mcMeta").textContent=[fmtDist(n.d),st?(st.stamm?"Stammlokal":st.visits+"× da"):"Neu für dich",st&&st.avg?"Ø "+num1(st.avg):null].filter(Boolean).join(" · ");
+      $("mcRoute").href=routeUrl(n);$("mcRoute").hidden=false;
+    }
+  }
+  async function refreshMap(){
+    if(mapBusy)return;mapBusy=true;
+    $("mcName").textContent="Suche Döner in der Nähe …";$("mcMeta").textContent="";$("mcRoute").hidden=true;
+    try{mapPos=await getPos();pos=mapPos}catch(e){
+      mapBusy=false;
+      $("mcName").textContent="Standort nicht verfügbar";$("mcMeta").textContent="Gezeigt werden deine besuchten Läden";
+      drawMap();fitVisited();return;
+    }
+    updateGmaps();map.setView([mapPos.lat,mapPos.lon],15);
+    drawMap();
+    const r=await overpass(mapPos,MAP_RADIUS,true);
+    mapShops=r.list;mapBusy=false;
+    drawMap();
+    if(!mapShops.length&&!Object.values(shopStats()).some(s=>s.lat!=null)){
+      $("mcName").textContent=r.failed?"Suche gerade nicht möglich":"Kein Döner im Umkreis von 1,5 km";$("mcMeta").textContent="";
+    }
+  }
+  function fitVisited(){
+    const pts=Object.values(shopStats()).filter(s=>s.lat!=null).map(s=>[s.lat,s.lon]);
+    if(pts.length)map.fitBounds(pts,{padding:[60,60],maxZoom:15});
+  }
+  function initMap(){
+    map=L.map("map",{zoomControl:false}).setView([51.16,10.45],6);
+    L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark()?"dark_all":"light_all"}/{z}/{x}/{y}{r}.png`,{
+      subdomains:"abcd",maxZoom:20,
+      attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende © <a href="https://carto.com/attributions">CARTO</a>'
+    }).addTo(map);
+    layer=L.layerGroup().addTo(map);
+    fitVisited();
+  }
+  $("recenter").onclick=()=>{if(mapPos)map.setView([mapPos.lat,mapPos.lon],15);refreshMap()};
+
+  // ---------- Navigation ----------
+  function show(view){
+    const isMap=view==="map";
+    $("viewTracker").hidden=view!=="tracker";$("viewStats").hidden=view!=="stats";$("viewMap").hidden=!isMap;
+    $("tabTracker").setAttribute("aria-selected",view==="tracker");$("tabStats").setAttribute("aria-selected",view==="stats");
+    $("tabMap").setAttribute("aria-selected",isMap);
+    if(view==="stats"){renderStats();window.scrollTo(0,0)}
+    if(isMap){
+      if(!window.L){$("mcName").textContent="Karte konnte nicht geladen werden";return}
+      if(!map)initMap();
+      setTimeout(()=>map.invalidateSize(),30);
+      drawMap();
+      if(!mapPos||!mapShops.length)refreshMap();
+    }else if(view==="tracker")window.scrollTo(0,0);
+  }
+  $("tabTracker").onclick=()=>show("tracker");
+  $("tabMap").onclick=()=>show("map");
+  $("tabStats").onclick=()=>show("stats");
+
+  // ---------- Start ----------
   render();setShopUI();loadNative();
-  // Standort beim Öffnen und beim Zurückkehren in die App
-  let lastLoc=0;
   async function autoLocate(){
-    if(Date.now()-lastLoc<180000||$("picker").classList.contains("open"))return;
+    if(Date.now()-lastLoc<180000||document.querySelector(".layer.open")||!$("viewMap").hidden)return;
     lastLoc=Date.now();
     try{
       if(Geo){const st=await Geo.checkPermissions();
-        if(st.location==="granted"||st.coarseLocation==="granted"||st.location==="prompt"||st.location==="prompt-with-rationale")locate();}
+        if(["granted","prompt","prompt-with-rationale"].includes(st.location)||st.coarseLocation==="granted")locate();}
       else if(navigator.permissions){const r=await navigator.permissions.query({name:"geolocation"});if(r.state==="granted")locate();}
     }catch(e){}
   }
@@ -391,5 +875,4 @@ h2{font-size:18px;font-weight:800;margin:30px 0 10px}
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")autoLocate()});
 })();
 </script>
-</body>
-</html>
+</body></html>
