@@ -195,6 +195,26 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .arow .ghost{border:1.5px solid var(--line);background:var(--card)}
 .arow .prim{border:0;background:#9A3E31;color:#FFF7F2}
 
+.wide{position:absolute;z-index:500;left:12px;top:calc(var(--safeT) + 96px);display:flex;align-items:center;gap:10px;border:0;background:var(--card);color:var(--ink);
+  border-radius:999px;padding:8px 14px 8px 8px;font-size:14px;font-weight:600;box-shadow:0 2px 10px rgba(40,30,20,.14);cursor:pointer;max-width:calc(100% - 24px)}
+.wide .sw{position:relative;flex:none;width:38px;height:22px;border-radius:11px;background:var(--line);transition:background .15s}
+.wide .sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+.wide[aria-checked="true"] .sw{background:#9A3E31}
+.wide[aria-checked="true"] .sw::after{transform:translateX(16px)}
+
+.sheet{overflow-y:auto}
+.newshop{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;padding:12px;border-radius:12px;border:0;background:#9A3E31;color:#FFF7F2;font-weight:700;font-size:15px;cursor:pointer}
+.mini{height:210px;border-radius:14px;overflow:hidden;margin-top:12px;background:#F2EFE9}
+.edit{text-align:left;margin-top:8px;border-top:1px solid var(--line)}
+.erow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.erow>span:first-child{color:var(--muted)}
+.erow input{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);font-size:15px;max-width:62%}
+.eprice{display:flex;align-items:center;gap:6px}
+.eprice input{width:90px;text-align:right}
+.eshop{border:0;background:none;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:6px 0}
+.arow .ghost{display:flex;align-items:center;justify-content:center;gap:6px}
+.arow .prim.skip{text-decoration:none;margin:0;padding:13px;color:#FFF7F2}
+
 /* Navigation */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:1000;display:flex;justify-content:center;gap:8px;
   padding:8px 16px calc(8px + var(--safeB));background:var(--bg);border-top:1px solid var(--line)}
@@ -377,10 +397,10 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 <div id="viewMap" hidden>
   <div id="map" aria-label="Karte mit Dönerläden"></div>
   <div class="mapcard" id="mapCard"><div class="t"><div class="k">Nächster Döner</div><div class="v" id="mcName">Suche …</div><div class="m" id="mcMeta"></div></div><a id="mcRoute" href="#" target="_blank" rel="noopener" hidden>Route</a></div>
+  <button class="wide" id="wideToggle" type="button" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span id="wideLabel">Alle Döner im Umkreis von 10 km</span></button>
   <div class="legend"><span><i style="background:var(--tomate)"></i>Neu</span><span><i style="background:var(--salatDunkel)"></i>Besucht</span><span><i style="background:var(--kohl)"></i>Stammlokal</span></div>
   <a class="gmaps float" id="gmMap" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Google Maps</a>
   <button class="addfab" id="addShop" type="button" aria-label="Laden hinzufügen"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
-  <div class="placebar" id="placeBar" hidden><span>Tippe auf die Karte, wo der Laden ist</span><button type="button" id="placeCancel">Abbrechen</button></div>
   <button class="recenter" id="recenter" type="button" aria-label="Auf meinen Standort zentrieren"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="var(--ink)"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="var(--ink)" stroke-width="2"/></svg></button>
 </div>
 
@@ -396,7 +416,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     <h3 id="pTitle">Wo gab’s den Döner?</h3>
     <ul class="opts" id="opts"></ul>
     <a class="gmaps" id="gmPick" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Nicht dabei? In Google Maps suchen</a>
-    <form class="manual" id="manual"><input id="manualName" placeholder="Anderer Laden" aria-label="Name des Ladens"><button type="submit">Übernehmen</button></form>
+    <button type="button" class="newshop" id="newShop"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Neuen Laden eintragen</button>
     <p class="hint">Ladendaten © OpenStreetMap-Mitwirkende. Dein Standort wird nur für die Suche an OpenStreetMap gesendet, deine Einträge bleiben auf dem Handy.</p>
   </div>
 </div>
@@ -411,8 +431,12 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     </div>
     <div class="stars" id="stars"></div>
     <p class="rlabel" id="rLabel"></p>
-    <label class="when">Wann? <input type="datetime-local" id="rWhen"></label>
-    <button class="skip" type="button" data-close>Überspringen</button>
+    <div class="edit">
+      <label class="erow"><span>Wann</span><input type="datetime-local" id="rWhen"></label>
+      <label class="erow"><span>Preis</span><span class="eprice"><input id="rPrice" type="text" inputmode="decimal" placeholder="–"> €</span></label>
+      <div class="erow"><span>Laden</span><button type="button" class="eshop" id="rShop">Ohne Laden</button></div>
+    </div>
+    <div class="arow"><button type="button" class="ghost" id="rDel">Löschen</button><button type="button" class="prim skip" data-close>Fertig</button></div>
   </div>
 </div>
 
@@ -422,9 +446,10 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     <h3 id="aTitle">Laden hinzufügen</h3>
     <label class="fld"><span>Name</span><input id="aName" placeholder="z. B. Bosporus Grill" autocomplete="off"></label>
     <label class="fld"><span>Google-Maps-Link <small>(optional)</small></span><input id="aLink" placeholder="In Google Maps: Teilen → Link kopieren" inputmode="url" autocomplete="off"></label>
-    <p class="hint" id="aWhere">Noch kein Ort gewählt.</p>
+    <div class="mini" id="aMap" aria-label="Karte zum Setzen des Pins"></div>
+    <p class="hint" id="aWhere">Tippe auf die Karte, um den Pin zu setzen.</p>
     <p class="aerr" id="aErr" role="alert"></p>
-    <div class="arow"><button type="button" class="ghost" id="aPick">Auf Karte wählen</button><button type="button" class="prim" id="aSave">Speichern</button></div>
+    <div class="arow"><button type="button" class="ghost" id="aHere"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Mein Standort</button><button type="button" class="prim" id="aSave">Speichern</button></div>
   </div>
 </div>
 
@@ -548,7 +573,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const out={};
     for(const [i,q] of ["döner","kebab"].entries()){
       if(i)await new Promise(r=>setTimeout(r,1100));
-      const j=await httpJson(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=40&bounded=1&viewbox=${vb}&q=${encodeURIComponent(q)}`,12000);
+      const j=await httpJson(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=${radius>3000?50:40}&bounded=1&viewbox=${vb}&q=${encodeURIComponent(q)}`,12000);
       (j||[]).forEach(e=>{if(!e.name)return;const lat=+e.lat,lon=+e.lon;
         out[e.osm_type+"/"+e.osm_id]={id:e.osm_type+"/"+e.osm_id,name:e.name,lat,lon,d:dist(p,{lat,lon}),kebab:2}});
     }
@@ -628,29 +653,46 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     closeLayer(el.closest(".layer").id)}));
   document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".layer.open").forEach(l=>l.classList.remove("open"))});
 
-  function openPicker(){
+  let pickCtx="track";
+  function knownShops(ref){
+    const m={};
+    nearby.forEach(s=>m[shopKey(s)]={...s});
+    customs.forEach(c=>{m[shopKey(c)]={...(m[shopKey(c)]||{}),...c}});
+    Object.values(shopStats()).forEach(s=>{if(s.lat==null&&!m[s.key])m[s.key]={id:s.id,name:s.name,visits:s.visits,stamm:s.stamm};
+      else if(s.lat!=null)m[s.key]={...(m[s.key]||{}),id:s.id,name:s.name,lat:s.lat,lon:s.lon,visits:s.visits,stamm:s.stamm}});
+    return Object.values(m).map(s=>({...s,d:ref&&s.lat!=null?dist(ref,s):null}))
+      .sort((a,b)=>(a.d??1e9)-(b.d??1e9)||(b.visits||0)-(a.visits||0)).slice(0,20);
+  }
+  function openPicker(ctx){
+    pickCtx=ctx||"track";
+    const ue=pickCtx==="edit"?entries.find(x=>x.id===rateId):null;
+    const list=ue?knownShops(ue.loc||(ue.shop&&ue.shop.lat!=null?ue.shop:null)||pos):nearby;
+    const cur=ue?ue.shop:shop;
+    $("pTitle").textContent=ue?"Welcher Laden war es?":"Wo gab’s den Döner?";
     const ul=$("opts");ul.innerHTML="";
-    if(!nearby.length){const li=document.createElement("li");li.className="empty";li.style.padding="6px 4px";
-      li.textContent=pos?"Keine Läden gefunden. Trag den Namen unten ein.":"Noch kein Standort. Trag den Namen unten ein.";ul.appendChild(li)}
-    nearby.forEach(s=>{
+    if(!list.length){const li=document.createElement("li");li.className="empty";li.style.padding="6px 4px";
+      li.textContent=pos||ue?"Keine Läden gefunden. Trag ihn unten neu ein.":"Noch kein Standort. Trag den Laden unten neu ein.";ul.appendChild(li)}
+    const pickShop=s=>{
+      if(ue){ue.shop={id:s.id||null,name:s.name,lat:s.lat??null,lon:s.lon??null};save();render();closeLayer("picker");openRater(ue.id,true)}
+      else{shop=s;lastLoc=Date.now();setShopUI();closeLayer("picker")}
+    };
+    list.forEach(s=>{
       const li=document.createElement("li"),b=document.createElement("button");b.type="button";
-      b.setAttribute("aria-current",!!shop&&shopKey(shop)===shopKey(s));
+      b.setAttribute("aria-current",!!cur&&shopKey(cur)===shopKey(s));
       const a=document.createElement("span");a.textContent=s.name+" ";
       if(s.visits){const t=document.createElement("span");t.className="tag";t.textContent=s.stamm?"Stammlokal":s.visits+"× da";a.appendChild(t)}
-      const d=document.createElement("span");d.className="dist";d.textContent=fmtDist(s.d);
-      b.append(a,d);b.onclick=()=>{shop=s;lastLoc=Date.now();setShopUI();closeLayer("picker")};li.appendChild(b);ul.appendChild(li);
+      const d=document.createElement("span");d.className="dist";d.textContent=s.d!=null?fmtDist(s.d):"";
+      b.append(a,d);b.onclick=()=>pickShop(s);li.appendChild(b);ul.appendChild(li);
     });
     const li=document.createElement("li"),b=document.createElement("button");b.type="button";
-    b.textContent="Ohne Laden eintragen";b.style.color="var(--muted)";
-    b.onclick=()=>{shop=null;setShopUI("without");closeLayer("picker")};
+    b.textContent=ue?"Ohne Laden":"Ohne Laden eintragen";b.style.color="var(--muted)";
+    b.onclick=()=>{if(ue){ue.shop=null;save();render();closeLayer("picker");openRater(ue.id,true)}
+      else{shop=null;setShopUI("without");closeLayer("picker")}};
     li.appendChild(b);ul.appendChild(li);
     updateGmaps();openLayer("picker");
   }
-  $("shopBtn").onclick=()=>{ if(!pos&&!shop&&$("shopName").textContent==="Laden finden"){locate();return} openPicker(); };
-  $("gmPick").addEventListener("click",()=>{setTimeout(()=>$("manualName").focus(),600)});
-  $("manual").onsubmit=e=>{e.preventDefault();const v=$("manualName").value.trim();if(!v)return;
-    shop={name:v,lat:pos?.lat??null,lon:pos?.lon??null,id:"manual:"+v.toLowerCase(),d:null};
-    $("manualName").value="";setShopUI();closeLayer("picker")};
+  $("shopBtn").onclick=()=>{ if(!pos&&!shop&&$("shopName").textContent==="Laden finden"){locate();return} openPicker("track"); };
+  $("newShop").onclick=()=>{closeLayer("picker");openAdder(false,pickCtx==="edit"?"edit":"pick")};
 
   // ---------- Eintragen & Bewerten ----------
   $("go").onclick=()=>{
@@ -662,8 +704,11 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     entries.push(e);lastId=e.id;save();render();setShopUI();
     openRater(e.id);
   };
-  function openRater(id){
-    rateId=id;const e=entries.find(x=>x.id===id);if(!e)return;
+  let rateFresh=false;
+  function openRater(id,editing){
+    rateId=id;rateFresh=!editing;const e=entries.find(x=>x.id===id);if(!e)return;
+    $("rPrice").value=e.price!=null?String(e.price).replace(".",","):"";
+    $("rShop").textContent=e.shop?e.shop.name:"Ohne Laden";
     titleRater(e);paintKind($("rKind"),kindOf(e));
     paintStars(e.rating||0);
     const d=new Date(e.t),z=n=>String(n).padStart(2,"0");
@@ -688,9 +733,16 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const b=document.createElement("button");b.type="button";b.innerHTML=WEDGE;b.setAttribute("aria-label",i+" von 5");
     b.onclick=()=>{const e=entries.find(x=>x.id===rateId);if(!e)return;
       e.rating=i;paintStars(i);save();render();
-      setTimeout(()=>{closeLayer("rater");if(e.id===lastId)toast(KIND[kindOf(e)]+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")},350)};
+      if(rateFresh)setTimeout(()=>{closeLayer("rater");if(e.id===lastId)toast(KIND[kindOf(e)]+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")},350)};
     $("stars").appendChild(b);
   }
+  $("rPrice").addEventListener("change",()=>{
+    const e=entries.find(x=>x.id===rateId);if(!e)return;const v=$("rPrice").value.trim();
+    const p=parseFloat(v.replace(",","."));e.price=v&&isFinite(p)?Math.round(p*100)/100:null;
+    $("rPrice").value=e.price!=null?String(e.price).replace(".",","):"";save();render()});
+  $("rShop").onclick=()=>{closeLayer("rater");openPicker("edit")};
+  $("rDel").onclick=()=>{const e=entries.find(x=>x.id===rateId);if(!e)return;
+    if(!confirm("Diesen Eintrag löschen?"))return;closeLayer("rater");del(e.id)};
   $("rWhen").addEventListener("change",()=>{
     const e=entries.find(x=>x.id===rateId);const t=new Date($("rWhen").value).getTime();
     if(e&&isFinite(t)){e.t=t;save();render()}
@@ -748,8 +800,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       const p=document.createElement("span");p.className="e";p.textContent=e.price!=null?eur(e.price):"";
       const x=document.createElement("button");x.type="button";x.textContent="✕";x.setAttribute("aria-label","Eintrag löschen");
       x.onclick=ev=>{ev.stopPropagation();del(e.id)};
-      li.onclick=()=>openRater(e.id);
-      li.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();openRater(e.id)}};
+      li.onclick=()=>openRater(e.id,true);
+      li.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();openRater(e.id,true)}};
       li.append(wr,p,x);$("log").appendChild(li);
     });
     $("logEmpty").hidden=all.length>0;
@@ -866,7 +918,28 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
 
   // ---------- Karte ----------
-  let map=null, markers=[], mapShops=[], mapPos=null, mapBusy=false;
+  let map=null, markers=[], mapShops=[], mapPos=null, mapBusy=false, pendingRefresh=false, styleReady=false;
+  const WIDE_R=10000;
+  let wide=(()=>{try{return localStorage.getItem("doener-wide")==="1"}catch(e){return false}})();
+  function paintWide(count){
+    $("wideToggle").setAttribute("aria-checked",wide);
+    $("wideLabel").textContent=wide?(count!=null?`Alle Döner im Umkreis von 10 km · ${count}`:"Alle Döner im Umkreis von 10 km"):"Alle Döner im Umkreis von 10 km";
+  }
+  function ringData(){
+    if(!wide||!mapPos)return {type:"FeatureCollection",features:[]};
+    const pts=[];for(let i=0;i<=72;i++){const a=i/72*2*Math.PI;
+      pts.push([mapPos.lon+WIDE_R/(111320*Math.cos(mapPos.lat*Math.PI/180))*Math.cos(a),mapPos.lat+WIDE_R/111320*Math.sin(a)])}
+    return {type:"FeatureCollection",features:[{type:"Feature",geometry:{type:"LineString",coordinates:pts},properties:{}}]};
+  }
+  function drawRing(){
+    if(!map)return;
+    const run=()=>{try{
+      if(map.getSource("ring"))map.getSource("ring").setData(ringData());
+      else{map.addSource("ring",{type:"geojson",data:ringData()});
+        map.addLayer({id:"ring",type:"line",source:"ring",paint:{"line-color":"#9A3E31","line-width":2,"line-dasharray":[2,2],"line-opacity":.75}})}
+    }catch(e){}};
+    if(styleReady)run();else map.once("load",run);
+  }
   const dark=()=>window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
   const STYLE=()=>"https://tiles.openfreemap.org/styles/liberty";
   function pinEl(cls,label,size){
@@ -892,7 +965,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const all=[...mapShops.filter(s=>!customs.some(c=>c.id===s.id)),...customs];
     all.forEach(s=>{
       if(stats.some(v=>v.id===s.id||near(v,s)))return;
-      addMarker(s.lat,s.lon,pinEl("n","",16),popup(s,false));
+      addMarker(s.lat,s.lon,pinEl("n","",all.length>60?12:16),popup(s,false));
     });
     stats.forEach(s=>addMarker(s.lat,s.lon,pinEl(s.stamm?"s":"v",s.visits,s.stamm?32:28),popup(s,true)));
     if(mapPos)addMarker(mapPos.lat,mapPos.lon,pinEl("me","",16));
@@ -906,20 +979,26 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     }
   }
   async function refreshMap(){
-    if(mapBusy)return;mapBusy=true;
-    $("mcName").textContent="Suche Döner in der Nähe …";$("mcMeta").textContent="";$("mcRoute").hidden=true;
+    if(mapBusy){pendingRefresh=true;return}mapBusy=true;pendingRefresh=false;
+    paintWide();
+    $("mcName").textContent=wide?"Suche alle Döner im Umkreis von 10 km …":"Suche Döner in der Nähe …";$("mcMeta").textContent="";$("mcRoute").hidden=true;
     try{mapPos=await getPos();pos=mapPos}catch(e){
       mapBusy=false;
       $("mcName").textContent="Standort nicht verfügbar";$("mcMeta").textContent="Gezeigt werden deine besuchten Läden";
       drawMap();fitVisited();return;
     }
-    updateGmaps();map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});
-    drawMap();
-    const r=await overpass(mapPos,MAP_RADIUS,true);
+    updateGmaps();
+    if(wide){const dLat=WIDE_R/111320,dLon=WIDE_R/(111320*Math.cos(mapPos.lat*Math.PI/180));
+      map.fitBounds([[mapPos.lon-dLon,mapPos.lat-dLat],[mapPos.lon+dLon,mapPos.lat+dLat]],{padding:{top:150,bottom:110,left:14,right:14},duration:0})}
+    else map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});
+    drawRing();drawMap();
+    const r=await overpass(mapPos,wide?WIDE_R:MAP_RADIUS,true);
     mapShops=r.list;mapBusy=false;
+    if(wide)paintWide(r.failed?null:mapShops.length);
     drawMap();
+    if(pendingRefresh){refreshMap();return}
     if($("mcName").textContent.startsWith("Suche")){
-      $("mcName").textContent=r.failed?"Ladensuche gerade nicht erreichbar":"Kein Döner im Umkreis von 1,5 km";
+      $("mcName").textContent=r.failed?"Ladensuche gerade nicht erreichbar":`Kein Döner im Umkreis von ${wide?"10":"1,5"} km`;
       $("mcMeta").textContent=r.failed?("Fehler: "+lastErr):"Mit + kannst du selbst einen Laden eintragen";
     }
   }
@@ -933,43 +1012,76 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     map=new maplibregl.Map({container:"map",style:STYLE(),center:[10.45,51.16],zoom:5,
       attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false});
     map.touchZoomRotate.disableRotation();
+    map.on("load",()=>{styleReady=true});
     map.on("error",e=>{console.warn("Karte:",e&&e.error&&e.error.message)});
-    map.on("click",e=>{if(!placing)return;placing=false;$("placeBar").hidden=true;
-      setAddPos({lat:e.lngLat.lat,lon:e.lngLat.lng},"Ort auf der Karte gesetzt ✓");openAdder(true)});
-    map.on("contextmenu",e=>{if(placing)return;openAdder(false);
-      setAddPos({lat:e.lngLat.lat,lon:e.lngLat.lng},"Ort auf der Karte gesetzt ✓")});
+    map.on("contextmenu",e=>{openAdder(false,"map");
+      addPos={lat:e.lngLat.lat,lon:e.lngLat.lng};whereText("Pin gesetzt ✓ – zum Feinjustieren ziehen");
+      if(mini)mini.jumpTo({center:[addPos.lon,addPos.lat],zoom:17});showTmp()});
     fitVisited();
   }
-  let addPos=null,placing=false,tmpMarker=null;
-  function showTmp(){if(tmpMarker)tmpMarker.remove();tmpMarker=null;
-    if(addPos&&map){tmpMarker=new maplibregl.Marker({element:pinEl("tmp","+",30)}).setLngLat([addPos.lon,addPos.lat]).addTo(map)}}
-  function whereText(t){$("aWhere").textContent=t}
-  function openAdder(keep){
-    if(!keep){addPos=null;$("aName").value="";$("aLink").value="";whereText("Noch kein Ort gewählt.")}
-    $("aErr").textContent="";openLayer("adder");
+  let addPos=null,tmpMarker=null,mini=null,miniMarker=null,addCtx="map";
+  function showTmp(){
+    if(tmpMarker)tmpMarker.remove();tmpMarker=null;
+    if(addPos&&map&&addCtx==="map")tmpMarker=new maplibregl.Marker({element:pinEl("tmp","+",30)}).setLngLat([addPos.lon,addPos.lat]).addTo(map);
+    if(mini){
+      if(!addPos){if(miniMarker){miniMarker.remove();miniMarker=null}return}
+      if(!miniMarker){miniMarker=new maplibregl.Marker({element:pinEl("tmp","",26),draggable:true}).setLngLat([addPos.lon,addPos.lat]).addTo(mini);
+        miniMarker.on("dragend",()=>{const l=miniMarker.getLngLat();addPos={lat:l.lat,lon:l.lng};whereText("Pin verschoben ✓");showTmp()})}
+      else miniMarker.setLngLat([addPos.lon,addPos.lat]);
+    }
   }
-  $("addShop").onclick=()=>openAdder(false);
-  $("aPick").onclick=()=>{closeLayer("adder");placing=true;$("placeBar").hidden=false};
-  $("placeCancel").onclick=()=>{placing=false;$("placeBar").hidden=true;openAdder(true)};
+  function whereText(t){$("aWhere").textContent=t}
+  function initMini(){
+    if(!window.maplibregl)return;
+    const c=addPos||pos||mapPos;
+    if(!mini){
+      mini=new maplibregl.Map({container:"aMap",style:STYLE(),center:c?[c.lon,c.lat]:[10.45,51.16],zoom:c?16:5,
+        attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false});
+      mini.touchZoomRotate.disableRotation();
+      mini.on("click",e=>{addPos={lat:e.lngLat.lat,lon:e.lngLat.lng};whereText("Pin gesetzt ✓ – zum Feinjustieren ziehen");showTmp()});
+    }else if(c)mini.jumpTo({center:[c.lon,c.lat],zoom:16});
+    setTimeout(()=>{mini.resize();showTmp()},280);
+  }
+  function openAdder(keep,ctx){
+    addCtx=ctx||"map";
+    if(!keep){$("aName").value="";$("aLink").value="";
+      const p=pos||mapPos;addPos=p?{...p}:null;
+      whereText(p?"Pin steht auf deinem Standort – tippe oder ziehe, um ihn zu verschieben.":"Tippe auf die Karte, um den Pin zu setzen.")}
+    $("aErr").textContent="";openLayer("adder");initMini();
+  }
+  $("addShop").onclick=()=>openAdder(false,"map");
+  paintWide();
+  $("wideToggle").onclick=()=>{
+    wide=!wide;try{localStorage.setItem("doener-wide",wide?"1":"0")}catch(e){}
+    mapShops=[];paintWide();drawRing();drawMap();
+    if(map)refreshMap();
+  };
+  $("aHere").onclick=async()=>{
+    whereText("Standort wird bestimmt …");
+    try{const p=await getPos();pos=p;addPos={...p};whereText("Pin auf deinem Standort ✓");showTmp();if(mini)mini.jumpTo({center:[p.lon,p.lat],zoom:17})}
+    catch(e){whereText("Standort nicht verfügbar – tippe auf die Karte.")}
+  };
   function setAddPos(p,label){addPos=p;showTmp();whereText(label+" ("+p.lat.toFixed(5)+", "+p.lon.toFixed(5)+")")}
   async function readLink(){
     const v=$("aLink").value.trim();if(!v)return false;
     $("aErr").textContent="";whereText("Link wird gelesen …");
     try{const {c,n}=await parseMapsLink(v);setAddPos(c,"Ort aus dem Link übernommen ✓");
       if(n&&!$("aName").value.trim())$("aName").value=n;
-      if(map)map.jumpTo({center:[c.lon,c.lat],zoom:16});return true}
-    catch(e){whereText(addPos?"Ort gesetzt ✓":"Noch kein Ort gewählt.");$("aErr").textContent=e.message+". Wähle den Ort lieber auf der Karte.";return false}
+      if(mini)mini.jumpTo({center:[c.lon,c.lat],zoom:17});return true}
+    catch(e){whereText(addPos?"Ort gesetzt ✓":"Noch kein Ort gewählt.");$("aErr").textContent=e.message+". Setz den Pin lieber direkt auf der Karte.";return false}
   }
   $("aLink").addEventListener("change",readLink);
   $("aSave").onclick=async()=>{
     if(!addPos&&$("aLink").value.trim())await readLink();
     const name=$("aName").value.trim();
-    if(!addPos){$("aErr").textContent="Bitte wähle den Ort auf der Karte oder füge einen Link ein.";return}
+    if(!addPos){$("aErr").textContent="Bitte setz einen Pin auf der Karte oder füge einen Link ein.";return}
     if(!name){$("aErr").textContent="Bitte gib einen Namen ein.";return}
     const c={id:"custom:"+Date.now().toString(36),name,lat:Math.round(addPos.lat*1e6)/1e6,lon:Math.round(addPos.lon*1e6)/1e6,kebab:2};
     customs.push(c);saveCustoms();closeLayer("adder");addPos=null;showTmp();drawMap();
-    if(map)map.jumpTo({center:[c.lon,c.lat],zoom:16});
-    toast(name+" gespeichert",true);
+    if(addCtx==="map"){if(map)map.jumpTo({center:[c.lon,c.lat],zoom:16});toast(name+" gespeichert",true)}
+    else if(addCtx==="pick"){shop={...c,d:pos?dist(pos,c):null};lastLoc=Date.now();setShopUI();toast(name+" gespeichert und ausgewählt",true)}
+    else if(addCtx==="edit"){const e=entries.find(x=>x.id===rateId);
+      if(e){e.shop={id:c.id,name:c.name,lat:c.lat,lon:c.lon};save();render();openRater(e.id,true)}}
   };
   document.addEventListener("click",e=>{
     const b=e.target.closest&&e.target.closest("[data-del]");if(!b)return;
