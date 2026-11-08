@@ -1,0 +1,8 @@
+{
+  "appId": "de.doenertracker.app",
+  "appName": "Döner-Tracker",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#F6F7F2"
+  }
+}
