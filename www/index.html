@@ -549,12 +549,20 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   const OVERPASS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://maps.mail.ru/osm/tools/overpass/api/interpreter"];
   async function overpass(p,radius,kebabOnly){
-    const k=`nwr(around:${radius},${p.lat},${p.lon})["cuisine"~"kebab|doner|döner|turkish|shawarma",i];`;
-    const q=`[out:json][timeout:20];(${k}${kebabOnly?"":`nwr(around:${radius},${p.lat},${p.lon})["amenity"="fast_food"];`});out center tags 80;`;
+    const A=`around:${radius},${p.lat},${p.lon}`;
+    const CUI="kebab|doner|döner|turkish|shawarma|falafel|arab|lebanese|syrian|kurdish|middle_eastern|lahmacun|pide";
+    const NAM="d[öo]ner|kebab|kebap|d[üu]r[üu]m|lahmacun|shawarma|schawarma";
+    const q=`[out:json][timeout:25];(`+
+      `nwr(${A})["cuisine"~"${CUI}",i];`+
+      `nwr(${A})["amenity"~"fast_food|restaurant|cafe|food_court"]["name"~"${NAM}",i];`+
+      `nwr(${A})["shop"~"deli|bakery|butcher|convenience"]["name"~"${NAM}",i];`+
+      (kebabOnly?"":`nwr(${A})["amenity"="fast_food"];`)+
+      `);out center tags 600;`;
+    const nameRe=new RegExp(NAM,"i");
     const parse=j=>j.elements.filter(e=>e.tags&&e.tags.name).map(e=>{
       const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon, c=(e.tags.cuisine||"").toLowerCase();
       return {id:e.type+"/"+e.id,name:e.tags.name,lat,lon,d:dist(p,{lat,lon}),
-        kebab:/kebab|doner|döner|shawarma/.test(c)?2:/turkish/.test(c)?1:0};
+        kebab:/kebab|doner|döner|shawarma|lahmacun/.test(c)||nameRe.test(e.tags.name)?2:/turkish|falafel|arab|lebanese|syrian|kurdish|middle_eastern|pide/.test(c)?1:0};
     });
     try{
       const j=await Promise.any(OVERPASS.map(h=>httpJson(h+"?data="+encodeURIComponent(q)).then(j=>{
@@ -571,7 +579,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const dLat=radius/111320,dLon=radius/(111320*Math.cos(p.lat*Math.PI/180));
     const vb=[p.lon-dLon,p.lat+dLat,p.lon+dLon,p.lat-dLat].map(v=>v.toFixed(5)).join(",");
     const out={};
-    for(const [i,q] of ["döner","kebab"].entries()){
+    for(const [i,q] of (radius>3000?["döner","kebab","kebap","dürüm"]:["döner","kebab"]).entries()){
       if(i)await new Promise(r=>setTimeout(r,1100));
       const j=await httpJson(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=${radius>3000?50:40}&bounded=1&viewbox=${vb}&q=${encodeURIComponent(q)}`,12000);
       (j||[]).forEach(e=>{if(!e.name)return;const lat=+e.lat,lon=+e.lon;
