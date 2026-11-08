@@ -179,6 +179,22 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .gmaps.float{position:absolute;z-index:500;right:68px;bottom:12px;margin:0;height:46px;padding:0 14px;border:0;border-radius:23px;box-shadow:0 2px 10px rgba(40,30,20,.16)}
 .legend{max-width:calc(100% - 210px)}
 
+.addfab{position:absolute;z-index:500;right:12px;bottom:70px;width:46px;height:46px;border-radius:50%;border:0;background:#9A3E31;color:#FFF7F2;box-shadow:0 2px 10px rgba(40,30,20,.2);display:grid;place-items:center;cursor:pointer}
+.placebar{position:absolute;z-index:600;left:12px;right:12px;top:calc(var(--safeT) + 12px);max-width:436px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;font-weight:600}
+.placebar span{flex:1}
+.placebar button{border:0;background:none;color:var(--brot);font-weight:800;cursor:pointer}
+.pin.tmp{background:#9A3E31;font-size:18px}
+.pdel{display:inline-block;margin-left:8px;border:0;background:none;color:var(--muted);text-decoration:underline;font-size:14px;cursor:pointer;padding:6px 4px}
+.fld{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;margin-top:10px}
+.fld small{font-weight:400;color:var(--muted)}
+.fld input{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--card);font-weight:400;font-size:16px}
+.fld input:focus{outline:none;border-color:var(--kruste)}
+.aerr{color:#B0443A;font-size:14px;margin:6px 0 0;min-height:0}
+.arow{display:flex;gap:10px;margin-top:14px}
+.arow button{flex:1;border-radius:12px;padding:13px;font-weight:700;cursor:pointer}
+.arow .ghost{border:1.5px solid var(--line);background:var(--card)}
+.arow .prim{border:0;background:#9A3E31;color:#FFF7F2}
+
 /* Navigation */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:1000;display:flex;justify-content:center;gap:8px;
   padding:8px 16px calc(8px + var(--safeB));background:var(--bg);border-top:1px solid var(--line)}
@@ -363,6 +379,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   <div class="mapcard" id="mapCard"><div class="t"><div class="k">Nächster Döner</div><div class="v" id="mcName">Suche …</div><div class="m" id="mcMeta"></div></div><a id="mcRoute" href="#" target="_blank" rel="noopener" hidden>Route</a></div>
   <div class="legend"><span><i style="background:var(--tomate)"></i>Neu</span><span><i style="background:var(--salatDunkel)"></i>Besucht</span><span><i style="background:var(--kohl)"></i>Stammlokal</span></div>
   <a class="gmaps float" id="gmMap" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Google Maps</a>
+  <button class="addfab" id="addShop" type="button" aria-label="Laden hinzufügen"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
+  <div class="placebar" id="placeBar" hidden><span>Tippe auf die Karte, wo der Laden ist</span><button type="button" id="placeCancel">Abbrechen</button></div>
   <button class="recenter" id="recenter" type="button" aria-label="Auf meinen Standort zentrieren"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="var(--ink)"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="var(--ink)" stroke-width="2"/></svg></button>
 </div>
 
@@ -398,6 +416,18 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   </div>
 </div>
 
+<div class="layer" id="adder" role="dialog" aria-modal="true" aria-labelledby="aTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet">
+    <h3 id="aTitle">Laden hinzufügen</h3>
+    <label class="fld"><span>Name</span><input id="aName" placeholder="z. B. Bosporus Grill" autocomplete="off"></label>
+    <label class="fld"><span>Google-Maps-Link <small>(optional)</small></span><input id="aLink" placeholder="In Google Maps: Teilen → Link kopieren" inputmode="url" autocomplete="off"></label>
+    <p class="hint" id="aWhere">Noch kein Ort gewählt.</p>
+    <p class="aerr" id="aErr" role="alert"></p>
+    <div class="arow"><button type="button" class="ghost" id="aPick">Auf Karte wählen</button><button type="button" class="prim" id="aSave">Speichern</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status"><span id="toastText"></span><button id="undo" type="button">Rückgängig</button></div>
 <script src="vendor/maplibre-gl.js"></script>
 <script>
@@ -428,6 +458,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     if(Prefs)Prefs.set({key:KEY,value:v}).catch(()=>{});}
   async function loadNative(){
     if(!Prefs)return;
+    try{const c=await Prefs.get({key:CKEY});if(c&&c.value){customs=JSON.parse(c.value);try{localStorage.setItem(CKEY,c.value)}catch(e){}}
+      else if(customs.length)saveCustoms()}catch(e){}
     try{const r=await Prefs.get({key:KEY});
       if(r&&r.value){entries=JSON.parse(r.value);try{localStorage.setItem(KEY,r.value)}catch(e){}render()}
       else if(entries.length)save();
@@ -473,25 +505,84 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     });
   }
 
+  const Http=Cap.CapacitorHttp, native=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+  const APP_UA="DoenerTracker/1.0 (private Android app)";
+  let lastErr="";
+  async function httpJson(url,timeout=20000){
+    if(Http&&native){
+      const r=await Promise.race([
+        Http.request({url,method:"GET",headers:{"User-Agent":APP_UA,"Accept":"application/json"},connectTimeout:timeout,readTimeout:timeout}),
+        new Promise((_,no)=>setTimeout(()=>no(new Error("Zeitüberschreitung")),timeout+1500))]);
+      if(r.status<200||r.status>=300)throw new Error("HTTP "+r.status);
+      return typeof r.data==="string"?JSON.parse(r.data):r.data;
+    }
+    const ac=new AbortController();const t=setTimeout(()=>ac.abort(),timeout);
+    try{const r=await fetch(url,{signal:ac.signal,headers:{"Accept":"application/json"}});
+      if(!r.ok)throw new Error("HTTP "+r.status);return await r.json()}
+    catch(e){throw new Error(e.name==="AbortError"?"Zeitüberschreitung":(e.message||"Netzwerkfehler"))}
+    finally{clearTimeout(t)}
+  }
+  const OVERPASS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://maps.mail.ru/osm/tools/overpass/api/interpreter"];
   async function overpass(p,radius,kebabOnly){
     const k=`nwr(around:${radius},${p.lat},${p.lon})["cuisine"~"kebab|doner|döner|turkish|shawarma",i];`;
-    const q=`[out:json][timeout:15];(${k}${kebabOnly?"":`nwr(around:${radius},${p.lat},${p.lon})["amenity"="fast_food"];`});out center tags 80;`;
-    for(const host of["https://overpass-api.de/api/interpreter","https://overpass.kumi.systems/api/interpreter"]){
-      try{
-        const ac=new AbortController();const t=setTimeout(()=>ac.abort(),10000);
-        const r=await fetch(host,{method:"POST",body:"data="+encodeURIComponent(q),signal:ac.signal,
-          headers:{"Content-Type":"application/x-www-form-urlencoded"}});
-        clearTimeout(t);if(!r.ok)throw 0;
-        const j=await r.json();
-        const list=j.elements.filter(e=>e.tags&&e.tags.name).map(e=>{
-          const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon, c=(e.tags.cuisine||"").toLowerCase();
-          return {id:e.type+"/"+e.id,name:e.tags.name,lat,lon,d:dist(p,{lat,lon}),
-            kebab:/kebab|doner|döner|shawarma/.test(c)?2:/turkish/.test(c)?1:0};
-        });
-        return {list,failed:false};
-      }catch(e){}
+    const q=`[out:json][timeout:20];(${k}${kebabOnly?"":`nwr(around:${radius},${p.lat},${p.lon})["amenity"="fast_food"];`});out center tags 80;`;
+    const parse=j=>j.elements.filter(e=>e.tags&&e.tags.name).map(e=>{
+      const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon, c=(e.tags.cuisine||"").toLowerCase();
+      return {id:e.type+"/"+e.id,name:e.tags.name,lat,lon,d:dist(p,{lat,lon}),
+        kebab:/kebab|doner|döner|shawarma/.test(c)?2:/turkish/.test(c)?1:0};
+    });
+    try{
+      const j=await Promise.any(OVERPASS.map(h=>httpJson(h+"?data="+encodeURIComponent(q)).then(j=>{
+        if(!j||!Array.isArray(j.elements))throw new Error("leere Antwort");return j})));
+      lastErr="";return {list:parse(j),failed:false};
+    }catch(e){
+      lastErr=[...new Set((e.errors||[e]).map(x=>x.message))].join(", ");
+      try{const list=await nominatim(p,radius);lastErr="";return {list,failed:false}}
+      catch(e2){lastErr+=" / Ersatzsuche: "+e2.message}
+      return {list:[],failed:true};
     }
-    return {list:[],failed:true};
+  }
+  async function nominatim(p,radius){
+    const dLat=radius/111320,dLon=radius/(111320*Math.cos(p.lat*Math.PI/180));
+    const vb=[p.lon-dLon,p.lat+dLat,p.lon+dLon,p.lat-dLat].map(v=>v.toFixed(5)).join(",");
+    const out={};
+    for(const [i,q] of ["döner","kebab"].entries()){
+      if(i)await new Promise(r=>setTimeout(r,1100));
+      const j=await httpJson(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=40&bounded=1&viewbox=${vb}&q=${encodeURIComponent(q)}`,12000);
+      (j||[]).forEach(e=>{if(!e.name)return;const lat=+e.lat,lon=+e.lon;
+        out[e.osm_type+"/"+e.osm_id]={id:e.osm_type+"/"+e.osm_id,name:e.name,lat,lon,d:dist(p,{lat,lon}),kebab:2}});
+    }
+    return Object.values(out);
+  }
+
+  // ---------- Eigene Läden ----------
+  const CKEY="doener-custom-shops-v1";
+  let customs=(()=>{try{return JSON.parse(localStorage.getItem(CKEY)||"[]")}catch(e){return []}})();
+  function saveCustoms(){const v=JSON.stringify(customs);try{localStorage.setItem(CKEY,v)}catch(e){}
+    if(Prefs)Prefs.set({key:CKEY,value:v}).catch(()=>{})}
+  function coordsFrom(str){
+    if(!str)return null;let m;
+    try{str=decodeURIComponent(str)}catch(e){}
+    if((m=str.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)))return {lat:+m[1],lon:+m[2]};
+    if((m=str.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)))return {lat:+m[1],lon:+m[2]};
+    if((m=str.match(/[?&](?:q|query|ll|destination|center)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i)))return {lat:+m[1],lon:+m[2]};
+    if((m=str.match(/geo:(-?\d+\.\d+),(-?\d+\.\d+)/)))return {lat:+m[1],lon:+m[2]};
+    return null;
+  }
+  function nameFrom(str){const m=(str||"").match(/\/place\/([^/@?]+)/);
+    try{return m?decodeURIComponent(m[1].replace(/\+/g," ")):""}catch(e){return ""}}
+  async function parseMapsLink(raw){
+    const url=(raw.match(/https?:\/\/\S+/)||[raw.trim()])[0];
+    let c=coordsFrom(url),n=nameFrom(url);
+    if(!c&&/^https?:/.test(url)){
+      if(!(Http&&native))throw new Error("Kurzlinks lassen sich nur in der App auslesen");
+      const r=await Http.request({url,method:"GET",headers:{"User-Agent":"Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Mobile Safari/537.36"},connectTimeout:12000,readTimeout:12000});
+      const fin=r.url||"",body=typeof r.data==="string"?r.data:"";
+      c=coordsFrom(fin)||coordsFrom(body.slice(0,200000));n=n||nameFrom(fin);
+    }
+    if(!n){const pre=raw.split(/https?:\/\//)[0].trim();if(pre)n=pre.split(/\n|·|,/)[0].trim()}
+    if(!c)throw new Error("Im Link steht kein Ort");
+    return {c,n};
   }
 
   function gmapsUrl(p){
@@ -507,7 +598,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       const st=shopStats()[shopKey(shop)];
       m.textContent=[shop.d!=null?fmtDist(shop.d)+" entfernt":"Manuell gewählt",st?visitsLabel(st):null].filter(Boolean).join(" · ");return}
     const T={loc:["Suche Dönerläden …","Standort wird bestimmt"],denied:["Standort nicht freigegeben","Tippen, um den Laden einzugeben"],
-      none:["Kein Dönerladen in der Nähe","Tippen, um ihn einzugeben"],err:["Suche gerade nicht möglich","Tippen, um ihn einzugeben"],
+      none:["Kein Dönerladen in der Nähe","Tippen, um ihn einzugeben"],err:["Suche gerade nicht möglich","Tippen, um ihn einzugeben"+(lastErr?" · "+lastErr:"")],
       without:["Ohne Laden","Tippen, um einen Laden zu wählen"]}[state]||["Laden finden","Tippen, um den Standort zu nutzen"];
     n.textContent=T[0];m.textContent=T[1];
   }
@@ -523,6 +614,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const map={};
     const r=await overpass(p,RADIUS,false);
     r.list.forEach(s=>map[s.id]=s);
+    customs.forEach(c=>{const d=dist(p,c);if(d<=RADIUS)map[c.id]={...c,d}});
     stats.forEach(s=>{ if(s.lat==null)return; const d=dist(p,s); if(d>RADIUS)return;
       map[s.key]={...(map[s.key]||{}),id:s.id,name:s.name,lat:s.lat,lon:s.lon,d,visits:s.visits,stamm:s.stamm};});
     const list=Object.values(map).sort((a,b)=>
@@ -607,7 +699,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     if(rateId===lastId){const e=entries.find(x=>x.id===rateId);if(e)toast(KIND[kindOf(e)]+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")}});
   $("undo").onclick=()=>{if(lastId)del(lastId);lastId=null;$("toast").classList.remove("show")};
   function del(id){entries=entries.filter(e=>e.id!==id);save();render();if(map)drawMap()}
-  function toast(t){$("toastText").textContent=t;$("toast").classList.add("show");clearTimeout(tTimer);
+  function toast(t,noUndo){$("undo").hidden=!!noUndo;$("toastText").textContent=t;$("toast").classList.add("show");clearTimeout(tTimer);
     tTimer=setTimeout(()=>{$("toast").classList.remove("show");lastId=null},4500)}
   $("more").onclick=()=>{showAll=true;render()};
 
@@ -789,20 +881,22 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     if(visited){meta.push(s.stamm?"Stammlokal":s.visits+"× da");if(s.avg)meta.push("Ø "+num1(s.avg)+" von 5")}
     else meta.push("Noch nicht probiert");
     if(mapPos&&s.lat!=null)meta.push(fmtDist(dist(mapPos,s)));
-    return `<div class="pop"><b>${esc(s.name)}</b><div class="m">${esc(meta.join(" · "))}</div><a href="${routeUrl(s)}" target="_blank" rel="noopener">Route</a></div>`;
+    const own=String(s.id||"").startsWith("custom:")?`<button type="button" class="pdel" data-del="${esc(s.id)}">Entfernen</button>`:"";
+    return `<div class="pop"><b>${esc(s.name)}</b><div class="m">${esc(meta.join(" · "))}${own?" · selbst eingetragen":""}</div><a href="${routeUrl(s)}" target="_blank" rel="noopener">Route</a>${own}</div>`;
   }
   function drawMap(){
     if(!map)return;
     markers.forEach(m=>m.remove());markers=[];
     const stats=Object.values(shopStats()).filter(s=>s.lat!=null);
     const near=(a,b)=>dist(a,b)<40&&a.name.toLowerCase()===b.name.toLowerCase();
-    mapShops.forEach(s=>{
+    const all=[...mapShops.filter(s=>!customs.some(c=>c.id===s.id)),...customs];
+    all.forEach(s=>{
       if(stats.some(v=>v.id===s.id||near(v,s)))return;
       addMarker(s.lat,s.lon,pinEl("n","",16),popup(s,false));
     });
     stats.forEach(s=>addMarker(s.lat,s.lon,pinEl(s.stamm?"s":"v",s.visits,s.stamm?32:28),popup(s,true)));
     if(mapPos)addMarker(mapPos.lat,mapPos.lon,pinEl("me","",16));
-    const cand=[...mapShops.filter(s=>s.kebab),...stats];
+    const cand=[...mapShops.filter(s=>s.kebab),...customs,...stats];
     if(mapPos&&cand.length){
       const n=cand.map(s=>({...s,d:dist(mapPos,s)})).sort((a,b)=>a.d-b.d)[0];
       const st=stats.find(v=>v.key===(n.key||shopKey(n)));
@@ -826,7 +920,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     drawMap();
     if($("mcName").textContent.startsWith("Suche")){
       $("mcName").textContent=r.failed?"Ladensuche gerade nicht erreichbar":"Kein Döner im Umkreis von 1,5 km";
-      $("mcMeta").textContent="Tipp: unten auf „Google Maps“";
+      $("mcMeta").textContent=r.failed?("Fehler: "+lastErr):"Mit + kannst du selbst einen Laden eintragen";
     }
   }
   function fitVisited(){
@@ -840,8 +934,49 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false});
     map.touchZoomRotate.disableRotation();
     map.on("error",e=>{console.warn("Karte:",e&&e.error&&e.error.message)});
+    map.on("click",e=>{if(!placing)return;placing=false;$("placeBar").hidden=true;
+      setAddPos({lat:e.lngLat.lat,lon:e.lngLat.lng},"Ort auf der Karte gesetzt ✓");openAdder(true)});
+    map.on("contextmenu",e=>{if(placing)return;openAdder(false);
+      setAddPos({lat:e.lngLat.lat,lon:e.lngLat.lng},"Ort auf der Karte gesetzt ✓")});
     fitVisited();
   }
+  let addPos=null,placing=false,tmpMarker=null;
+  function showTmp(){if(tmpMarker)tmpMarker.remove();tmpMarker=null;
+    if(addPos&&map){tmpMarker=new maplibregl.Marker({element:pinEl("tmp","+",30)}).setLngLat([addPos.lon,addPos.lat]).addTo(map)}}
+  function whereText(t){$("aWhere").textContent=t}
+  function openAdder(keep){
+    if(!keep){addPos=null;$("aName").value="";$("aLink").value="";whereText("Noch kein Ort gewählt.")}
+    $("aErr").textContent="";openLayer("adder");
+  }
+  $("addShop").onclick=()=>openAdder(false);
+  $("aPick").onclick=()=>{closeLayer("adder");placing=true;$("placeBar").hidden=false};
+  $("placeCancel").onclick=()=>{placing=false;$("placeBar").hidden=true;openAdder(true)};
+  function setAddPos(p,label){addPos=p;showTmp();whereText(label+" ("+p.lat.toFixed(5)+", "+p.lon.toFixed(5)+")")}
+  async function readLink(){
+    const v=$("aLink").value.trim();if(!v)return false;
+    $("aErr").textContent="";whereText("Link wird gelesen …");
+    try{const {c,n}=await parseMapsLink(v);setAddPos(c,"Ort aus dem Link übernommen ✓");
+      if(n&&!$("aName").value.trim())$("aName").value=n;
+      if(map)map.jumpTo({center:[c.lon,c.lat],zoom:16});return true}
+    catch(e){whereText(addPos?"Ort gesetzt ✓":"Noch kein Ort gewählt.");$("aErr").textContent=e.message+". Wähle den Ort lieber auf der Karte.";return false}
+  }
+  $("aLink").addEventListener("change",readLink);
+  $("aSave").onclick=async()=>{
+    if(!addPos&&$("aLink").value.trim())await readLink();
+    const name=$("aName").value.trim();
+    if(!addPos){$("aErr").textContent="Bitte wähle den Ort auf der Karte oder füge einen Link ein.";return}
+    if(!name){$("aErr").textContent="Bitte gib einen Namen ein.";return}
+    const c={id:"custom:"+Date.now().toString(36),name,lat:Math.round(addPos.lat*1e6)/1e6,lon:Math.round(addPos.lon*1e6)/1e6,kebab:2};
+    customs.push(c);saveCustoms();closeLayer("adder");addPos=null;showTmp();drawMap();
+    if(map)map.jumpTo({center:[c.lon,c.lat],zoom:16});
+    toast(name+" gespeichert",true);
+  };
+  document.addEventListener("click",e=>{
+    const b=e.target.closest&&e.target.closest("[data-del]");if(!b)return;
+    const c=customs.find(x=>x.id===b.dataset.del);if(!c)return;
+    if(!confirm(c.name+" von der Karte entfernen? Deine Einträge bleiben erhalten."))return;
+    customs=customs.filter(x=>x.id!==c.id);saveCustoms();drawMap();
+  });
   $("recenter").onclick=()=>{if(mapPos)map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});refreshMap()};
 
   // ---------- Navigation ----------
