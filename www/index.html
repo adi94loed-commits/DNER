@@ -113,6 +113,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .mapcard a,.pop a{flex:none;background:#9A3E31;color:#FFF7F2;text-decoration:none;font-weight:700;padding:10px 14px;border-radius:12px}
 .legend{position:absolute;z-index:500;left:12px;bottom:12px;display:flex;gap:6px;flex-wrap:wrap}
 .legend span{display:flex;align-items:center;gap:6px;background:var(--card);border-radius:999px;padding:5px 10px;font-size:13px;box-shadow:0 2px 10px rgba(40,30,20,.12)}
+.legend span[hidden]{display:none}
 .legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
 .recenter{position:absolute;z-index:500;right:12px;bottom:12px;width:46px;height:46px;border-radius:50%;border:0;background:var(--card);box-shadow:0 2px 10px rgba(40,30,20,.16);cursor:pointer;display:grid;place-items:center}
 .pin{display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:800;font-size:13px;border:2.5px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.25)}
@@ -128,7 +129,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .maplibregl-popup-anchor-bottom .maplibregl-popup-tip{border-top-color:var(--card)}
 .maplibregl-popup-anchor-top .maplibregl-popup-tip{border-bottom-color:var(--card)}
 .maplibregl-ctrl-attrib{font-size:10px}
-.maplibregl-ctrl-bottom-right{bottom:64px}
+.maplibregl-ctrl-bottom-right{bottom:122px}
 
 
 /* Döner/Dürüm-Auswahl */
@@ -215,6 +216,19 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .arow .ghost{display:flex;align-items:center;justify-content:center;gap:6px}
 .arow .prim.skip{text-decoration:none;margin:0;padding:13px;color:#FFF7F2}
 
+.wide.fsq{top:calc(var(--safeT) + 140px)}
+.wide.fsq[aria-disabled="true"]{opacity:.7}
+.wide.upd{top:calc(var(--safeT) + 184px);padding:8px 14px 8px 12px}
+.wide.upd[aria-busy="true"]{opacity:.75}
+.wide.upd[aria-busy="true"] svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pok{display:inline-block;margin-left:8px;border:0;background:none;color:var(--salatDunkel);font-weight:700;text-decoration:underline;font-size:14px;cursor:pointer;padding:6px 4px}
+.pop .src{font-size:12px;color:var(--muted);margin:-6px 0 10px}
+.phide{display:inline-block;margin-left:8px;border:0;background:none;color:var(--muted);text-decoration:underline;font-size:14px;cursor:pointer;padding:6px 4px}
+.hid{list-style:none;margin:8px 0 0;padding:0}
+.hid li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.hid button{border:0;background:none;color:var(--ink);text-decoration:underline;font-weight:600;cursor:pointer;flex:none}
+
 /* Navigation */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:1000;display:flex;justify-content:center;gap:8px;
   padding:8px 16px calc(8px + var(--safeB));background:var(--bg);border-top:1px solid var(--line)}
@@ -252,11 +266,54 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
 .toast button{border:0;background:none;color:var(--brot);font-weight:800;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.sheet,.scrim,.toast,.go{transition:none}}
+/* Startseite: Döner mittig mit Button, Verlauf erst beim Wischen */
+.start{min-height:calc(100svh - var(--nav) - var(--safeB) - var(--safeT) - 10px);
+  display:flex;flex-direction:column;justify-content:center;align-items:stretch;position:relative;padding-bottom:56px}
+.start .hero svg{max-width:400px}
+.go.big{flex:none;width:100%;padding:17px 16px;margin-top:6px;font-size:20px}
+.start .sub{text-align:center}
+.down{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);border:0;background:none;color:var(--muted);
+  display:flex;align-items:center;gap:4px;font-size:15px;font-weight:600;cursor:pointer;padding:8px 12px;white-space:nowrap}
+.down svg{flex:none}
+#logH{margin-top:8px}
+#entry .sheet{max-height:92vh}
+#entry .shop{margin-top:2px}
+/* Füllung (optional) */
+.fill{margin-top:8px}
+.filltog{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:8px 6px;cursor:pointer;text-align:left;color:var(--muted);font-size:15px}
+.filltog .lbl{flex:1}
+.filltog .val{font-weight:600;color:var(--ink)}
+.filltog .opt{font-size:13px}
+.filltog .chev{flex:none;transition:transform .18s;transform-origin:50% 50%}
+.filltog[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.filltog .clr{border:0;background:var(--line);color:var(--ink);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:13px;flex:none}
+.filltog .clr[hidden]{display:none}
+.fillpanel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .2s ease}
+.fillpanel.open{grid-template-rows:1fr}
+.fillpanel>div{overflow:hidden}
+.fg{display:flex;flex-wrap:wrap;gap:6px;padding:2px 2px 8px}
+.fg .fl{width:100%;font-size:13px;color:var(--muted);padding:4px 4px 0}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1.5px solid transparent;border-radius:999px;padding:7px 13px;font-size:15px;font-weight:600;cursor:pointer;background:var(--brotHell);color:var(--ink)}
+.chip.veg{background:var(--salatHell)}
+.chip.tiny{font-size:10px;letter-spacing:.2px}
+.chip svg{flex:none}
+.chip[aria-pressed="true"]{background:#8C5634;color:#FFF7F2}
+.chip.veg[aria-pressed="true"]{background:var(--salatDunkel);color:#fff}
+.chip[aria-pressed="true"] svg path{fill:currentColor}
+.go.long{font-size:16px;line-height:1.15}
+.log .ft{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--brotHell);color:var(--ink);margin:0 2px;vertical-align:1px}
+.log .ft.veg{background:var(--salatHell);color:var(--salatDunkel)}
+.log .ft.tiny{font-size:9px}
+.rfill{margin-top:4px}
+.rfill .fg{justify-content:center}
+.rfill .fg .fl{text-align:center}
+.rfh{margin:4px 0 0;font-size:15px;font-weight:600;text-align:center}
 </style>
 </head>
 <body>
 <div id="viewTracker">
   <main>
+    <section class="start">
     <section class="hero" aria-live="polite">
       <svg viewBox="0 44 360 252" role="img" aria-labelledby="heroLabel">
         <title id="heroLabel">Döner und Dürüm diesen Monat</title>
@@ -346,27 +403,15 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       </svg>
     </section>
 
-    <button class="shop" id="shopBtn" type="button" aria-haspopup="dialog">
-      <svg width="28" height="26" viewBox="0 0 28 26" aria-hidden="true"><path d="M2 12 L13 3 Q14 2.2 15 3 L26 12 Q27 13 26.4 14.4 C23 22 5 22 1.6 14.4 Q1 13 2 12Z" fill="var(--salat)"/><circle cx="14" cy="13" r="3.2" fill="var(--salatHell)"/></svg>
-      <span class="txt"><span class="name" id="shopName">Laden finden</span><span class="meta" id="shopMeta">Tippen, um den Standort zu nutzen</span></span>
-      <span class="chg" id="shopChg" hidden>ändern</span>
-    </button>
-
-    <div class="kind" role="group" aria-label="Was gab es?">
-      <button type="button" data-k="doener" aria-pressed="true"><svg width="26" height="24" viewBox="0 0 48 46" aria-hidden="true"><circle cx="10" cy="22" r="5.5" fill="var(--salat)"/><circle cx="17" cy="15" r="5.5" fill="#8C5634"/><circle cx="31" cy="15" r="5.5" fill="var(--tomate)"/><circle cx="38" cy="22" r="5.5" fill="var(--salat)"/><path d="M3 26 L22 10 Q24 8.5 26 10 L45 26 Q46.5 27.5 45.5 29.5 C40 44 8 44 2.5 29.5 Q1.5 27.5 3 26Z" fill="var(--kruste)"/></svg>Döner</button>
-      <button type="button" data-k="duerum" aria-pressed="false"><svg width="26" height="24" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-35 24 24)"><rect x="16" y="2" width="16" height="44" rx="8" fill="var(--brot)"/><circle cx="20" cy="6" r="3" fill="var(--salat)"/><circle cx="27" cy="5" r="3" fill="#8C5634"/><path d="M15 26 L18.6 23.5 L22.2 26 L25.8 23.5 L29.4 26 L33 23.5 V40 Q33 47 24 47 Q15 47 15 40Z" fill="var(--kruste)"/></g></svg>Dürüm</button>
-    </div>
-    <div class="row">
-      <label class="price"><input id="price" type="text" inputmode="decimal" placeholder="Preis" aria-label="Preis in Euro"><span>€</span></label>
-      <button class="go" id="go" type="button">Döner eintragen</button>
-    </div>
-
+    <button class="go big" id="openEntry" type="button">Döner eintragen</button>
     <p class="sub" id="mSub"></p>
-    <h2>Verlauf</h2>
+    <button class="down" id="toLog" type="button">Verlauf<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </section>
+    <h2 id="logH">Verlauf</h2>
     <ul class="log" id="log"></ul>
     <p class="empty" id="logEmpty">Dein erster Döner erscheint hier.</p>
     <button class="more" id="more" type="button" hidden>Ältere anzeigen</button>
-    <p class="foot">Tippe auf einen Eintrag, um ihn zu bewerten. Ladendaten © OpenStreetMap-Mitwirkende</p>
+    <p class="foot">Tippe auf einen Eintrag, um ihn zu bearbeiten. Ladendaten © OpenStreetMap-Mitwirkende, Foursquare OS Places (Apache 2.0)</p>
   </main>
 </div>
 
@@ -389,6 +434,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       <section class="card"><h3>Meistbesucht</h3><ul class="top" id="top" style="margin-top:8px"></ul><p class="empty" id="topEmpty">Ab 3 Besuchen wird ein Laden zum Stammlokal.</p></section>
       <section class="card" id="cardBest"><h3>Bestbewertete Läden</h3><ul class="top" id="bestShops" style="margin-top:8px"></ul></section>
     </div>
+    <section class="card" id="cardHidden" hidden><h3>Ausgeblendete Läden</h3><p class="cap">Diese Läden zeigt die App auf der Karte und bei der Ladensuche nicht mehr an.</p><ul class="hid" id="hiddenList"></ul></section>
     <section class="card"><h3>Döner pro Monat</h3><p class="cap">Letzte 12 Monate</p><div id="chMonth"></div></section>
     <section class="card" id="cardPrice"><h3>Preis im Schnitt</h3><p class="cap">Letzte 12 Monate</p><div id="chPrice"></div></section>
   </main>
@@ -398,7 +444,9 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   <div id="map" aria-label="Karte mit Dönerläden"></div>
   <div class="mapcard" id="mapCard"><div class="t"><div class="k">Nächster Döner</div><div class="v" id="mcName">Suche …</div><div class="m" id="mcMeta"></div></div><a id="mcRoute" href="#" target="_blank" rel="noopener" hidden>Route</a></div>
   <button class="wide" id="wideToggle" type="button" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span id="wideLabel">Alle Döner im Umkreis von 10 km</span></button>
-  <div class="legend"><span><i style="background:var(--tomate)"></i>Neu</span><span><i style="background:var(--salatDunkel)"></i>Besucht</span><span><i style="background:var(--kohl)"></i>Stammlokal</span></div>
+  <button class="wide fsq" id="fsqToggle" type="button" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span id="fsqLabel">Auch „vielleicht Döner“ zeigen</span></button>
+  <button class="wide upd" id="updArea" type="button"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="updLabel">Diese Gegend aktualisieren</span></button>
+  <div class="legend"><span><i style="background:var(--tomate)"></i>Döner</span><span id="lgMaybe"><i style="background:#fff;box-shadow:inset 0 0 0 2.5px var(--tomate)"></i>Vielleicht</span><span><i style="background:var(--salatDunkel)"></i>Besucht</span><span><i style="background:var(--kohl)"></i>Stammlokal</span></div>
   <a class="gmaps float" id="gmMap" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Google Maps</a>
   <button class="addfab" id="addShop" type="button" aria-label="Laden hinzufügen"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
   <button class="recenter" id="recenter" type="button" aria-label="Auf meinen Standort zentrieren"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="var(--ink)"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="var(--ink)" stroke-width="2"/></svg></button>
@@ -410,6 +458,36 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   <button type="button" role="tab" id="tabMap" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 3v15M15 6v15" stroke="currentColor" stroke-width="2"/></svg>Karte</button>
 </nav>
 
+<div class="layer" id="entry" role="dialog" aria-modal="true" aria-labelledby="eTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet">
+    <h3 id="eTitle">Neuer Döner</h3>
+    <button class="shop" id="shopBtn" type="button" aria-haspopup="dialog">
+      <svg width="28" height="26" viewBox="0 0 28 26" aria-hidden="true"><path d="M2 12 L13 3 Q14 2.2 15 3 L26 12 Q27 13 26.4 14.4 C23 22 5 22 1.6 14.4 Q1 13 2 12Z" fill="var(--salat)"/><circle cx="14" cy="13" r="3.2" fill="var(--salatHell)"/></svg>
+      <span class="txt"><span class="name" id="shopName">Laden finden</span><span class="meta" id="shopMeta">Tippen, um den Standort zu nutzen</span></span>
+      <span class="chg" id="shopChg" hidden>ändern</span>
+    </button>
+
+    <div class="kind" id="eKind" role="group" aria-label="Was gab es?">
+      <button type="button" data-k="doener" aria-pressed="true"><svg width="26" height="24" viewBox="0 0 48 46" aria-hidden="true"><circle cx="10" cy="22" r="5.5" fill="var(--salat)"/><circle cx="17" cy="15" r="5.5" fill="#8C5634"/><circle cx="31" cy="15" r="5.5" fill="var(--tomate)"/><circle cx="38" cy="22" r="5.5" fill="var(--salat)"/><path d="M3 26 L22 10 Q24 8.5 26 10 L45 26 Q46.5 27.5 45.5 29.5 C40 44 8 44 2.5 29.5 Q1.5 27.5 3 26Z" fill="var(--kruste)"/></svg>Döner</button>
+      <button type="button" data-k="duerum" aria-pressed="false"><svg width="26" height="24" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-35 24 24)"><rect x="16" y="2" width="16" height="44" rx="8" fill="var(--brot)"/><circle cx="20" cy="6" r="3" fill="var(--salat)"/><circle cx="27" cy="5" r="3" fill="#8C5634"/><path d="M15 26 L18.6 23.5 L22.2 26 L25.8 23.5 L29.4 26 L33 23.5 V40 Q33 47 24 47 Q15 47 15 40Z" fill="var(--kruste)"/></g></svg>Dürüm</button>
+    </div>
+    <div class="fill">
+      <button class="filltog" id="fillTog" type="button" aria-expanded="false" aria-controls="fillPanel">
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Füllung <span class="val" id="fillVal"></span><span class="opt" id="fillOpt">angeben (optional)</span></span>
+        <span class="clr" id="fillClr" role="button" aria-label="Füllung entfernen" hidden>✕</span>
+      </button>
+      <div class="fillpanel" id="fillPanel"><div id="eChips"></div></div>
+    </div>
+    <div class="row">
+      <label class="price"><input id="price" type="text" inputmode="decimal" placeholder="Preis" aria-label="Preis in Euro"><span>€</span></label>
+      <button class="go" id="go" type="button">Döner eintragen</button>
+    </div>
+
+  </div>
+</div>
+
 <div class="layer" id="picker" role="dialog" aria-modal="true" aria-labelledby="pTitle">
   <div class="scrim" data-close></div>
   <div class="sheet">
@@ -417,7 +495,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     <ul class="opts" id="opts"></ul>
     <a class="gmaps" id="gmPick" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Nicht dabei? In Google Maps suchen</a>
     <button type="button" class="newshop" id="newShop"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Neuen Laden eintragen</button>
-    <p class="hint">Ladendaten © OpenStreetMap-Mitwirkende. Dein Standort wird nur für die Suche an OpenStreetMap gesendet, deine Einträge bleiben auf dem Handy.</p>
+    <p class="hint">Ladendaten © OpenStreetMap-Mitwirkende und Foursquare OS Places. Die Läden sind in der App gespeichert, die Suche klappt auch offline. Nur „Diese Gegend aktualisieren“ auf der Karte fragt OpenStreetMap. Deine Einträge bleiben auf dem Handy.</p>
   </div>
 </div>
 
@@ -431,6 +509,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     </div>
     <div class="stars" id="stars"></div>
     <p class="rlabel" id="rLabel"></p>
+    <div class="rfill"><p class="rfh">Füllung</p><div id="rChips"></div></div>
     <div class="edit">
       <label class="erow"><span>Wann</span><input type="datetime-local" id="rWhen"></label>
       <label class="erow"><span>Preis</span><span class="eprice"><input id="rPrice" type="text" inputmode="decimal" placeholder="–"> €</span></label>
@@ -470,7 +549,21 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 
   const KIND={doener:"Döner",duerum:"Dürüm"};
   const kindOf=e=>(e.kind==="duerum"||e.kind==="Dürüm")?"duerum":"doener";
+  // Füllung (optional)
+  const FILL={
+    kalb:{g:"Fleisch",n:"Kalb",p:"Kalbs"},
+    haehnchen:{g:"Fleisch",n:"Hähnchen",p:"Hähnchen"},
+    veggie:{g:"Ohne Fleisch",n:"Vegetarisch",p:"Veggie"},
+    halloumi:{g:"Ohne Fleisch",n:"Halloumi",p:"Halloumi"},
+    falafel:{g:"Ohne Fleisch",n:"Falafel",p:"Falafel"},
+    seitan:{g:"Ohne Fleisch",n:"Seitan",p:"Seitan"},
+    soja:{g:"Ohne Fleisch",n:"Sojasteak",p:"Soja"}
+  };
+  const isVeg=f=>!!(f&&FILL[f]&&FILL[f].g==="Ohne Fleisch");
+  let fill=(()=>{try{const f=localStorage.getItem("doener-fill");return FILL[f]?f:null}catch(e){return null}})();
+  let fillOpen=false;
   let kind=(()=>{try{return localStorage.getItem("doener-kind")==="duerum"?"duerum":"doener"}catch(e){return"doener"}})();
+  let rev=1;
   let entries=load(), nearby=[], shop=null, pos=null, showAll=false, lastId=null, tTimer, lastLoc=0, rateId=null;
 
   // ---------- Speicher ----------
@@ -478,13 +571,20 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);
       const o=localStorage.getItem(OLD);return o?JSON.parse(o):[]}catch(e){return []}
   }
-  function save(){const v=JSON.stringify(entries);
+  function save(){rev++;const v=JSON.stringify(entries);
     try{localStorage.setItem(KEY,v)}catch(e){}
     if(Prefs)Prefs.set({key:KEY,value:v}).catch(()=>{});}
   async function loadNative(){
     if(!Prefs)return;
+    try{const h=await Prefs.get({key:HKEY});if(h&&h.value){hidden=JSON.parse(h.value);try{localStorage.setItem(HKEY,h.value)}catch(e){}}
+      else if(Object.keys(hidden).length)saveHidden()}catch(e){}
     try{const c=await Prefs.get({key:CKEY});if(c&&c.value){customs=JSON.parse(c.value);try{localStorage.setItem(CKEY,c.value)}catch(e){}}
       else if(customs.length)saveCustoms()}catch(e){}
+    for(const [k,set,cur] of [[LKEY,v=>local=v,()=>local],[OKKEY,v=>confirmed=v,()=>confirmed]]){
+      try{const r=await Prefs.get({key:k});if(r&&r.value){set(JSON.parse(r.value));try{localStorage.setItem(k,r.value)}catch(e){}}
+        else if(Object.keys(cur()).length)Prefs.set({key:k,value:JSON.stringify(cur())}).catch(()=>{})}catch(e){}
+    }
+    grid=null;rev++;if(map)drawMap();
     try{const r=await Prefs.get({key:KEY});
       if(r&&r.value){entries=JSON.parse(r.value);try{localStorage.setItem(KEY,r.value)}catch(e){}render()}
       else if(entries.length)save();
@@ -515,19 +615,25 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   function visitsLabel(s){return s.stamm?"Stammlokal":s.visits+"× da"}
 
   // ---------- Standort ----------
-  async function getPos(){
+  async function getPos(fast){
+    const opt=fast?[{enableHighAccuracy:false,timeout:4000,maximumAge:300000},{enableHighAccuracy:true,timeout:15000,maximumAge:60000}]
+                  :[{enableHighAccuracy:true,timeout:15000,maximumAge:60000}];
     if(Geo){
       let st=await Geo.checkPermissions();
       if(st.location!=="granted"&&st.coarseLocation!=="granted")st=await Geo.requestPermissions();
       if(st.location!=="granted"&&st.coarseLocation!=="granted")throw new Error("denied");
-      const p=await Geo.getCurrentPosition({enableHighAccuracy:true,timeout:15000,maximumAge:60000});
-      return {lat:p.coords.latitude,lon:p.coords.longitude};
+      let err;
+      for(const o of opt){try{const p=await Geo.getCurrentPosition(o);return {lat:p.coords.latitude,lon:p.coords.longitude}}catch(e){err=e}}
+      throw err||new Error("error");
     }
-    return new Promise((ok,no)=>{
+    const one=o=>new Promise((ok,no)=>{
       if(!navigator.geolocation)return no(new Error("denied"));
       navigator.geolocation.getCurrentPosition(p=>ok({lat:p.coords.latitude,lon:p.coords.longitude}),
-        e=>no(new Error(e&&e.code===1?"denied":"error")),{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+        e=>no(new Error(e&&e.code===1?"denied":"error")),o);
     });
+    let err;
+    for(const o of opt){try{return await one(o)}catch(e){err=e;if(e.message==="denied")break}}
+    throw err;
   }
 
   const Http=Cap.CapacitorHttp, native=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
@@ -548,22 +654,31 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     finally{clearTimeout(t)}
   }
   const OVERPASS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://maps.mail.ru/osm/tools/overpass/api/interpreter"];
+  const SURE="d[öo]ner|d[öo]nner|kebab|kebap|d[üu]r[üu]m|lahmacun|schawarma|shawarma|iskender";
+  const TURK="istanbul|stanbul|ankara|antalya|izmir|anatolia|anadolu|bosporus|bosphorus|bodrum|alanya|kapadokya|sultan|efes|mangal|kervan|osmanl|ottoman|marmara|bursa|adana|urfa|gaziantep|mersin|trabzon|karadeniz|aksaray|konya|kayseri|sofra|lokanta";
+  const SNACK="grill|imbiss|falafel|shawerma";
+  const NOTMAY=/wurst|curry|burger|gyros|griech|hellas|akropolis|olymp|souvlaki|steak|sushi|asia|china|thai|vietnam|fisch|backfisch|hähnchen|broiler|pommes/i;
+  // 2 = Döner sicher, 1 = vielleicht Döner, 0 = kein Döner
+  function lvlFor(name,cuisine,fast){
+    const n=String(name||"").toLowerCase(),c=String(cuisine||"").toLowerCase();
+    if(new RegExp(SURE).test(n)||/kebab|doner|döner|shawarma|lahmacun|durum|dürüm/.test(c))return 2;
+    if(NOTMAY.test(n))return 0;
+    if(/turkish|middle_eastern|arab|lebanese|syrian|kurdish|falafel|pide|persian|afghan|iraqi/.test(c))return 1;
+    if(new RegExp(TURK).test(n))return 1;
+    if(fast&&new RegExp(SNACK).test(n))return 1;
+    return 0;
+  }
   async function overpass(p,radius,kebabOnly){
     const A=`around:${radius},${p.lat},${p.lon}`;
-    const CUI="kebab|doner|döner|turkish|shawarma|falafel|arab|lebanese|syrian|kurdish|middle_eastern|lahmacun|pide";
-    const NAM="d[öo]ner|kebab|kebap|d[üu]r[üu]m|lahmacun|shawarma|schawarma";
-    const q=`[out:json][timeout:25];(`+
-      `nwr(${A})["cuisine"~"${CUI}",i];`+
-      `nwr(${A})["amenity"~"fast_food|restaurant|cafe|food_court"]["name"~"${NAM}",i];`+
-      `nwr(${A})["shop"~"deli|bakery|butcher|convenience"]["name"~"${NAM}",i];`+
-      (kebabOnly?"":`nwr(${A})["amenity"="fast_food"];`)+
-      `);out center tags 600;`;
-    const nameRe=new RegExp(NAM,"i");
-    const parse=j=>j.elements.filter(e=>e.tags&&e.tags.name).map(e=>{
-      const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon, c=(e.tags.cuisine||"").toLowerCase();
+    const CUI="kebab|doner|döner|turkish|shawarma|falafel|arab|lebanese|syrian|kurdish|middle_eastern|lahmacun|pide|persian|afghan|iraqi";
+    const q=`[out:json][timeout:25];nwr(${A})["amenity"~"^(fast_food|restaurant|cafe|food_court)$"]->.f;(`+
+      `nwr.f["cuisine"~"${CUI}",i];nwr.f["name"~"${SURE}|${TURK}",i];nwr.f["amenity"="fast_food"]["name"~"${SNACK}",i];`+(kebabOnly?"":`nwr.f["amenity"="fast_food"];`)+
+      `);out tags center qt 2000;`;
+    const parse=j=>j.elements.filter(e=>e.tags&&e.tags.name&&!e.tags["disused:amenity"]).map(e=>{
+      const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon;
       return {id:e.type+"/"+e.id,name:e.tags.name,lat,lon,d:dist(p,{lat,lon}),
-        kebab:/kebab|doner|döner|shawarma|lahmacun/.test(c)||nameRe.test(e.tags.name)?2:/turkish|falafel|arab|lebanese|syrian|kurdish|middle_eastern|pide/.test(c)?1:0};
-    });
+        kebab:lvlFor(e.tags.name,e.tags.cuisine,e.tags.amenity==="fast_food")};
+    }).filter(s=>s.lat!=null);
     try{
       const j=await Promise.any(OVERPASS.map(h=>httpJson(h+"?data="+encodeURIComponent(q)).then(j=>{
         if(!j||!Array.isArray(j.elements))throw new Error("leere Antwort");return j})));
@@ -574,6 +689,25 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       catch(e2){lastErr+=" / Ersatzsuche: "+e2.message}
       return {list:[],failed:true};
     }
+  }
+  const CACHE_KEY="doener-shop-cache-v1",inflight={};
+  function cKey(p,r){const g=r>=5000?50:r>=1000?200:1000;return r+":"+(Math.round(p.lat*g)/g)+","+(Math.round(p.lon*g)/g)}
+  function cRead(){try{return JSON.parse(localStorage.getItem(CACHE_KEY)||"{}")}catch(e){return {}}}
+  function cacheGet(p,r){const e=cRead()[cKey(p,r)];return e&&Date.now()-e.t<14*864e5?e:null}
+  function cachePut(p,r,list){try{const c=cRead();
+    c[cKey(p,r)]={t:Date.now(),list:list.map(s=>({id:s.id,name:s.name,lat:s.lat,lon:s.lon,kebab:s.kebab}))};
+    Object.keys(c).sort((a,b)=>c[b].t-c[a].t).slice(15).forEach(k=>delete c[k]);
+    localStorage.setItem(CACHE_KEY,JSON.stringify(c))}catch(e){}}
+  const withDist=(list,p)=>list.map(s=>({...s,d:dist(p,s)})).filter(s=>s.d<=(s.r||1e9));
+  // liefert sofort gespeicherte Treffer (falls vorhanden) und lädt bei Bedarf frisch nach
+  async function shopsAround(p,r,kebabOnly,{force=false,maxAge=864e5}={}){
+    const c=cacheGet(p,r);
+    if(c&&!force&&Date.now()-c.t<maxAge)return {list:withDist(c.list,p).filter(s=>s.d<=r*1.15),failed:false,cached:true};
+    const k=cKey(p,r)+":"+kebabOnly;
+    if(!inflight[k])inflight[k]=overpass(p,r,kebabOnly).then(res=>{if(!res.failed)cachePut(p,r,res.list);return res}).finally(()=>{delete inflight[k]});
+    const res=await inflight[k];
+    if(res.failed&&c)return {list:withDist(c.list,p).filter(s=>s.d<=r*1.15),failed:false,cached:true};
+    return res;
   }
   async function nominatim(p,radius){
     const dLat=radius/111320,dLon=radius/(111320*Math.cos(p.lat*Math.PI/180));
@@ -591,38 +725,147 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   // ---------- Eigene Läden ----------
   const CKEY="doener-custom-shops-v1";
   let customs=(()=>{try{return JSON.parse(localStorage.getItem(CKEY)||"[]")}catch(e){return []}})();
-  function saveCustoms(){const v=JSON.stringify(customs);try{localStorage.setItem(CKEY,v)}catch(e){}
+  function saveCustoms(){rev++;const v=JSON.stringify(customs);try{localStorage.setItem(CKEY,v)}catch(e){}
     if(Prefs)Prefs.set({key:CKEY,value:v}).catch(()=>{})}
   function coordsFrom(str){
     if(!str)return null;let m;
+    str=String(str).replace(/&amp;/g,"&").replace(/%2C/gi,",").replace(/%40/g,"@").replace(/%21/g,"!").replace(/%3D/gi,"=").replace(/%3F/gi,"?").replace(/%26/g,"&");
     try{str=decodeURIComponent(str)}catch(e){}
-    if((m=str.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)))return {lat:+m[1],lon:+m[2]};
-    if((m=str.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)))return {lat:+m[1],lon:+m[2]};
-    if((m=str.match(/[?&](?:q|query|ll|destination|center)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i)))return {lat:+m[1],lon:+m[2]};
-    if((m=str.match(/geo:(-?\d+\.\d+),(-?\d+\.\d+)/)))return {lat:+m[1],lon:+m[2]};
+    const ok=(a,b)=>Math.abs(a)<=90&&Math.abs(b)<=180&&!(a===0&&b===0);
+    const tries=[/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/,/@(-?\d+\.\d+),(-?\d+\.\d+)/,
+      /[?&](?:q|query|ll|sll|destination|center|markers|daddr)=(?:loc:)?(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i,
+      /geo:(-?\d+\.\d+),(-?\d+\.\d+)/,/staticmap\?center=(-?\d+\.\d+),(-?\d+\.\d+)/];
+    for(const re of tries){if((m=str.match(re))&&ok(+m[1],+m[2]))return {lat:+m[1],lon:+m[2]}}
     return null;
   }
-  function nameFrom(str){const m=(str||"").match(/\/place\/([^/@?]+)/);
-    try{return m?decodeURIComponent(m[1].replace(/\+/g," ")):""}catch(e){return ""}}
+  function nameFrom(str){
+    if(!str)return "";let m;
+    const dec=t=>{let r;try{r=decodeURIComponent(t.replace(/\+/g," "))}catch(e){r=t}return r.replace(/\+/g," ").trim()};
+    if((m=str.match(/\/place\/([^/@?]+)/)))return dec(m[1]);
+    if((m=str.match(/[?&]q=([^&]+)/))&&!/^-?\d+\.\d+,/.test(dec(m[1])))return dec(m[1]).split(",")[0];
+    return "";
+  }
+  const DESK_UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
+  async function fetchText(url){
+    const r=await Http.request({url,method:"GET",responseType:"text",connectTimeout:12000,readTimeout:12000,
+      headers:{"User-Agent":DESK_UA,"Accept-Language":"de-DE,de;q=0.9","Cookie":"CONSENT=YES+cb; SOCS=CAESEwgDEgk0ODE3Nzk3MjQaAmRlIAEaBgiA_LyaBg"}});
+    return {url:r.url||url,body:typeof r.data==="string"?r.data:JSON.stringify(r.data||"")};
+  }
+  async function geocode(q){
+    const ref=pos||mapPos,base=`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(q)}`;
+    const urls=ref?[base+`&bounded=1&viewbox=${(ref.lon-.2).toFixed(4)},${(ref.lat+.15).toFixed(4)},${(ref.lon+.2).toFixed(4)},${(ref.lat-.15).toFixed(4)}`,base]:[base];
+    for(const u of urls){try{const j=await httpJson(u,12000);if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon}}catch(e){}}
+    return null;
+  }
   async function parseMapsLink(raw){
     const url=(raw.match(/https?:\/\/\S+/)||[raw.trim()])[0];
-    let c=coordsFrom(url),n=nameFrom(url);
-    if(!c&&/^https?:/.test(url)){
-      if(!(Http&&native))throw new Error("Kurzlinks lassen sich nur in der App auslesen");
-      const r=await Http.request({url,method:"GET",headers:{"User-Agent":"Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Mobile Safari/537.36"},connectTimeout:12000,readTimeout:12000});
-      const fin=r.url||"",body=typeof r.data==="string"?r.data:"";
-      c=coordsFrom(fin)||coordsFrom(body.slice(0,200000));n=n||nameFrom(fin);
+    let c=coordsFrom(url),n=nameFrom(url),via="";
+    if(!c&&/^https?:/.test(url)&&Http&&native){
+      try{
+        let r=await fetchText(url);via=(r.url.split("/")[2]||"");
+        c=coordsFrom(r.url)||coordsFrom(r.body.slice(0,600000));n=n||nameFrom(r.url);
+        if(!c&&/consent\.google|sorry/.test(r.url)){
+          const m=r.url.match(/[?&]continue=([^&]+)/);
+          if(m){const next=decodeURIComponent(m[1]);c=coordsFrom(next);n=n||nameFrom(next);
+            if(!c){r=await fetchText(next);c=coordsFrom(r.url)||coordsFrom(r.body.slice(0,600000));n=n||nameFrom(r.url)}}
+        }
+      }catch(e){via="nicht erreichbar"}
     }
-    if(!n){const pre=raw.split(/https?:\/\//)[0].trim();if(pre)n=pre.split(/\n|·|,/)[0].trim()}
-    if(!c)throw new Error("Im Link steht kein Ort");
+    const pre=raw.split(/https?:\/\//)[0].trim();let addr="";
+    if(pre){const parts=pre.split(/\n|·|\|/).map(x=>x.trim()).filter(Boolean);if(!n)n=parts[0]||"";addr=parts.slice(1).join(", ")}
+    if(!c&&(n||addr)){c=await geocode([n,addr].filter(Boolean).join(", "));if(c)c.approx=true}
+    if(!c&&!(Http&&native)&&/goo\.gl|g\.co/.test(url))throw new Error("Kurzlinks lassen sich nur in der installierten App auslesen");
+    if(!c)throw new Error("Aus dem Link ließ sich kein Ort lesen"+(via?" ("+via+")":""));
     return {c,n};
   }
+
 
   function gmapsUrl(p){
     return p?`https://www.google.com/maps/search/D%C3%B6ner/@${p.lat.toFixed(5)},${p.lon.toFixed(5)},16z`
             :"https://www.google.com/maps/search/?api=1&query=D%C3%B6ner";
   }
   function updateGmaps(){const u=gmapsUrl(pos||mapPos);$("gmPick").href=u;$("gmMap").href=u}
+
+  // ---------- Foursquare-Basis & ausgeblendete Läden ----------
+  // ---------- Läden-Bestand (offline) ----------
+  // Basis aus der App (data/doener-basis.json) + selbst aktualisierte Gegenden (local) + bestätigte Läden
+  const LKEY="doener-local-shops-v1", OKKEY="doener-confirmed-v1";
+  let maybeOn=(()=>{try{return localStorage.getItem("doener-maybe-on")!=="0"}catch(e){return true}})();
+  let base=null,baseLoading=null,baseIds=new Set(),grid=null;
+  let local=(()=>{try{return JSON.parse(localStorage.getItem(LKEY)||"{}")}catch(e){return {}}})();      // id -> [name,lat,lon,stufe,zeit]
+  let confirmed=(()=>{try{return JSON.parse(localStorage.getItem(OKKEY)||"{}")}catch(e){return {}}})(); // id -> true
+  function persist(k,obj){rev++;const v=JSON.stringify(obj);try{localStorage.setItem(k,v)}catch(e){}
+    if(Prefs)Prefs.set({key:k,value:v}).catch(()=>{})}
+  function saveLocal(){grid=null;persist(LKEY,local)}
+  function saveConfirmed(){persist(OKKEY,confirmed)}
+  function loadBase(){
+    if(base)return Promise.resolve(base);
+    if(!baseLoading)baseLoading=(async()=>{
+      const get=async u=>{try{const r=await fetch(u);return r.ok?await r.json():null}catch(e){return null}};
+      let j=await get("data/doener-basis.json"),places=j&&Array.isArray(j.places)?j.places:null;
+      if(!places){j=await get("data/fsq-doener.json");
+        places=j&&Array.isArray(j.places)?j.places.map(q=>["fsq:"+q[0],q[1],q[2],q[3],2]):null}
+      base={places:places||[],missing:!places,created:j&&j.created||null};
+      baseIds=new Set(base.places.map(q=>q[0]));grid=null;rev++;
+      return base;
+    })();
+    return baseLoading;
+  }
+  const cellOf=(lat,lon)=>Math.floor(lat*50)+","+Math.floor(lon*33);   // Raster ca. 2 km
+  function buildGrid(){
+    grid=new Map();
+    const add=s=>{const k=cellOf(s.lat,s.lon);let a=grid.get(k);if(!a)grid.set(k,a=[]);a.push(s)};
+    Object.entries(local).forEach(([id,v])=>add({id,name:v[0],lat:v[1],lon:v[2],lvl:v[3]||2,src:"local"}));
+    if(base)base.places.forEach(q=>{if(!local[q[0]])add({id:q[0],name:q[1],lat:q[2],lon:q[3],lvl:q[4]||2})});
+  }
+  const lvlOf=s=>confirmed[s.id]?2:(s.lvl||2);
+  function eachShop(fn){if(!grid)buildGrid();for(const a of grid.values())for(const s of a)fn(s)}
+  // alle gespeicherten Läden im Umkreis (ohne ausgeblendete), inkl. eigener Läden
+  function shopsNear(p,r,minLvl=1){
+    if(!grid)buildGrid();
+    const dLat=r/111320,dLon=r/(111320*Math.cos(p.lat*Math.PI/180)),out=[];
+    for(let i=Math.floor((p.lat-dLat)*50);i<=Math.floor((p.lat+dLat)*50);i++)
+      for(let j=Math.floor((p.lon-dLon)*33);j<=Math.floor((p.lon+dLon)*33);j++){
+        const a=grid.get(i+","+j);if(!a)continue;
+        for(const s of a){if(hidden[s.id])continue;const l=lvlOf(s);if(l<minLvl)continue;
+          const d=dist(p,s);if(d<=r)out.push({...s,lvl:l,kebab:l,d})}
+      }
+    customs.forEach(c=>{const d=dist(p,c);if(d<=r)out.push({...c,lvl:2,kebab:2,d})});
+    return out;
+  }
+  // Döner-Läden einer Gegend frisch von OpenStreetMap holen und dauerhaft speichern
+  async function updateArea(p,r){
+    const res=await overpass(p,r,true);
+    if(res.failed)throw new Error(lastErr||"OpenStreetMap nicht erreichbar");
+    const found=res.list.filter(s=>s.kebab>=1);
+    Object.keys(local).forEach(id=>{const v=local[id];if(dist(p,{lat:v[1],lon:v[2]})<=r)delete local[id]});
+    let neu=0;
+    found.forEach(s=>{if(!baseIds.has(s.id))neu++;
+      local[s.id]=[s.name,Math.round(s.lat*1e5)/1e5,Math.round(s.lon*1e5)/1e5,s.kebab,Date.now()]});
+    saveLocal();
+    return {n:found.length,neu};
+  }
+  const normName=n=>String(n||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+  function sameShop(a,b){const d=dist(a,b);if(d<15)return true;if(d>90)return false;
+    const x=normName(a.name),y=normName(b.name);return !!x&&!!y&&(x.includes(y)||y.includes(x))}
+  function mergeSources(main,extra){
+    const out=main.map(s=>({src:"osm",...s}));
+    extra.forEach(e=>{if(!out.some(o=>sameShop(o,e)))out.push(e)});
+    return out;
+  }
+  const HKEY="doener-hidden-v1";
+  let hidden=(()=>{try{return JSON.parse(localStorage.getItem(HKEY)||"{}")}catch(e){return {}}})();
+  function saveHidden(){rev++;const v=JSON.stringify(hidden);try{localStorage.setItem(HKEY,v)}catch(e){}
+    if(Prefs)Prefs.set({key:HKEY,value:v}).catch(()=>{})}
+  const visible=list=>list.filter(s=>!hidden[s.id]);
+  function renderHidden(){
+    const ids=Object.keys(hidden);$("cardHidden").hidden=!ids.length;
+    $("hiddenList").innerHTML=ids.sort((a,b)=>hidden[b].t-hidden[a].t).map(id=>
+      `<li><span>${esc(hidden[id].name)}</span><button type="button" data-unhide="${esc(id)}">Zurückholen</button></li>`).join("");
+  }
+  function paintMaybe(){
+    $("fsqToggle").setAttribute("aria-checked",maybeOn);$("lgMaybe").hidden=!maybeOn;
+  }
 
   // ---------- Laden-Auswahl ----------
   function setShopUI(state){
@@ -645,14 +888,21 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   async function findShops(p){
     const stats=Object.values(shopStats());
     const map={};
-    const r=await overpass(p,RADIUS,false);
-    r.list.forEach(s=>map[s.id]=s);
-    customs.forEach(c=>{const d=dist(p,c);if(d<=RADIUS)map[c.id]={...c,d}});
+    await loadBase();
+    shopsNear(p,RADIUS,1).forEach(s=>map[s.id]=s);
+    let failed=false;
+    if(!Object.keys(map).length){   // nichts gespeichert in der Nähe: einmal live fragen und Döner-Läden merken
+      const r=await shopsAround(p,RADIUS,false,{maxAge:3*864e5});failed=r.failed;
+      r.list.forEach(s=>map[s.id]=s);
+      const add=r.list.filter(s=>s.kebab>=1&&!local[s.id]&&!baseIds.has(s.id));
+      if(add.length){add.forEach(s=>local[s.id]=[s.name,Math.round(s.lat*1e5)/1e5,Math.round(s.lon*1e5)/1e5,s.kebab,Date.now()]);saveLocal()}
+    }
+    Object.keys(map).forEach(k=>{if(hidden[map[k].id])delete map[k]});
     stats.forEach(s=>{ if(s.lat==null)return; const d=dist(p,s); if(d>RADIUS)return;
       map[s.key]={...(map[s.key]||{}),id:s.id,name:s.name,lat:s.lat,lon:s.lon,d,visits:s.visits,stamm:s.stamm};});
     const list=Object.values(map).sort((a,b)=>
       ((b.stamm?4:b.visits?3:0)+(b.kebab||0))-((a.stamm?4:a.visits?3:0)+(a.kebab||0))||a.d-b.d).slice(0,12);
-    if(!list.length&&r.failed)list.err=true;
+    if(!list.length&&failed)list.err=true;
     return list;
   }
   function openLayer(id){$(id).classList.add("open")}
@@ -706,30 +956,67 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   $("go").onclick=()=>{
     const p=parseFloat(String($("price").value).replace(",","."));
     const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),
-      kind,price:isFinite(p)?Math.round(p*100)/100:null,rating:null,
+      kind,...(fill?{fill}:{}),price:isFinite(p)?Math.round(p*100)/100:null,rating:null,
       loc:pos?{lat:Math.round(pos.lat*1e5)/1e5,lon:Math.round(pos.lon*1e5)/1e5}:null,
       shop:shop?{id:shop.id||null,name:shop.name,lat:shop.lat??null,lon:shop.lon??null}:null};
     entries.push(e);lastId=e.id;save();render();setShopUI();
-    openRater(e.id);
+    $("price").value="";closeLayer("entry");
+    setTimeout(()=>openRater(e.id),230);
   };
   let rateFresh=false;
   function openRater(id,editing){
     rateId=id;rateFresh=!editing;const e=entries.find(x=>x.id===id);if(!e)return;
     $("rPrice").value=e.price!=null?String(e.price).replace(".",","):"";
     $("rShop").textContent=e.shop?e.shop.name:"Ohne Laden";
-    titleRater(e);paintKind($("rKind"),kindOf(e));
+    titleRater(e);paintKind($("rKind"),kindOf(e));paintRFill(e);
     paintStars(e.rating||0);
     const d=new Date(e.t),z=n=>String(n).padStart(2,"0");
     $("rWhen").value=`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
     $("rWhen").max=(()=>{const n=new Date();return `${n.getFullYear()}-${z(n.getMonth()+1)}-${z(n.getDate())}T23:59`})();
     openLayer("rater");
   }
-  function titleRater(e){const k=KIND[kindOf(e)];
-    $("rTitle").textContent=e.shop?`Wie war ${k==="Dürüm"?"der Dürüm":"der Döner"} bei ${e.shop.name}?`:`Wie war ${k==="Dürüm"?"der Dürüm":"der Döner"}?`}
+  function titleRater(e){const k=nameOf(e);
+    $("rTitle").textContent=e.shop?`Wie war der ${k} bei ${e.shop.name}?`:`Wie war der ${k}?`}
+  function paintRFill(e){fillChips($("rChips"),e.fill||null,f=>{if(f)e.fill=f;else delete e.fill;save();render();titleRater(e);paintRFill(e)})}
   function paintKind(group,k){group.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k))}
-  function setKind(k){kind=k;try{localStorage.setItem("doener-kind",k)}catch(e){}
-    paintKind(document.querySelector("main .kind"),k);$("go").textContent=KIND[k]+" eintragen"}
-  document.querySelectorAll("main .kind button").forEach(b=>b.onclick=()=>setKind(b.dataset.k));
+  const fullName=(k,f)=>!(f&&FILL[f])?KIND[k]:(f==="kalb"&&k==="doener"?"Kalbsdöner":`${FILL[f].p}-${KIND[k]}`);
+  const nameOf=e=>fullName(kindOf(e),e.fill);
+  const LEAF='<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19C5 10 11 5 20 4c0 9-5 15-14 15z" fill="var(--salatDunkel)"/></svg>';
+  function fillChips(el,cur,onPick){
+    el.innerHTML="";
+    ["Fleisch","Ohne Fleisch"].forEach(g=>{
+      const box=document.createElement("div");box.className="fg";box.setAttribute("role","group");box.setAttribute("aria-label",g);
+      const l=document.createElement("span");l.className="fl";l.textContent=g;box.appendChild(l);
+      Object.entries(FILL).filter(([,v])=>v.g===g).forEach(([k,v])=>{
+        const b=document.createElement("button");b.type="button";
+        b.className="chip"+(isVeg(k)?" veg":"")+(k==="haehnchen"?" tiny":"");
+        b.setAttribute("aria-pressed",cur===k);b.innerHTML=(isVeg(k)?LEAF:"")+v.n;
+        b.onclick=()=>onPick(cur===k?null:k);box.appendChild(b);
+      });
+      el.appendChild(box);
+    });
+  }
+  function paintEntry(){
+    paintKind($("eKind"),kind);
+    const t=fullName(kind,fill);
+    $("eTitle").textContent="Neuer "+t;
+    $("go").textContent=t+" eintragen";$("go").classList.toggle("long",t.length>8);
+    $("fillTog").setAttribute("aria-expanded",fillOpen);$("fillPanel").classList.toggle("open",fillOpen);
+    $("fillVal").textContent=fill?FILL[fill].n:"";$("fillOpt").hidden=!!fill;$("fillClr").hidden=!fill;
+    fillChips($("eChips"),fill,f=>setFill(f,true));
+  }
+  function setFill(f,close){fill=f;try{f?localStorage.setItem("doener-fill",f):localStorage.removeItem("doener-fill")}catch(e){}
+    if(close)fillOpen=false;paintEntry()}
+  $("fillTog").onclick=()=>{fillOpen=!fillOpen;paintEntry()};
+  $("fillClr").onclick=ev=>{ev.stopPropagation();setFill(null,true)};
+  function setKind(k){kind=k;try{localStorage.setItem("doener-kind",k)}catch(e){}paintEntry()}
+  $("eKind").querySelectorAll("button").forEach(b=>b.onclick=()=>setKind(b.dataset.k));
+  $("openEntry").onclick=()=>{
+    fillOpen=false;paintEntry();openLayer("entry");
+    if(!pos&&!shop&&$("shopName").textContent==="Laden finden")locate();
+  };
+  $("toLog").onclick=()=>{const y=$("logH").getBoundingClientRect().top+scrollY-12;
+    scrollTo({top:y,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})};
   $("rKind").querySelectorAll("button").forEach(b=>b.onclick=()=>{
     const e=entries.find(x=>x.id===rateId);if(!e)return;e.kind=b.dataset.k;paintKind($("rKind"),e.kind);titleRater(e);save();render()});
   setKind(kind);
@@ -741,7 +1028,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const b=document.createElement("button");b.type="button";b.innerHTML=WEDGE;b.setAttribute("aria-label",i+" von 5");
     b.onclick=()=>{const e=entries.find(x=>x.id===rateId);if(!e)return;
       e.rating=i;paintStars(i);save();render();
-      if(rateFresh)setTimeout(()=>{closeLayer("rater");if(e.id===lastId)toast(KIND[kindOf(e)]+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")},350)};
+      if(rateFresh)setTimeout(()=>{closeLayer("rater");if(e.id===lastId)toast(nameOf(e)+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")},350)};
     $("stars").appendChild(b);
   }
   $("rPrice").addEventListener("change",()=>{
@@ -756,7 +1043,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     if(e&&isFinite(t)){e.t=t;save();render()}
   });
   $("rater").querySelector(".skip").addEventListener("click",()=>{
-    if(rateId===lastId){const e=entries.find(x=>x.id===rateId);if(e)toast(KIND[kindOf(e)]+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")}});
+    if(rateId===lastId){const e=entries.find(x=>x.id===rateId);if(e)toast(nameOf(e)+(e.shop?` bei ${e.shop.name}`:"")+" eingetragen")}});
   $("undo").onclick=()=>{if(lastId)del(lastId);lastId=null;$("toast").classList.remove("show")};
   function del(id){entries=entries.filter(e=>e.id!==id);save();render();if(map)drawMap()}
   function toast(t,noUndo){$("undo").hidden=!!noUndo;$("toastText").textContent=t;$("toast").classList.add("show");clearTimeout(tTimer);
@@ -775,7 +1062,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const all=entries.slice().sort((a,b)=>b.t-a.t),month=all.filter(e=>e.t>=mStart);
     const mD=month.filter(e=>kindOf(e)==="doener").length,mR=month.length-mD,mn=now.toLocaleDateString("de-DE",{month:"long"});
     $("mLabel").textContent="im "+mn;
-    $("mSplit").textContent=`${mD} Döner · ${mR} Dürüm`;
+    const mV=month.filter(e=>isVeg(e.fill)).length;
+    $("mSplit").textContent=`${mD} Döner · ${mR} Dürüm`+(mV?` · ${mV} ohne Fleisch`:"");
     $("mCount").textContent=month.length;
     const last=all[0];
     $("mSub").textContent=last?`Zuletzt: ${rel(last.t)}${last.shop?", "+last.shop.name:""}`:"Noch keiner eingetragen.";
@@ -800,7 +1088,9 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       li.setAttribute("role","button");li.tabIndex=0;li.setAttribute("aria-label","Bewerten: "+(e.shop?e.shop.name:"Döner"));
       const s=document.createElement("div");s.className="s";s.textContent=e.shop?e.shop.name:KIND[kindOf(e)];
       const d=document.createElement("div");d.className="d";
-      d.textContent=KIND[kindOf(e)]+" · "+rel(e.t)+", "+new Date(e.t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+      d.append(KIND[kindOf(e)]);
+      if(e.fill&&FILL[e.fill]){const f=document.createElement("span");f.className="ft"+(isVeg(e.fill)?" veg":"")+(e.fill==="haehnchen"?" tiny":"");f.textContent=FILL[e.fill].n;d.append(" ",f)}
+      d.append(" · "+rel(e.t)+", "+new Date(e.t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}));
       const rt=document.createElement("div");rt.className="rt";
       if(e.rating){for(let i=1;i<=5;i++){const x=document.createElement("span");if(i<=e.rating)x.className="on";rt.appendChild(x)}}
       else{const x=document.createElement("em");x.textContent="Noch nicht bewertet";rt.appendChild(x)}
@@ -855,6 +1145,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     return o+"</svg>";
   }
   function renderStats(){
+    renderHidden();
     const now=new Date(), E=entries.filter(inRange).sort((a,b)=>a.t-b.t);
     $("statsEmpty").hidden=E.length>0;$("statsBody").hidden=!E.length;
     // 12 Monate (unabhängig vom Filter)
@@ -926,7 +1217,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
 
   // ---------- Karte ----------
-  let map=null, markers=[], mapShops=[], mapPos=null, mapBusy=false, pendingRefresh=false, styleReady=false;
+  let map=null, markers=[], mapPos=null, shopRev=-1, popRef=null, mapBusy=false, pendingRefresh=false, styleReady=false;
   const WIDE_R=10000;
   let wide=(()=>{try{return localStorage.getItem("doener-wide")==="1"}catch(e){return false}})();
   function paintWide(count){
@@ -960,55 +1251,89 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   function popup(s,visited){
     const meta=[];
     if(visited){meta.push(s.stamm?"Stammlokal":s.visits+"× da");if(s.avg)meta.push("Ø "+num1(s.avg)+" von 5")}
-    else meta.push("Noch nicht probiert");
+    else meta.push(s.lvl===1?"Vielleicht ein Dönerladen":"Noch nicht probiert");
     if(mapPos&&s.lat!=null)meta.push(fmtDist(dist(mapPos,s)));
-    const own=String(s.id||"").startsWith("custom:")?`<button type="button" class="pdel" data-del="${esc(s.id)}">Entfernen</button>`:"";
-    return `<div class="pop"><b>${esc(s.name)}</b><div class="m">${esc(meta.join(" · "))}${own?" · selbst eingetragen":""}</div><a href="${routeUrl(s)}" target="_blank" rel="noopener">Route</a>${own}</div>`;
+    const id=String(s.id||"");
+    const own=id.startsWith("custom:")?`<button type="button" class="pdel" data-del="${esc(id)}">Entfernen</button>`
+      :(id?(!visited&&s.lvl===1?`<button type="button" class="pok" data-ok="${esc(id)}">Ist Döner ✓</button>`:"")+`<button type="button" class="phide" data-hide="${esc(id)}" data-name="${esc(s.name)}">Ausblenden</button>`:"");
+    const src=id.startsWith("custom:")?"selbst eingetragen":id.startsWith("fsq:")?"Quelle: Foursquare":/^(node|way|relation)\//.test(id)?"Quelle: OpenStreetMap"+(local[id]?" (aktualisiert)":""):"";
+    return `<div class="pop"><b>${esc(s.name)}</b><div class="m">${esc(meta.join(" · "))}</div>${src?`<div class="src">${src}</div>`:""}<a href="${routeUrl(s)}" target="_blank" rel="noopener">Route</a>${own}</div>`;
+  }
+  // alle gespeicherten Läden als eine Kartenebene (schnell, auch bei tausenden Läden)
+  function shopFeatures(){
+    const stats=Object.values(shopStats()).filter(s=>s.lat!=null);
+    const vis=new Set(stats.map(s=>s.id).filter(Boolean));
+    const nearV=s=>stats.some(v=>Math.abs(v.lat-s.lat)<.0005&&Math.abs(v.lon-s.lon)<.0008&&v.name.toLowerCase()===s.name.toLowerCase());
+    const f=[],pt=(s,l)=>f.push({type:"Feature",geometry:{type:"Point",coordinates:[s.lon,s.lat]},properties:{id:s.id,name:s.name,lvl:l}});
+    eachShop(s=>{if(hidden[s.id]||vis.has(s.id)||nearV(s))return;pt(s,lvlOf(s))});
+    customs.forEach(c=>{if(!vis.has(c.id))pt(c,2)});
+    return {type:"FeatureCollection",features:f};
+  }
+  function ensureShopLayer(){
+    if(!map||!styleReady||!base)return;
+    if(!map.getSource("shops")){
+      map.addSource("shops",{type:"geojson",data:shopFeatures()});shopRev=rev;
+      const r=k=>["interpolate",["linear"],["zoom"],5,1.6*k,10,3.4*k,14,7*k,17,9*k];
+      map.addLayer({id:"shops-maybe",type:"circle",source:"shops",filter:["==",["get","lvl"],1],
+        paint:{"circle-radius":r(.9),"circle-color":"#FFFFFF","circle-stroke-color":"#BC5840","circle-stroke-width":["interpolate",["linear"],["zoom"],8,1,14,2.5]}});
+      map.addLayer({id:"shops-sure",type:"circle",source:"shops",filter:["==",["get","lvl"],2],
+        paint:{"circle-radius":r(1),"circle-color":"#BC5840","circle-stroke-color":"#FFFFFF","circle-stroke-width":["interpolate",["linear"],["zoom"],10,0,13,2]}});
+      // Antippen mit Fangbereich: nächster Laden im Umkreis von 22 px
+      map.on("click",e=>{
+        const P=e.point,R=22,layers=maybeOn?["shops-sure","shops-maybe"]:["shops-sure"];
+        const fs=map.queryRenderedFeatures([[P.x-R,P.y-R],[P.x+R,P.y+R]],{layers});if(!fs.length)return;
+        const ft=fs.map(f=>{const q=map.project(f.geometry.coordinates);return {f,d:(q.x-P.x)**2+(q.y-P.y)**2}}).sort((a,b)=>a.d-b.d)[0].f;
+        const [lon,lat]=ft.geometry.coordinates,pr=ft.properties;
+        const s={...(customs.find(c=>c.id===pr.id)||{}),id:pr.id,name:pr.name,lat,lon,lvl:pr.lvl};
+        if(popRef)popRef.remove();
+        popRef=new maplibregl.Popup({offset:10,closeButton:false,maxWidth:"260px"}).setLngLat([lon,lat]).setHTML(popup(s,false)).addTo(map)});
+    }else if(shopRev!==rev){map.getSource("shops").setData(shopFeatures());shopRev=rev}
+    map.setLayoutProperty("shops-maybe","visibility",maybeOn?"visible":"none");
   }
   function drawMap(){
     if(!map)return;
+    ensureShopLayer();
     markers.forEach(m=>m.remove());markers=[];
-    const stats=Object.values(shopStats()).filter(s=>s.lat!=null);
-    const near=(a,b)=>dist(a,b)<40&&a.name.toLowerCase()===b.name.toLowerCase();
-    const all=[...mapShops.filter(s=>!customs.some(c=>c.id===s.id)),...customs];
-    all.forEach(s=>{
-      if(stats.some(v=>v.id===s.id||near(v,s)))return;
-      addMarker(s.lat,s.lon,pinEl("n","",all.length>60?12:16),popup(s,false));
-    });
+    const stats=Object.values(shopStats()).filter(s=>s.lat!=null&&!hidden[s.id]);
     stats.forEach(s=>addMarker(s.lat,s.lon,pinEl(s.stamm?"s":"v",s.visits,s.stamm?32:28),popup(s,true)));
     if(mapPos)addMarker(mapPos.lat,mapPos.lon,pinEl("me","",16));
-    const cand=[...mapShops.filter(s=>s.kebab),...customs,...stats];
-    if(mapPos&&cand.length){
+    if(!mapPos||!base)return;
+    if(wide)paintWide(shopsNear(mapPos,WIDE_R,maybeOn?1:2).length);
+    const cand=[...shopsNear(mapPos,25000,2),...stats];
+    if(cand.length){
       const n=cand.map(s=>({...s,d:dist(mapPos,s)})).sort((a,b)=>a.d-b.d)[0];
       const st=stats.find(v=>v.key===(n.key||shopKey(n)));
       $("mcName").textContent=n.name;
       $("mcMeta").textContent=[fmtDist(n.d),st?(st.stamm?"Stammlokal":st.visits+"× da"):"Neu für dich",st&&st.avg?"Ø "+num1(st.avg):null].filter(Boolean).join(" · ");
       $("mcRoute").href=routeUrl(n);$("mcRoute").hidden=false;
+    }else{
+      $("mcName").textContent="Kein Döner gespeichert in der Nähe";
+      $("mcMeta").textContent="Tippe auf „Diese Gegend aktualisieren“ oder trag ihn mit + ein";$("mcRoute").hidden=true;
     }
   }
   async function refreshMap(){
     if(mapBusy){pendingRefresh=true;return}mapBusy=true;pendingRefresh=false;
-    paintWide();
-    $("mcName").textContent=wide?"Suche alle Döner im Umkreis von 10 km …":"Suche Döner in der Nähe …";$("mcMeta").textContent="";$("mcRoute").hidden=true;
-    try{mapPos=await getPos();pos=mapPos}catch(e){
+    paintWide();paintMaybe();
+    if(!mapPos){$("mcName").textContent="Standort wird bestimmt …";$("mcMeta").textContent="";$("mcRoute").hidden=true}
+    await loadBase();
+    try{mapPos=await getPos(true);pos=pos||mapPos}catch(e){
       mapBusy=false;
-      $("mcName").textContent="Standort nicht verfügbar";$("mcMeta").textContent="Gezeigt werden deine besuchten Läden";
+      $("mcName").textContent="Standort nicht verfügbar";$("mcMeta").textContent="Gezeigt werden alle gespeicherten Läden";
       drawMap();fitVisited();return;
     }
     updateGmaps();
     if(wide){const dLat=WIDE_R/111320,dLon=WIDE_R/(111320*Math.cos(mapPos.lat*Math.PI/180));
       map.fitBounds([[mapPos.lon-dLon,mapPos.lat-dLat],[mapPos.lon+dLon,mapPos.lat+dLat]],{padding:{top:150,bottom:110,left:14,right:14},duration:0})}
     else map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});
-    drawRing();drawMap();
-    const r=await overpass(mapPos,wide?WIDE_R:MAP_RADIUS,true);
-    mapShops=r.list;mapBusy=false;
-    if(wide)paintWide(r.failed?null:mapShops.length);
-    drawMap();
-    if(pendingRefresh){refreshMap();return}
-    if($("mcName").textContent.startsWith("Suche")){
-      $("mcName").textContent=r.failed?"Ladensuche gerade nicht erreichbar":`Kein Döner im Umkreis von ${wide?"10":"1,5"} km`;
-      $("mcMeta").textContent=r.failed?("Fehler: "+lastErr):"Mit + kannst du selbst einen Laden eintragen";
+    drawRing();
+    // ohne Basis-Datei: beim ersten Mal die Gegend einmal laden, danach offline
+    if(base.missing&&!shopsNear(mapPos,WIDE_R,1).length){
+      $("mcName").textContent="Lade Döner in deiner Gegend …";
+      try{await updateArea(mapPos,WIDE_R)}catch(e){toast("Laden gerade nicht möglich: "+e.message,true)}
     }
+    mapBusy=false;
+    drawMap();
+    if(pendingRefresh)refreshMap();
   }
   function fitVisited(){
     const pts=Object.values(shopStats()).filter(s=>s.lat!=null);
@@ -1018,9 +1343,9 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   function initMap(){
     map=new maplibregl.Map({container:"map",style:STYLE(),center:[10.45,51.16],zoom:5,
-      attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false});
+      attributionControl:{compact:true,customAttribution:"Döner-Daten: OpenStreetMap-Mitwirkende, Foursquare OS Places"},dragRotate:false,pitchWithRotate:false});
     map.touchZoomRotate.disableRotation();
-    map.on("load",()=>{styleReady=true});
+    map.on("load",()=>{styleReady=true;drawMap()});
     map.on("error",e=>{console.warn("Karte:",e&&e.error&&e.error.message)});
     map.on("contextmenu",e=>{openAdder(false,"map");
       addPos={lat:e.lngLat.lat,lon:e.lngLat.lng};whereText("Pin gesetzt ✓ – zum Feinjustieren ziehen");
@@ -1058,10 +1383,35 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     $("aErr").textContent="";openLayer("adder");initMini();
   }
   $("addShop").onclick=()=>openAdder(false,"map");
+  $("fsqToggle").onclick=()=>{
+    maybeOn=!maybeOn;try{localStorage.setItem("doener-maybe-on",maybeOn?"1":"0")}catch(e){}
+    paintMaybe();drawMap();
+  };
+  let updBusy=false;
+  $("updArea").onclick=async()=>{
+    if(updBusy||!map)return;updBusy=true;
+    const b=$("updArea"),l=$("updLabel"),c=map.getCenter(),p={lat:c.lat,lon:c.lng};
+    b.setAttribute("aria-busy","true");l.textContent="Lade Läden im Umkreis von 10 km …";
+    try{await loadBase();const r=await updateArea(p,WIDE_R);drawMap();
+      toast(r.n?`${r.n} Döner-Läden gespeichert`+(r.neu?`, davon ${r.neu} neu`:""):"Hier hat OpenStreetMap keine Döner-Läden",true)}
+    catch(e){toast("Aktualisieren gerade nicht möglich: "+e.message,true)}
+    b.removeAttribute("aria-busy");l.textContent="Diese Gegend aktualisieren";updBusy=false;
+  };
+  document.addEventListener("click",e=>{
+    const h=e.target.closest&&e.target.closest("[data-hide]");
+    if(h){if(!confirm(`„${h.dataset.name}“ ausblenden? Der Laden erscheint dann nicht mehr auf der Karte und bei der Ladensuche. In der Statistik kannst du ihn zurückholen.`))return;
+      hidden[h.dataset.hide]={name:h.dataset.name,t:Date.now()};saveHidden();renderHidden();
+      if(shop&&shop.id===h.dataset.hide){shop=null;setShopUI("without")}
+      nearby=nearby.filter(s=>s.id!==h.dataset.hide);if(popRef)popRef.remove();drawMap();toast("Ausgeblendet",true);return}
+    const ok=e.target.closest&&e.target.closest("[data-ok]");
+    if(ok){confirmed[ok.dataset.ok]=true;saveConfirmed();if(popRef)popRef.remove();drawMap();toast("Als Dönerladen gemerkt",true);return}
+    const u=e.target.closest&&e.target.closest("[data-unhide]");
+    if(u){delete hidden[u.dataset.unhide];saveHidden();renderHidden();drawMap()}
+  });
   paintWide();
   $("wideToggle").onclick=()=>{
     wide=!wide;try{localStorage.setItem("doener-wide",wide?"1":"0")}catch(e){}
-    mapShops=[];paintWide();drawRing();drawMap();
+    paintWide();drawRing();
     if(map)refreshMap();
   };
   $("aHere").onclick=async()=>{
@@ -1073,7 +1423,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   async function readLink(){
     const v=$("aLink").value.trim();if(!v)return false;
     $("aErr").textContent="";whereText("Link wird gelesen …");
-    try{const {c,n}=await parseMapsLink(v);setAddPos(c,"Ort aus dem Link übernommen ✓");
+    try{const {c,n}=await parseMapsLink(v);setAddPos(c,c.approx?"Ort über den Namen gefunden – bitte Pin prüfen":"Ort aus dem Link übernommen ✓");
       if(n&&!$("aName").value.trim())$("aName").value=n;
       if(mini)mini.jumpTo({center:[c.lon,c.lat],zoom:17});return true}
     catch(e){whereText(addPos?"Ort gesetzt ✓":"Noch kein Ort gewählt.");$("aErr").textContent=e.message+". Setz den Pin lieber direkt auf der Karte.";return false}
@@ -1095,7 +1445,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     const b=e.target.closest&&e.target.closest("[data-del]");if(!b)return;
     const c=customs.find(x=>x.id===b.dataset.del);if(!c)return;
     if(!confirm(c.name+" von der Karte entfernen? Deine Einträge bleiben erhalten."))return;
-    customs=customs.filter(x=>x.id!==c.id);saveCustoms();drawMap();
+    customs=customs.filter(x=>x.id!==c.id);saveCustoms();if(popRef)popRef.remove();drawMap();
   });
   $("recenter").onclick=()=>{if(mapPos)map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});refreshMap()};
 
@@ -1111,7 +1461,9 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       if(!map)initMap();
       setTimeout(()=>map.resize(),30);
       drawMap();
-      if(!mapPos||!mapShops.length)refreshMap();
+      if(!mapPos)refreshMap();
+      try{if(!localStorage.getItem("doener-map-tip")){localStorage.setItem("doener-map-tip","1");
+        setTimeout(()=>toast("Tipp: Lange auf die Karte drücken trägt einen Laden ein. Laden antippen → Ausblenden.",true),1200)}}catch(e){}
     }else if(view==="tracker")window.scrollTo(0,0);
   }
   $("tabTracker").onclick=()=>show("tracker");
@@ -1119,7 +1471,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   $("tabStats").onclick=()=>show("stats");
 
   // ---------- Start ----------
-  render();setShopUI();loadNative();
+  render();setShopUI();loadNative();loadBase();
   async function autoLocate(){
     if(Date.now()-lastLoc<180000||document.querySelector(".layer.open")||!$("viewMap").hidden)return;
     lastLoc=Date.now();
