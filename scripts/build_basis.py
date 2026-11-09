@@ -24,7 +24,15 @@ MAYBE_NAME = (r"istanbul|stanbul|ankara|antalya|izmir|anatolia|anadolu|bosporus|
               r"mersin|trabzon|karadeniz|aksaray|konya|kayseri|sofra|lokanta|grill|imbiss|falafel|shawerma")
 TURK_NAME = re.sub(r"\|grill|\|imbiss|\|falafel|\|shawerma", "", MAYBE_NAME)
 # nicht als "vielleicht" werten (deutsche/andere Imbisse)
-NOT_MAYBE = r"wurst|curry|burger|gyros|griech|hellas|akropolis|olymp|souvlaki|steak|sushi|asia|china|thai|vietnam|fisch|backfisch|hähnchen|broiler|pommes"
+NOT_MAYBE = (r"wurst|curry|burger|gyros|griech|hellas|akropolis|olymp|souvlaki|steak|sushi|asia|china|thai|vietnam|"
+             r"fisch|backfisch|hähnchen|broiler|pommes|mcdonald|burger king|kfc|subway|nordsee|pizza hut|domino|"
+             r"dunkin|starbucks|vapiano|wienerwald|kamps|backwerk|ditsch|five guys|popeyes|dean ?& ?david|"
+             r"coffee|bäck|baeck|backstube|eiscaf|eisdiele|gelato|bubble|poke|crepe|crêpe|waffel|frittenwerk|"
+             r"kiosk|tankstelle|bakery|donut|bagel|sandwich|nudel|noodle|ramen|taco|burrito|mexi")
+# Fast Food mit diesen Küchen ist sicher kein Döner
+NOT_CUISINE = (r"burger|chicken|asian|chinese|thai|vietnam|japanese|sushi|korean|indian|sandwich|ice_cream|coffee|"
+               r"bakery|donut|fish|seafood|german|sausage|bratwurst|currywurst|greek|gyros|crepe|waffle|bubble_tea|"
+               r"poke|bagel|hot_dog|salad|juice|cake|fries|friture|mexican|burrito|taco|noodle|ramen|dessert")
 
 def level(name, cuisine, fast):
     n, c = (name or "").lower(), (cuisine or "").lower()
@@ -36,7 +44,8 @@ def level(name, cuisine, fast):
         return 1
     if re.search(TURK_NAME, n):
         return 1
-    if fast and re.search(r"grill|imbiss|falafel|shawerma", n):
+    # Fast Food, das nicht klar etwas anderes ist: vielleicht Döner
+    if fast and not (c and re.search(NOT_CUISINE, c)):
         return 1
     return 0
 
@@ -65,7 +74,7 @@ def fetch_osm():
     q = (f'[out:json][timeout:900][maxsize:1073741824];'
          f'area["ISO3166-1"="DE"][admin_level=2]->.de;'
          f'nwr(area.de)["amenity"~"^(fast_food|restaurant|food_court|cafe)$"]->.f;'
-         f'(nwr.f["cuisine"~"kebab|doner|döner|shawarma|lahmacun|durum|dürüm|{MAYBE_CUISINE}",i];'
+         f'(nwr.f["amenity"="fast_food"];nwr.f["cuisine"~"kebab|doner|döner|shawarma|lahmacun|durum|dürüm|{MAYBE_CUISINE}",i];'
          f'nwr.f["name"~"{names}",i];);out tags center qt;')
     data = urllib.parse.urlencode({"data": q}).encode()
     last = None
@@ -76,7 +85,7 @@ def fetch_osm():
                 req = urllib.request.Request(url, data=data, headers={"User-Agent": "DoenerTracker-Basis/2.0 (GitHub Actions)"})
                 j = json.load(urllib.request.urlopen(req, timeout=1000))
                 els = j.get("elements") or []
-                if len(els) < 500:
+                if len(els) < 2000:
                     raise RuntimeError(f"nur {len(els)} Treffer")
                 return els
             except Exception as e:
@@ -142,12 +151,15 @@ try:
                OR TRY_CAST(date_refreshed AS DATE) >= current_date - INTERVAL 3 YEAR)
           AND (regexp_matches(lower(name), '{SURE}|{MAYBE_NAME}')
                OR regexp_matches(lower(coalesce(array_to_string(fsq_category_labels, '|'), '')),
-                                 'doner|döner|kebab|turkish|middle eastern|falafel|shawarma'))
+                                 'doner|döner|kebab|turkish|middle eastern|falafel|shawarma|fast food|snack'))
     """).fetchall()
     for pid, name, lat, lon, cat, city in rows:
+        fc = ("turkish" if re.search(r"turkish|middle eastern|falafel", cat) else
+              "burger" if re.search(r"burger|chicken|sandwich|bakery|coffee|ice cream|dessert|asian|chinese|thai|"
+                                    r"vietnam|japanese|sushi|indian|fish|seafood|german|hot dog|bagel|donut|salad|"
+                                    r"juice|mexican|taco|noodle|bistro|cafe|café", cat) else "")
         lv = 2 if re.search(r"doner|döner|kebab|shawarma", cat) else level(
-            name, "turkish" if re.search(r"turkish|middle eastern|falafel", cat) else "",
-            "fast food" in cat or "snack" in cat)
+            name, fc, "fast food" in cat or "snack" in cat)
         if lv:
             fsq.append([f"fsq:{pid}", name.strip(), round(lat, 5), round(lon, 5), lv, city])
     print(f"Foursquare: {len(fsq)} Läden", flush=True)

@@ -178,7 +178,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .gmaps{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:12px;border-radius:12px;
   background:var(--card);border:1.5px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
 .gmaps.float{position:absolute;z-index:500;right:68px;bottom:12px;margin:0;height:46px;padding:0 14px;border:0;border-radius:23px;box-shadow:0 2px 10px rgba(40,30,20,.16)}
-.legend{max-width:calc(100% - 210px)}
+
 
 .addfab{position:absolute;z-index:500;right:12px;bottom:70px;width:46px;height:46px;border-radius:50%;border:0;background:#9A3E31;color:#FFF7F2;box-shadow:0 2px 10px rgba(40,30,20,.2);display:grid;place-items:center;cursor:pointer}
 .placebar{position:absolute;z-index:600;left:12px;right:12px;top:calc(var(--safeT) + 12px);max-width:436px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;font-weight:600}
@@ -308,6 +308,31 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .rfill .fg{justify-content:center}
 .rfill .fg .fl{text-align:center}
 .rfh{margin:4px 0 0;font-size:15px;font-weight:600;text-align:center}
+/* Kartenmenü: Einstellungen + Legende aufklappbar, Karte bleibt frei */
+.mbtn{position:absolute;z-index:510;right:12px;bottom:128px;width:46px;height:46px;border-radius:50%;border:0;background:var(--card);color:var(--ink);
+  box-shadow:0 2px 10px rgba(40,30,20,.16);cursor:pointer;display:grid;place-items:center}
+.mbtn svg{grid-area:1/1}
+.mbtn .ic-close,.mbtn[aria-expanded="true"] .ic-open{display:none}
+.mbtn[aria-expanded="true"] .ic-close{display:block}
+.mbtn .dot{position:absolute;top:7px;right:7px;width:10px;height:10px;border-radius:50%;background:#9A3E31;box-shadow:0 0 0 2px var(--card)}
+.mbtn .dot[hidden]{display:none}
+.mpanel{position:absolute;z-index:510;left:12px;right:70px;bottom:12px;max-width:360px;max-height:calc(100% - var(--safeT) - 120px);overflow-y:auto;
+  background:var(--card);border-radius:18px;padding:10px 12px 12px;box-shadow:0 8px 28px rgba(40,30,20,.22);
+  transform-origin:100% 100%;animation:mpIn .16s ease-out}
+.mpanel[hidden]{display:none}
+@keyframes mpIn{from{opacity:0;transform:scale(.96) translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.mpanel{animation:none}}
+.mph{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:6px 2px 4px}
+.mpanel .wide{position:static;box-shadow:none;background:none;width:100%;max-width:none;padding:9px 2px;border-radius:10px;text-align:left;font-size:15px}
+.mpanel .wide+.wide{border-top:1px solid var(--line)}
+.mpanel .wide.upd{padding:10px 2px;gap:14px}
+.mpanel .wide.upd svg{margin:0 9px 0 10px;flex:none}
+.mpanel .legend{position:static;display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;max-width:none;margin:2px 2px 0}
+.mpanel .legend span{background:none;box-shadow:none;padding:2px 0;font-size:14px}
+.mpanel .cnt{margin-left:auto;font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.mtip{font-size:13px;color:var(--muted);margin:10px 2px 0;line-height:1.35}
+.gmaps.mlink{margin-top:10px;padding:10px;font-size:15px}
+.maplibregl-ctrl-bottom-right{bottom:180px}
 </style>
 </head>
 <body>
@@ -443,11 +468,17 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 <div id="viewMap" hidden>
   <div id="map" aria-label="Karte mit Dönerläden"></div>
   <div class="mapcard" id="mapCard"><div class="t"><div class="k">Nächster Döner</div><div class="v" id="mcName">Suche …</div><div class="m" id="mcMeta"></div></div><a id="mcRoute" href="#" target="_blank" rel="noopener" hidden>Route</a></div>
-  <button class="wide" id="wideToggle" type="button" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span id="wideLabel">Alle Döner im Umkreis von 10 km</span></button>
-  <button class="wide fsq" id="fsqToggle" type="button" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span id="fsqLabel">Auch „vielleicht Döner“ zeigen</span></button>
-  <button class="wide upd" id="updArea" type="button"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="updLabel">Diese Gegend aktualisieren</span></button>
-  <div class="legend"><span><i style="background:var(--tomate)"></i>Döner</span><span id="lgMaybe"><i style="background:#fff;box-shadow:inset 0 0 0 2.5px var(--tomate)"></i>Vielleicht</span><span><i style="background:var(--salatDunkel)"></i>Besucht</span><span><i style="background:var(--kohl)"></i>Stammlokal</span></div>
-  <a class="gmaps float" id="gmMap" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Google Maps</a>
+  <div class="mpanel" id="mPanel" role="dialog" aria-label="Karteneinstellungen" hidden>
+    <div class="mph">Karte</div>
+    <button class="wide" id="wideToggle" type="button" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span id="wideLabel">Umkreis von 10 km zeigen</span><span class="cnt" id="wideCount"></span></button>
+    <button class="wide fsq" id="fsqToggle" type="button" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span id="fsqLabel">Auch „vielleicht Döner“ zeigen</span></button>
+    <button class="wide upd" id="updArea" type="button"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="updLabel">Diese Gegend aktualisieren</span></button>
+    <div class="mph">Legende</div>
+    <div class="legend"><span><i style="background:var(--tomate)"></i>Döner</span><span id="lgMaybe"><i style="background:#fff;box-shadow:inset 0 0 0 2.5px var(--tomate)"></i>Vielleicht</span><span><i style="background:var(--salatDunkel)"></i>Besucht</span><span><i style="background:var(--kohl)"></i>Stammlokal</span></div>
+    <p class="mtip">Lange drücken: Laden eintragen · Laden antippen: ausblenden oder bestätigen</p>
+    <a class="gmaps mlink" id="gmMap" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>In Google Maps suchen</a>
+  </div>
+  <button class="mbtn" id="mBtn" type="button" aria-label="Karteneinstellungen und Legende" aria-expanded="false" aria-controls="mPanel"><svg class="ic-open" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5zM2 13l10 5 10-5M2 17.5l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg><svg class="ic-close" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="dot" id="mDot" hidden></span></button>
   <button class="addfab" id="addShop" type="button" aria-label="Laden hinzufügen"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
   <button class="recenter" id="recenter" type="button" aria-label="Auf meinen Standort zentrieren"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="var(--ink)"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="var(--ink)" stroke-width="2"/></svg></button>
 </div>
@@ -657,7 +688,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   const SURE="d[öo]ner|d[öo]nner|kebab|kebap|d[üu]r[üu]m|lahmacun|schawarma|shawarma|iskender";
   const TURK="istanbul|stanbul|ankara|antalya|izmir|anatolia|anadolu|bosporus|bosphorus|bodrum|alanya|kapadokya|sultan|efes|mangal|kervan|osmanl|ottoman|marmara|bursa|adana|urfa|gaziantep|mersin|trabzon|karadeniz|aksaray|konya|kayseri|sofra|lokanta";
   const SNACK="grill|imbiss|falafel|shawerma";
-  const NOTMAY=/wurst|curry|burger|gyros|griech|hellas|akropolis|olymp|souvlaki|steak|sushi|asia|china|thai|vietnam|fisch|backfisch|hähnchen|broiler|pommes/i;
+  const NOTMAY=/wurst|curry|burger|gyros|griech|hellas|akropolis|olymp|souvlaki|steak|sushi|asia|china|thai|vietnam|fisch|backfisch|hähnchen|broiler|pommes|mcdonald|burger king|kfc|subway|nordsee|pizza hut|domino|dunkin|starbucks|vapiano|wienerwald|kamps|backwerk|ditsch|five guys|popeyes|dean ?& ?david|coffee|bäck|baeck|backstube|eiscaf|eisdiele|gelato|bubble|poke|crepe|crêpe|waffel|frittenwerk|kiosk|tankstelle|bakery|donut|bagel|sandwich|nudel|noodle|ramen|taco|burrito|mexi/i;
+  const NOTCUI=/burger|chicken|asian|chinese|thai|vietnam|japanese|sushi|korean|indian|sandwich|ice_cream|coffee|bakery|donut|fish|seafood|german|sausage|bratwurst|currywurst|greek|gyros|crepe|waffle|bubble_tea|poke|bagel|hot_dog|salad|juice|cake|fries|friture|mexican|burrito|taco|noodle|ramen|dessert/;
   // 2 = Döner sicher, 1 = vielleicht Döner, 0 = kein Döner
   function lvlFor(name,cuisine,fast){
     const n=String(name||"").toLowerCase(),c=String(cuisine||"").toLowerCase();
@@ -665,7 +697,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     if(NOTMAY.test(n))return 0;
     if(/turkish|middle_eastern|arab|lebanese|syrian|kurdish|falafel|pide|persian|afghan|iraqi/.test(c))return 1;
     if(new RegExp(TURK).test(n))return 1;
-    if(fast&&new RegExp(SNACK).test(n))return 1;
+    if(fast&&!(c&&NOTCUI.test(c)))return 1;   // Imbiss, der nicht klar etwas anderes ist: vielleicht Döner
     return 0;
   }
   async function overpass(p,radius,kebabOnly){
@@ -733,7 +765,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     try{str=decodeURIComponent(str)}catch(e){}
     const ok=(a,b)=>Math.abs(a)<=90&&Math.abs(b)<=180&&!(a===0&&b===0);
     const tries=[/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/,/@(-?\d+\.\d+),(-?\d+\.\d+)/,
-      /[?&](?:q|query|ll|sll|destination|center|markers|daddr)=(?:loc:)?(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i,
+      /[?&](?:q|query|ll|sll|destination|center|markers|daddr|coordinate)=(?:loc:)?(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i,
       /geo:(-?\d+\.\d+),(-?\d+\.\d+)/,/staticmap\?center=(-?\d+\.\d+),(-?\d+\.\d+)/];
     for(const re of tries){if((m=str.match(re))&&ok(+m[1],+m[2]))return {lat:+m[1],lon:+m[2]}}
     return null;
@@ -757,23 +789,33 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     for(const u of urls){try{const j=await httpJson(u,12000);if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon}}catch(e){}}
     return null;
   }
+  // Koordinaten aus einer geladenen Google-Seite: nur verlässliche Stellen (Vorschaubild des Ortes, Ortsmarke)
+  function coordsFromPage(html){
+    if(!html)return null;let m;
+    const ok=(a,b)=>Math.abs(a)<=90&&Math.abs(b)<=180&&!(a===0&&b===0);
+    const tries=[/staticmap\?center=(-?\d+\.\d+)(?:%2C|,)(-?\d+\.\d+)/,/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/];
+    for(const re of tries){if((m=html.match(re))&&ok(+m[1],+m[2]))return {lat:+m[1],lon:+m[2]}}
+    return null;
+  }
   async function parseMapsLink(raw){
     const url=(raw.match(/https?:\/\/\S+/)||[raw.trim()])[0];
     let c=coordsFrom(url),n=nameFrom(url),via="";
     if(!c&&/^https?:/.test(url)&&Http&&native){
       try{
         let r=await fetchText(url);via=(r.url.split("/")[2]||"");
-        c=coordsFrom(r.url)||coordsFrom(r.body.slice(0,600000));n=n||nameFrom(r.url);
+        c=coordsFrom(r.url)||coordsFromPage(r.body.slice(0,800000));n=n||nameFrom(r.url);
         if(!c&&/consent\.google|sorry/.test(r.url)){
           const m=r.url.match(/[?&]continue=([^&]+)/);
           if(m){const next=decodeURIComponent(m[1]);c=coordsFrom(next);n=n||nameFrom(next);
-            if(!c){r=await fetchText(next);c=coordsFrom(r.url)||coordsFrom(r.body.slice(0,600000));n=n||nameFrom(r.url)}}
+            if(!c){r=await fetchText(next);c=coordsFrom(r.url)||coordsFromPage(r.body.slice(0,800000));n=n||nameFrom(r.url)}}
         }
       }catch(e){via="nicht erreichbar"}
     }
     const pre=raw.split(/https?:\/\//)[0].trim();let addr="";
     if(pre){const parts=pre.split(/\n|·|\|/).map(x=>x.trim()).filter(Boolean);if(!n)n=parts[0]||"";addr=parts.slice(1).join(", ")}
-    if(!c&&(n||addr)){c=await geocode([n,addr].filter(Boolean).join(", "));if(c)c.approx=true}
+    if(!c&&(n||addr)){
+      for(const q of [addr,[n,addr].filter(Boolean).join(", "),n].filter(Boolean)){c=await geocode(q);if(c){c.approx=true;break}}
+    }
     if(!c&&!(Http&&native)&&/goo\.gl|g\.co/.test(url))throw new Error("Kurzlinks lassen sich nur in der installierten App auslesen");
     if(!c)throw new Error("Aus dem Link ließ sich kein Ort lesen"+(via?" ("+via+")":""));
     return {c,n};
@@ -835,7 +877,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   // Döner-Läden einer Gegend frisch von OpenStreetMap holen und dauerhaft speichern
   async function updateArea(p,r){
-    const res=await overpass(p,r,true);
+    const res=await overpass(p,r,false);
     if(res.failed)throw new Error(lastErr||"OpenStreetMap nicht erreichbar");
     const found=res.list.filter(s=>s.kebab>=1);
     Object.keys(local).forEach(id=>{const v=local[id];if(dist(p,{lat:v[1],lon:v[2]})<=r)delete local[id]});
@@ -864,7 +906,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       `<li><span>${esc(hidden[id].name)}</span><button type="button" data-unhide="${esc(id)}">Zurückholen</button></li>`).join("");
   }
   function paintMaybe(){
-    $("fsqToggle").setAttribute("aria-checked",maybeOn);$("lgMaybe").hidden=!maybeOn;
+    $("fsqToggle").setAttribute("aria-checked",maybeOn);$("lgMaybe").hidden=!maybeOn;if(typeof paintDot==="function")paintDot();
   }
 
   // ---------- Laden-Auswahl ----------
@@ -1221,8 +1263,9 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   const WIDE_R=10000;
   let wide=(()=>{try{return localStorage.getItem("doener-wide")==="1"}catch(e){return false}})();
   function paintWide(count){
-    $("wideToggle").setAttribute("aria-checked",wide);
-    $("wideLabel").textContent=wide?(count!=null?`Alle Döner im Umkreis von 10 km · ${count}`:"Alle Döner im Umkreis von 10 km"):"Alle Döner im Umkreis von 10 km";
+    $("wideToggle").setAttribute("aria-checked",wide);paintDot();
+    $("wideLabel").textContent="Umkreis von 10 km zeigen";
+    $("wideCount").textContent=wide&&count!=null?count+" Läden":"";
   }
   function ringData(){
     if(!wide||!mapPos)return {type:"FeatureCollection",features:[]};
@@ -1344,6 +1387,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   function initMap(){
     map=new maplibregl.Map({container:"map",style:STYLE(),center:[10.45,51.16],zoom:5,
       attributionControl:{compact:true,customAttribution:"Döner-Daten: OpenStreetMap-Mitwirkende, Foursquare OS Places"},dragRotate:false,pitchWithRotate:false});
+    map.on("dragstart",()=>setMenu(false));map.on("click",()=>{if(!$("mPanel").hidden)setMenu(false)});
     map.touchZoomRotate.disableRotation();
     map.on("load",()=>{styleReady=true;drawMap()});
     map.on("error",e=>{console.warn("Karte:",e&&e.error&&e.error.message)});
@@ -1382,7 +1426,11 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       whereText(p?"Pin steht auf deinem Standort – tippe oder ziehe, um ihn zu verschieben.":"Tippe auf die Karte, um den Pin zu setzen.")}
     $("aErr").textContent="";openLayer("adder");initMini();
   }
-  $("addShop").onclick=()=>openAdder(false,"map");
+  $("addShop").onclick=()=>{setMenu(false);openAdder(false,"map")};
+  function setMenu(open){$("mPanel").hidden=!open;$("mBtn").setAttribute("aria-expanded",open)}
+  $("mBtn").onclick=()=>setMenu($("mPanel").hidden);
+  // Punkt am Menüknopf: zeigt, dass vom Standard abweichende Einstellungen aktiv sind
+  function paintDot(){$("mDot").hidden=!(wide||!maybeOn)}
   $("fsqToggle").onclick=()=>{
     maybeOn=!maybeOn;try{localStorage.setItem("doener-maybe-on",maybeOn?"1":"0")}catch(e){}
     paintMaybe();drawMap();
@@ -1423,7 +1471,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   async function readLink(){
     const v=$("aLink").value.trim();if(!v)return false;
     $("aErr").textContent="";whereText("Link wird gelesen …");
-    try{const {c,n}=await parseMapsLink(v);setAddPos(c,c.approx?"Ort über den Namen gefunden – bitte Pin prüfen":"Ort aus dem Link übernommen ✓");
+    try{const {c,n}=await parseMapsLink(v);const ref=pos||mapPos,far=ref?dist(ref,c):0;
+      setAddPos(c,far>30000?`Achtung: Ort liegt ${Math.round(far/1000)} km entfernt – bitte Pin prüfen`:c.approx?"Ort über die Adresse gefunden – bitte Pin prüfen":"Ort aus dem Link übernommen ✓");
       if(n&&!$("aName").value.trim())$("aName").value=n;
       if(mini)mini.jumpTo({center:[c.lon,c.lat],zoom:17});return true}
     catch(e){whereText(addPos?"Ort gesetzt ✓":"Noch kein Ort gewählt.");$("aErr").textContent=e.message+". Setz den Pin lieber direkt auf der Karte.";return false}
