@@ -670,16 +670,20 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   const Http=Cap.CapacitorHttp, native=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
   const APP_UA="DoenerTracker/1.0 (private Android app)";
   let lastErr="";
-  async function httpJson(url,timeout=20000){
+  async function httpJson(url,opt=20000){
+    const {timeout=20000,post=null}=typeof opt==="number"?{timeout:opt}:opt;
+    const FORM="application/x-www-form-urlencoded";
     if(Http&&native){
       const r=await Promise.race([
-        Http.request({url,method:"GET",headers:{"User-Agent":APP_UA,"Accept":"application/json"},connectTimeout:timeout,readTimeout:timeout}),
+        Http.request({url,method:post?"POST":"GET",data:post||undefined,
+          headers:{"User-Agent":APP_UA,"Accept":"application/json",...(post?{"Content-Type":FORM}:{})},connectTimeout:timeout,readTimeout:timeout}),
         new Promise((_,no)=>setTimeout(()=>no(new Error("Zeitüberschreitung")),timeout+1500))]);
       if(r.status<200||r.status>=300)throw new Error("HTTP "+r.status);
       return typeof r.data==="string"?JSON.parse(r.data):r.data;
     }
     const ac=new AbortController();const t=setTimeout(()=>ac.abort(),timeout);
-    try{const r=await fetch(url,{signal:ac.signal,headers:{"Accept":"application/json"}});
+    try{const r=await fetch(url,{signal:ac.signal,method:post?"POST":"GET",body:post||undefined,
+        headers:{"Accept":"application/json",...(post?{"Content-Type":FORM}:{})}});
       if(!r.ok)throw new Error("HTTP "+r.status);return await r.json()}
     catch(e){throw new Error(e.name==="AbortError"?"Zeitüberschreitung":(e.message||"Netzwerkfehler"))}
     finally{clearTimeout(t)}
@@ -700,20 +704,29 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     if(fast&&!(c&&NOTCUI.test(c)))return 1;   // Imbiss, der nicht klar etwas anderes ist: vielleicht Döner
     return 0;
   }
-  async function overpass(p,radius,kebabOnly){
+  async function overpass(p,radius,kebabOnly,{area=false}={}){
     const A=`around:${radius},${p.lat},${p.lon}`;
     const CUI="kebab|doner|döner|turkish|shawarma|falafel|arab|lebanese|syrian|kurdish|middle_eastern|lahmacun|pide|persian|afghan|iraqi";
-    const q=`[out:json][timeout:25];nwr(${A})["amenity"~"^(fast_food|restaurant|cafe|food_court)$"]->.f;(`+
+    const q=`[out:json][timeout:${area?120:25}];nwr(${A})["amenity"~"^(fast_food|restaurant|cafe|food_court)$"]->.f;(`+
       `nwr.f["cuisine"~"${CUI}",i];nwr.f["name"~"${SURE}|${TURK}",i];nwr.f["amenity"="fast_food"]["name"~"${SNACK}",i];`+(kebabOnly?"":`nwr.f["amenity"="fast_food"];`)+
-      `);out tags center qt 2000;`;
+      `);out tags center qt${area?"":" 2000"};`;
     const parse=j=>j.elements.filter(e=>e.tags&&e.tags.name&&!e.tags["disused:amenity"]).map(e=>{
       const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon;
       return {id:e.type+"/"+e.id,name:e.tags.name,lat,lon,d:dist(p,{lat,lon}),
         kebab:lvlFor(e.tags.name,e.tags.cuisine,e.tags.amenity==="fast_food")};
     }).filter(s=>s.lat!=null);
+    const check=j=>{if(!j||!Array.isArray(j.elements))throw new Error("leere Antwort");
+      if(j.remark&&/runtime error|timed out|out of memory|abgebrochen/i.test(j.remark))throw new Error("Server-Abbruch (Antwort unvollständig)");return j};
+    if(area){   // große Abfrage: Server nacheinander, lange Zeitgrenze, keine Ersatzsuche (die fände nur einen Bruchteil)
+      const errs=[];
+      for(const h of OVERPASS){
+        try{const j=check(await httpJson(h,{post:"data="+encodeURIComponent(q),timeout:130000}));lastErr="";return {list:parse(j),failed:false}}
+        catch(e){errs.push(e.message)}
+      }
+      lastErr=[...new Set(errs)].join(", ");return {list:[],failed:true};
+    }
     try{
-      const j=await Promise.any(OVERPASS.map(h=>httpJson(h+"?data="+encodeURIComponent(q)).then(j=>{
-        if(!j||!Array.isArray(j.elements))throw new Error("leere Antwort");return j})));
+      const j=await Promise.any(OVERPASS.map(h=>httpJson(h+"?data="+encodeURIComponent(q)).then(check)));
       lastErr="";return {list:parse(j),failed:false};
     }catch(e){
       lastErr=[...new Set((e.errors||[e]).map(x=>x.message))].join(", ");
@@ -857,7 +870,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   function buildGrid(){
     grid=new Map();
     const add=s=>{const k=cellOf(s.lat,s.lon);let a=grid.get(k);if(!a)grid.set(k,a=[]);a.push(s)};
-    Object.entries(local).forEach(([id,v])=>add({id,name:v[0],lat:v[1],lon:v[2],lvl:v[3]||2,src:"local"}));
+    const bl=new Map();if(base)base.places.forEach(q=>bl.set(q[0],q[4]||2));
+    Object.entries(local).forEach(([id,v])=>add({id,name:v[0],lat:v[1],lon:v[2],lvl:Math.max(v[3]||1,bl.get(id)||0),src:"local"}));
     if(base)base.places.forEach(q=>{if(!local[q[0]])add({id:q[0],name:q[1],lat:q[2],lon:q[3],lvl:q[4]||2})});
   }
   const lvlOf=s=>confirmed[s.id]?2:(s.lvl||2);
@@ -877,16 +891,19 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   // Döner-Läden einer Gegend frisch von OpenStreetMap holen und dauerhaft speichern
   async function updateArea(p,r){
-    const res=await overpass(p,r,false);
+    const res=await overpass(p,r,false,{area:true});
     if(res.failed)throw new Error(lastErr||"OpenStreetMap nicht erreichbar");
     const found=res.list.filter(s=>s.kebab>=1);
-    Object.keys(local).forEach(id=>{const v=local[id];if(dist(p,{lat:v[1],lon:v[2]})<=r)delete local[id]});
+    const inArea=Object.keys(local).filter(id=>{const v=local[id];return dist(p,{lat:v[1],lon:v[2]})<=r});
     let neu=0;
-    found.forEach(s=>{if(!baseIds.has(s.id))neu++;
-      local[s.id]=[s.name,Math.round(s.lat*1e5)/1e5,Math.round(s.lon*1e5)/1e5,s.kebab,Date.now()]});
+    found.forEach(s=>{const old=local[s.id];if(!old&&!baseIds.has(s.id))neu++;
+      local[s.id]=[s.name,Math.round(s.lat*1e5)/1e5,Math.round(s.lon*1e5)/1e5,Math.max(s.kebab,old?old[3]||1:0),Date.now()]});
+    // Nicht mehr vorhandene Läden nur entfernen, wenn die Antwort vollständig wirkt
+    if(found.length>=inArea.length*0.6){const keep=new Set(found.map(s=>s.id));inArea.forEach(id=>{if(!keep.has(id))delete local[id]})}
     saveLocal();
-    return {n:found.length,neu};
+    return {n:found.length,neu,maybe:found.filter(s=>s.kebab===1).length};
   }
+
   const normName=n=>String(n||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
   function sameShop(a,b){const d=dist(a,b);if(d<15)return true;if(d>90)return false;
     const x=normName(a.name),y=normName(b.name);return !!x&&!!y&&(x.includes(y)||y.includes(x))}
@@ -1439,9 +1456,9 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   $("updArea").onclick=async()=>{
     if(updBusy||!map)return;updBusy=true;
     const b=$("updArea"),l=$("updLabel"),c=map.getCenter(),p={lat:c.lat,lon:c.lng};
-    b.setAttribute("aria-busy","true");l.textContent="Lade Läden im Umkreis von 10 km …";
+    b.setAttribute("aria-busy","true");l.textContent="Lade Umkreis 10 km … (bis 1 Min.)";
     try{await loadBase();const r=await updateArea(p,WIDE_R);drawMap();
-      toast(r.n?`${r.n} Döner-Läden gespeichert`+(r.neu?`, davon ${r.neu} neu`:""):"Hier hat OpenStreetMap keine Döner-Läden",true)}
+      toast(r.n?`${r.n} Läden gespeichert: ${r.n-r.maybe} Döner, ${r.maybe} vielleicht`+(r.neu?` (${r.neu} neu)`:""):"Hier hat OpenStreetMap keine Imbisse",true)}
     catch(e){toast("Aktualisieren gerade nicht möglich: "+e.message,true)}
     b.removeAttribute("aria-busy");l.textContent="Diese Gegend aktualisieren";updBusy=false;
   };
