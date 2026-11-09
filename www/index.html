@@ -333,6 +333,17 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .mtip{font-size:13px;color:var(--muted);margin:10px 2px 0;line-height:1.35}
 .gmaps.mlink{margin-top:10px;padding:10px;font-size:15px}
 .maplibregl-ctrl-bottom-right{bottom:180px}
+.newshop.alt{background:var(--salatHell);color:var(--salatDunkel)}
+.pickbar{position:absolute;z-index:520;left:12px;right:12px;top:calc(var(--safeT) + 12px);max-width:436px;margin:0 auto;display:flex;align-items:center;gap:12px;
+  background:#9A3E31;color:#FFF7F2;border-radius:16px;padding:12px 14px;box-shadow:0 6px 24px rgba(40,30,20,.2)}
+.pickbar[hidden],.mapcard[hidden]{display:none}
+.pickbar .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pickbar .t span{font-size:13px;opacity:.9;line-height:1.3}
+.pickbar button{flex:none;border:0;background:rgba(255,255,255,.18);color:inherit;font-weight:700;font-size:14px;padding:9px 12px;border-radius:10px;cursor:pointer}
+.ppick{display:block;width:100%;margin-top:8px;border:0;background:#9A3E31;color:#FFF7F2;font-weight:700;font-size:15px;padding:10px 12px;border-radius:10px;cursor:pointer}
+.ewhen{margin-top:4px;border-bottom:0;padding:8px 2px}
+.ehint{font-size:13px;color:#9A3E31;margin:0 2px 4px;line-height:1.35}
+.ehint[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -467,6 +478,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 
 <div id="viewMap" hidden>
   <div id="map" aria-label="Karte mit Dönerläden"></div>
+  <div class="pickbar" id="pickBar" hidden><div class="t"><b>Laden wählen</b><span id="pickSub">Tippe auf einen Laden. Nicht dabei? Lange drücken zum Eintragen.</span></div><button type="button" id="pickCancel">Abbrechen</button></div>
   <div class="mapcard" id="mapCard"><div class="t"><div class="k">Nächster Döner</div><div class="v" id="mcName">Suche …</div><div class="m" id="mcMeta"></div></div><a id="mcRoute" href="#" target="_blank" rel="noopener" hidden>Route</a></div>
   <div class="mpanel" id="mPanel" role="dialog" aria-label="Karteneinstellungen" hidden>
     <div class="mph">Karte</div>
@@ -503,6 +515,8 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       <button type="button" data-k="doener" aria-pressed="true"><svg width="26" height="24" viewBox="0 0 48 46" aria-hidden="true"><circle cx="10" cy="22" r="5.5" fill="var(--salat)"/><circle cx="17" cy="15" r="5.5" fill="#8C5634"/><circle cx="31" cy="15" r="5.5" fill="var(--tomate)"/><circle cx="38" cy="22" r="5.5" fill="var(--salat)"/><path d="M3 26 L22 10 Q24 8.5 26 10 L45 26 Q46.5 27.5 45.5 29.5 C40 44 8 44 2.5 29.5 Q1.5 27.5 3 26Z" fill="var(--kruste)"/></svg>Döner</button>
       <button type="button" data-k="duerum" aria-pressed="false"><svg width="26" height="24" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-35 24 24)"><rect x="16" y="2" width="16" height="44" rx="8" fill="var(--brot)"/><circle cx="20" cy="6" r="3" fill="var(--salat)"/><circle cx="27" cy="5" r="3" fill="#8C5634"/><path d="M15 26 L18.6 23.5 L22.2 26 L25.8 23.5 L29.4 26 L33 23.5 V40 Q33 47 24 47 Q15 47 15 40Z" fill="var(--kruste)"/></g></svg>Dürüm</button>
     </div>
+    <label class="erow ewhen"><span>Wann</span><input type="datetime-local" id="eWhen" aria-label="Wann gegessen"></label>
+    <p class="ehint" id="eHint" hidden>Nachtrag: Stimmt der Laden? Tippe oben auf „ändern“, auch über die Karte wählbar.</p>
     <div class="fill">
       <button class="filltog" id="fillTog" type="button" aria-expanded="false" aria-controls="fillPanel">
         <svg class="chev" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -525,6 +539,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     <h3 id="pTitle">Wo gab’s den Döner?</h3>
     <ul class="opts" id="opts"></ul>
     <a class="gmaps" id="gmPick" href="https://www.google.com/maps/search/?api=1&query=D%C3%B6ner" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>Nicht dabei? In Google Maps suchen</a>
+    <button type="button" class="newshop alt" id="mapPickBtn"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Auf der Karte auswählen</button>
     <button type="button" class="newshop" id="newShop"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Neuen Laden eintragen</button>
     <p class="hint">Ladendaten © OpenStreetMap-Mitwirkende und Foursquare OS Places. Die Läden sind in der App gespeichert, die Suche klappt auch offline. Nur „Diese Gegend aktualisieren“ auf der Karte fragt OpenStreetMap. Deine Einträge bleiben auf dem Handy.</p>
   </div>
@@ -555,7 +570,6 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   <div class="sheet">
     <h3 id="aTitle">Laden hinzufügen</h3>
     <label class="fld"><span>Name</span><input id="aName" placeholder="z. B. Bosporus Grill" autocomplete="off"></label>
-    <label class="fld"><span>Google-Maps-Link <small>(optional)</small></span><input id="aLink" placeholder="In Google Maps: Teilen → Link kopieren" inputmode="url" autocomplete="off"></label>
     <div class="mini" id="aMap" aria-label="Karte zum Setzen des Pins"></div>
     <p class="hint" id="aWhere">Tippe auf die Karte, um den Pin zu setzen.</p>
     <p class="aerr" id="aErr" role="alert"></p>
@@ -772,67 +786,6 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   let customs=(()=>{try{return JSON.parse(localStorage.getItem(CKEY)||"[]")}catch(e){return []}})();
   function saveCustoms(){rev++;const v=JSON.stringify(customs);try{localStorage.setItem(CKEY,v)}catch(e){}
     if(Prefs)Prefs.set({key:CKEY,value:v}).catch(()=>{})}
-  function coordsFrom(str){
-    if(!str)return null;let m;
-    str=String(str).replace(/&amp;/g,"&").replace(/%2C/gi,",").replace(/%40/g,"@").replace(/%21/g,"!").replace(/%3D/gi,"=").replace(/%3F/gi,"?").replace(/%26/g,"&");
-    try{str=decodeURIComponent(str)}catch(e){}
-    const ok=(a,b)=>Math.abs(a)<=90&&Math.abs(b)<=180&&!(a===0&&b===0);
-    const tries=[/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/,/@(-?\d+\.\d+),(-?\d+\.\d+)/,
-      /[?&](?:q|query|ll|sll|destination|center|markers|daddr|coordinate)=(?:loc:)?(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/i,
-      /geo:(-?\d+\.\d+),(-?\d+\.\d+)/,/staticmap\?center=(-?\d+\.\d+),(-?\d+\.\d+)/];
-    for(const re of tries){if((m=str.match(re))&&ok(+m[1],+m[2]))return {lat:+m[1],lon:+m[2]}}
-    return null;
-  }
-  function nameFrom(str){
-    if(!str)return "";let m;
-    const dec=t=>{let r;try{r=decodeURIComponent(t.replace(/\+/g," "))}catch(e){r=t}return r.replace(/\+/g," ").trim()};
-    if((m=str.match(/\/place\/([^/@?]+)/)))return dec(m[1]);
-    if((m=str.match(/[?&]q=([^&]+)/))&&!/^-?\d+\.\d+,/.test(dec(m[1])))return dec(m[1]).split(",")[0];
-    return "";
-  }
-  const DESK_UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
-  async function fetchText(url){
-    const r=await Http.request({url,method:"GET",responseType:"text",connectTimeout:12000,readTimeout:12000,
-      headers:{"User-Agent":DESK_UA,"Accept-Language":"de-DE,de;q=0.9","Cookie":"CONSENT=YES+cb; SOCS=CAESEwgDEgk0ODE3Nzk3MjQaAmRlIAEaBgiA_LyaBg"}});
-    return {url:r.url||url,body:typeof r.data==="string"?r.data:JSON.stringify(r.data||"")};
-  }
-  async function geocode(q){
-    const ref=pos||mapPos,base=`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(q)}`;
-    const urls=ref?[base+`&bounded=1&viewbox=${(ref.lon-.2).toFixed(4)},${(ref.lat+.15).toFixed(4)},${(ref.lon+.2).toFixed(4)},${(ref.lat-.15).toFixed(4)}`,base]:[base];
-    for(const u of urls){try{const j=await httpJson(u,12000);if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon}}catch(e){}}
-    return null;
-  }
-  // Koordinaten aus einer geladenen Google-Seite: nur verlässliche Stellen (Vorschaubild des Ortes, Ortsmarke)
-  function coordsFromPage(html){
-    if(!html)return null;let m;
-    const ok=(a,b)=>Math.abs(a)<=90&&Math.abs(b)<=180&&!(a===0&&b===0);
-    const tries=[/staticmap\?center=(-?\d+\.\d+)(?:%2C|,)(-?\d+\.\d+)/,/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/];
-    for(const re of tries){if((m=html.match(re))&&ok(+m[1],+m[2]))return {lat:+m[1],lon:+m[2]}}
-    return null;
-  }
-  async function parseMapsLink(raw){
-    const url=(raw.match(/https?:\/\/\S+/)||[raw.trim()])[0];
-    let c=coordsFrom(url),n=nameFrom(url),via="";
-    if(!c&&/^https?:/.test(url)&&Http&&native){
-      try{
-        let r=await fetchText(url);via=(r.url.split("/")[2]||"");
-        c=coordsFrom(r.url)||coordsFromPage(r.body.slice(0,800000));n=n||nameFrom(r.url);
-        if(!c&&/consent\.google|sorry/.test(r.url)){
-          const m=r.url.match(/[?&]continue=([^&]+)/);
-          if(m){const next=decodeURIComponent(m[1]);c=coordsFrom(next);n=n||nameFrom(next);
-            if(!c){r=await fetchText(next);c=coordsFrom(r.url)||coordsFromPage(r.body.slice(0,800000));n=n||nameFrom(r.url)}}
-        }
-      }catch(e){via="nicht erreichbar"}
-    }
-    const pre=raw.split(/https?:\/\//)[0].trim();let addr="";
-    if(pre){const parts=pre.split(/\n|·|\|/).map(x=>x.trim()).filter(Boolean);if(!n)n=parts[0]||"";addr=parts.slice(1).join(", ")}
-    if(!c&&(n||addr)){
-      for(const q of [addr,[n,addr].filter(Boolean).join(", "),n].filter(Boolean)){c=await geocode(q);if(c){c.approx=true;break}}
-    }
-    if(!c&&!(Http&&native)&&/goo\.gl|g\.co/.test(url))throw new Error("Kurzlinks lassen sich nur in der installierten App auslesen");
-    if(!c)throw new Error("Aus dem Link ließ sich kein Ort lesen"+(via?" ("+via+")":""));
-    return {c,n};
-  }
 
 
   function gmapsUrl(p){
@@ -1009,14 +962,15 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     updateGmaps();openLayer("picker");
   }
   $("shopBtn").onclick=()=>{ if(!pos&&!shop&&$("shopName").textContent==="Laden finden"){locate();return} openPicker("track"); };
+  $("mapPickBtn").onclick=()=>startMapPick(pickCtx==="edit"?"edit":"track");
   $("newShop").onclick=()=>{closeLayer("picker");openAdder(false,pickCtx==="edit"?"edit":"pick")};
 
   // ---------- Eintragen & Bewerten ----------
   $("go").onclick=()=>{
     const p=parseFloat(String($("price").value).replace(",","."));
-    const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),
+    const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:whenT(),
       kind,...(fill?{fill}:{}),price:isFinite(p)?Math.round(p*100)/100:null,rating:null,
-      loc:pos?{lat:Math.round(pos.lat*1e5)/1e5,lon:Math.round(pos.lon*1e5)/1e5}:null,
+      loc:pos&&Date.now()-whenT()<36e5?{lat:Math.round(pos.lat*1e5)/1e5,lon:Math.round(pos.lon*1e5)/1e5}:null,
       shop:shop?{id:shop.id||null,name:shop.name,lat:shop.lat??null,lon:shop.lon??null}:null};
     entries.push(e);lastId=e.id;save();render();setShopUI();
     $("price").value="";closeLayer("entry");
@@ -1070,7 +1024,12 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   $("fillClr").onclick=ev=>{ev.stopPropagation();setFill(null,true)};
   function setKind(k){kind=k;try{localStorage.setItem("doener-kind",k)}catch(e){}paintEntry()}
   $("eKind").querySelectorAll("button").forEach(b=>b.onclick=()=>setKind(b.dataset.k));
+  const z2=n=>String(n).padStart(2,"0"),dtl=d=>`${d.getFullYear()}-${z2(d.getMonth()+1)}-${z2(d.getDate())}T${z2(d.getHours())}:${z2(d.getMinutes())}`;
+  let whenOpen="";
+  function whenT(){const v=$("eWhen").value;if(!v||v===whenOpen)return Date.now();const t=new Date(v).getTime();return isFinite(t)&&t<=Date.now()+6e4?t:Date.now()}
+  $("eWhen").addEventListener("change",()=>{$("eHint").hidden=Date.now()-whenT()<36e5});
   $("openEntry").onclick=()=>{
+    whenOpen=dtl(new Date());$("eWhen").value=whenOpen;$("eWhen").max=dtl(new Date()).slice(0,11)+"23:59";$("eHint").hidden=true;
     fillOpen=false;paintEntry();openLayer("entry");
     if(!pos&&!shop&&$("shopName").textContent==="Laden finden")locate();
   };
@@ -1309,6 +1268,10 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     m.addTo(map);markers.push(m);
   }
   function popup(s,visited){
+    if(mapPick){
+      const d=mapPos&&s.lat!=null?fmtDist(dist(mapPos,s)):"";
+      return `<div class="pop"><b>${esc(s.name)}</b>${d?`<div class="m">${d}</div>`:""}<button type="button" class="ppick" data-pick="${esc(String(s.id||""))}" data-name="${esc(s.name)}" data-lat="${s.lat}" data-lon="${s.lon}">Diesen Laden wählen</button></div>`;
+    }
     const meta=[];
     if(visited){meta.push(s.stamm?"Stammlokal":s.visits+"× da");if(s.avg)meta.push("Ø "+num1(s.avg)+" von 5")}
     else meta.push(s.lvl===1?"Vielleicht ein Dönerladen":"Noch nicht probiert");
@@ -1438,7 +1401,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   function openAdder(keep,ctx){
     addCtx=ctx||"map";
-    if(!keep){$("aName").value="";$("aLink").value="";
+    if(!keep){$("aName").value="";
       const p=pos||mapPos;addPos=p?{...p}:null;
       whereText(p?"Pin steht auf deinem Standort – tippe oder ziehe, um ihn zu verschieben.":"Tippe auf die Karte, um den Pin zu setzen.")}
     $("aErr").textContent="";openLayer("adder");initMini();
@@ -1485,23 +1448,13 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     catch(e){whereText("Standort nicht verfügbar – tippe auf die Karte.")}
   };
   function setAddPos(p,label){addPos=p;showTmp();whereText(label+" ("+p.lat.toFixed(5)+", "+p.lon.toFixed(5)+")")}
-  async function readLink(){
-    const v=$("aLink").value.trim();if(!v)return false;
-    $("aErr").textContent="";whereText("Link wird gelesen …");
-    try{const {c,n}=await parseMapsLink(v);const ref=pos||mapPos,far=ref?dist(ref,c):0;
-      setAddPos(c,far>30000?`Achtung: Ort liegt ${Math.round(far/1000)} km entfernt – bitte Pin prüfen`:c.approx?"Ort über die Adresse gefunden – bitte Pin prüfen":"Ort aus dem Link übernommen ✓");
-      if(n&&!$("aName").value.trim())$("aName").value=n;
-      if(mini)mini.jumpTo({center:[c.lon,c.lat],zoom:17});return true}
-    catch(e){whereText(addPos?"Ort gesetzt ✓":"Noch kein Ort gewählt.");$("aErr").textContent=e.message+". Setz den Pin lieber direkt auf der Karte.";return false}
-  }
-  $("aLink").addEventListener("change",readLink);
   $("aSave").onclick=async()=>{
-    if(!addPos&&$("aLink").value.trim())await readLink();
     const name=$("aName").value.trim();
-    if(!addPos){$("aErr").textContent="Bitte setz einen Pin auf der Karte oder füge einen Link ein.";return}
+    if(!addPos){$("aErr").textContent="Bitte setz einen Pin auf der Karte.";return}
     if(!name){$("aErr").textContent="Bitte gib einen Namen ein.";return}
     const c={id:"custom:"+Date.now().toString(36),name,lat:Math.round(addPos.lat*1e6)/1e6,lon:Math.round(addPos.lon*1e6)/1e6,kebab:2};
     customs.push(c);saveCustoms();closeLayer("adder");addPos=null;showTmp();drawMap();
+    if(mapPick){finishMapPick(c);return}
     if(addCtx==="map"){if(map)map.jumpTo({center:[c.lon,c.lat],zoom:16});toast(name+" gespeichert",true)}
     else if(addCtx==="pick"){shop={...c,d:pos?dist(pos,c):null};lastLoc=Date.now();setShopUI();toast(name+" gespeichert und ausgewählt",true)}
     else if(addCtx==="edit"){const e=entries.find(x=>x.id===rateId);
@@ -1516,7 +1469,32 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   $("recenter").onclick=()=>{if(mapPos)map.jumpTo({center:[mapPos.lon,mapPos.lat],zoom:15});refreshMap()};
 
   // ---------- Navigation ----------
+  // ---------- Laden über die Karte wählen (z. B. für Nachträge) ----------
+  let mapPick=null;
+  function startMapPick(ctx){
+    closeLayer("picker");closeLayer("entry");closeLayer("rater");
+    const e=ctx==="edit"?entries.find(x=>x.id===rateId):null;
+    mapPick={ctx,center:e?(e.shop&&e.shop.lat!=null?e.shop:e.loc):null};
+    $("pickBar").hidden=false;$("mapCard").hidden=true;
+    show("map");rev++;
+    setTimeout(()=>{if(map&&mapPick&&mapPick.center)map.jumpTo({center:[mapPick.center.lon,mapPick.center.lat],zoom:15})},80);
+  }
+  function endMapPick(){mapPick=null;$("pickBar").hidden=true;$("mapCard").hidden=false;if(popRef)popRef.remove();rev++;if(map)drawMap()}
+  function finishMapPick(s){
+    const ctx=mapPick&&mapPick.ctx;endMapPick();show("tracker");
+    const sh={id:s.id||null,name:s.name,lat:s.lat??null,lon:s.lon??null};
+    if(ctx==="edit"){const e=entries.find(x=>x.id===rateId);if(e){e.shop=sh;save();render();openRater(e.id,true)}}
+    else{shop={...sh,d:pos&&sh.lat!=null?dist(pos,sh):null};lastLoc=Date.now();setShopUI();openLayer("entry")}
+    toast(s.name+" gewählt",true);
+  }
+  $("pickCancel").onclick=()=>{const ctx=mapPick&&mapPick.ctx;endMapPick();show("tracker");
+    if(ctx==="edit"&&rateId)openRater(rateId,true);else openLayer("entry")};
+  document.addEventListener("click",e=>{
+    const b=e.target.closest&&e.target.closest("[data-pick]");if(!b||!mapPick)return;
+    finishMapPick({id:b.dataset.pick||null,name:b.dataset.name,lat:+b.dataset.lat,lon:+b.dataset.lon});
+  });
   function show(view){
+    if(mapPick&&view!=="map")endMapPick();
     const isMap=view==="map";
     $("viewTracker").hidden=view!=="tracker";$("viewStats").hidden=view!=="stats";$("viewMap").hidden=!isMap;
     $("tabTracker").setAttribute("aria-selected",view==="tracker");$("tabStats").setAttribute("aria-selected",view==="stats");
