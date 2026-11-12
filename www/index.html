@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -19,7 +19,7 @@
   --pattern:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22112%22 height=%22112%22 viewBox=%220 0 112 112%22%3E%3Cg fill=%22%23E3E5DB%22%3E %3Cg transform=%22translate%2812 14%29 rotate%28-14%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2866 22%29 rotate%2832%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Cg transform=%22translate%2836 70%29 rotate%28168%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2880 80%29 rotate%28-28%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Ccircle cx=%2250%22 cy=%2240%22 r=%221.6%22/%3E%3Ccircle cx=%2298%22 cy=%2252%22 r=%221.6%22/%3E%3Ccircle cx=%2216%22 cy=%2296%22 r=%221.6%22/%3E%3C/g%3E%3C/svg%3E");
   --safeT:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));
   --safeB:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));
-  --nav:62px;
+  --nav:68px;
   box-sizing:border-box;color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -36,7 +36,7 @@
   --pattern:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22112%22 height=%22112%22 viewBox=%220 0 112 112%22%3E%3Cg fill=%22%232A2520%22%3E %3Cg transform=%22translate%2812 14%29 rotate%28-14%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2866 22%29 rotate%2832%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Cg transform=%22translate%2836 70%29 rotate%28168%29%22%3E%3Cpath d=%22M1 7 L8 1.4 Q9 .7 10 1.4 L17 7 Q17.7 7.7 17.3 8.6 C15 13.4 3 13.4 .7 8.6 Q.3 7.7 1 7Z%22/%3E%3C/g%3E %3Cg transform=%22translate%2880 80%29 rotate%28-28%29%22%3E%3Crect x=%220%22 y=%220%22 width=%2222%22 height=%228%22 rx=%224%22/%3E%3C/g%3E %3Ccircle cx=%2250%22 cy=%2240%22 r=%221.6%22/%3E%3Ccircle cx=%2298%22 cy=%2252%22 r=%221.6%22/%3E%3Ccircle cx=%2216%22 cy=%2296%22 r=%221.6%22/%3E%3C/g%3E%3C/svg%3E");color-scheme:dark}
 *,*::before,*::after{box-sizing:inherit}
 html,body{height:100%}
-body{margin:0;background:var(--bg) var(--pattern) repeat;background-attachment:fixed;color:var(--ink);user-select:none;-webkit-user-select:none;
+body{margin:0;background:var(--bg);color:var(--ink);user-select:none;-webkit-user-select:none;
   font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.4;
   -webkit-tap-highlight-color:transparent}
 button,input{font:inherit;color:inherit}
@@ -304,9 +304,12 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .log .ft{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--brotHell);color:var(--ink);margin:0 2px;vertical-align:1px}
 .log .ft.veg{background:var(--salatHell);color:var(--salatDunkel)}
 .log .ft.tiny{font-size:9px}
-.rfill{margin-top:4px}
-.rfill .fg{justify-content:center}
-.rfill .fg .fl{text-align:center}
+.rfill{margin-top:2px;text-align:left;border-top:1px solid var(--line)}
+.rfill .filltog{padding:10px 2px}
+.redit .opt{display:inline-block;margin-left:4px;color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 70px);vertical-align:bottom}
+.redit .edit{margin-top:0}
+.rfill .fg{justify-content:flex-start}
+.rfill .fg .fl{text-align:left}
 .rfh{margin:4px 0 0;font-size:15px;font-weight:600;text-align:center}
 /* Kartenmenü: Einstellungen + Legende aufklappbar, Karte bleibt frei */
 .mbtn{position:absolute;z-index:510;right:12px;bottom:128px;width:46px;height:46px;border-radius:50%;border:0;background:var(--card);color:var(--ink);
@@ -344,15 +347,231 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
 .ewhen{margin-top:4px;border-bottom:0;padding:8px 2px}
 .ehint{font-size:13px;color:#9A3E31;margin:0 2px 4px;line-height:1.35}
 .ehint[hidden]{display:none}
+/* Nächster Döner auf der Startseite */
+.near{display:flex;align-items:center;gap:8px;margin-top:10px;background:var(--card);border-radius:16px;padding:6px 6px 6px 4px;box-shadow:0 1px 6px rgba(40,30,20,.08)}
+.near[hidden]{display:none}
+.near .nb{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:0;background:none;color:var(--ink);text-align:left;padding:6px 8px;cursor:pointer;border-radius:12px}
+.near .t{min-width:0;display:flex;flex-direction:column}
+.near .k{font-size:12px;color:var(--muted)}
+.near .v{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.near .m{font-size:13px;color:var(--muted)}
+.near .nr{flex:none;background:#9A3E31;color:#FFF7F2;text-decoration:none;font-weight:700;font-size:15px;padding:11px 16px;border-radius:12px}
+/* Drehspieß als Ladeanzeige */
+.near .spit{display:none;flex:none;margin:-4px -2px -4px -4px}
+.near.loading .spit{display:block}
+.near.loading .npin,.near.loading .nr{display:none}
+.near .spit .turn{animation:spitTurn .8s linear infinite}
+@keyframes spitTurn{to{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.near .spit .turn{animation:none}}
+/* Döner-Fakt des Tages */
+.fact{display:flex;gap:12px;align-items:flex-start;margin-top:10px;background:var(--salatHell);border-radius:16px;padding:12px 14px;border:0;width:100%;text-align:left;color:var(--ink);cursor:pointer}
+.fact .ic{flex:none;width:34px;height:34px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:800;color:var(--salatDunkel);font-size:18px}
+.fact .tx{display:flex;flex-direction:column;min-width:0}
+.fact .k,.fsk{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--salatDunkel)}
+.fact .t{font-size:15px;line-height:1.35;margin-top:2px;font-weight:600}
+.fact .more{font-size:13px;color:var(--muted);margin-top:3px;text-decoration:none}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:#F3DCCF;color:#9A3E31;margin-left:6px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.tag[hidden]{display:none}
+.fsk{margin:0}
+#fsTitle{margin:4px 0 8px}
+.fsx{margin:0;font-size:16px;line-height:1.45}
+.fss{font-size:13px;color:var(--muted);margin:10px 0 0}
+.fss a{color:inherit}
+/* Rangsystem */
+.rankpill{display:flex;align-items:center;gap:8px;margin:-2px auto 4px;border:0;background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px 6px 10px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 1px 6px rgba(40,30,20,.08)}
+.rankpill i{width:12px;height:12px;border-radius:50%;flex:none;background:var(--line)}
+.lf{transform-box:fill-box;transform-origin:0 50%}
+.bd{transform-box:fill-box;transform-origin:50% 50%}
+#wreath.grow .wband,#ruSvg .grow .wband{stroke-dasharray:1;animation:bandIn 1s cubic-bezier(.4,0,.2,1) both}
+@keyframes bandIn{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+#wreath.grow .wguil,#ruSvg .grow .wguil{animation:fadeIn .8s .7s both}
+@keyframes fadeIn{from{opacity:0}}
+#wreath.grow .bd,#ruSvg .grow .bd{animation:leafIn .4s .6s cubic-bezier(.2,1.6,.4,1) both}
+.wglint{stroke-dasharray:.05 .95;animation:glint 5s linear infinite}
+@keyframes glint{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.wglint{animation:none;opacity:0}#wreath.grow .wband,#wreath.grow .wguil,#wreath.grow .bd{animation:none}}
+#wreath.grow .lf,#ruSvg .grow .lf{animation:leafIn .5s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes leafIn{from{transform:scale(0);opacity:0}}
+#wreath.grow .medal,#ruSvg .grow .medal{animation:medalIn .6s .9s cubic-bezier(.2,1.5,.4,1) both;transform-box:fill-box;transform-origin:50% 50%}
+@keyframes medalIn{from{transform:scale(0)}}
+@media (prefers-reduced-motion:reduce){#wreath.grow .lf,#wreath.grow .medal{animation:none}}
+#fw{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3100;display:none}
+.rankup{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(circle at 50% 40%,var(--ruGlow,#C99412) 0%,transparent 58%),#1A1411;animation:ruFade .35s ease both}
+.rankup[hidden]{display:none}
+.rankup.out{animation:ruOut .35s ease both}
+@keyframes ruFade{from{opacity:0}}
+@keyframes ruOut{to{opacity:0}}
+.ruRays{position:absolute;left:50%;top:42%;width:170vmax;height:170vmax;margin:-85vmax 0 0 -85vmax;opacity:.22;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,var(--ruHi,#fff) 0deg 6deg,transparent 6deg 18deg);
+  -webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%);animation:ruSpin 24s linear infinite}
+@keyframes ruSpin{to{transform:rotate(360deg)}}
+.ruBox{position:relative;text-align:center;color:#FFF7F2;width:min(420px,100%);display:flex;flex-direction:column;align-items:center}
+.ruK{margin:0;font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85;animation:ruUp .5s .2s both}
+#ruSvg{width:100%;max-width:400px;height:auto;margin:6px 0 2px;animation:ruPop .7s .1s cubic-bezier(.2,1.5,.4,1) both}
+#ruName{margin:0;font-size:40px;font-weight:800;line-height:1.05;color:var(--ruHi,#fff);animation:ruUp .5s .5s both}
+.ruSub{margin:8px 0 18px;font-size:16px;opacity:.85;animation:ruUp .5s .65s both}
+#ruOk{width:min(280px,100%);animation:ruUp .5s .8s both}
+@keyframes ruPop{from{transform:scale(.3) rotate(-8deg);opacity:0}}
+@keyframes ruUp{from{transform:translateY(14px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.rankup,.ruRays,.ruK,#ruSvg,#ruName,.ruSub,#ruOk{animation:none}}
+/* funkelnde Sterne am Kranz */
+.spk{transform-box:fill-box;transform-origin:50% 50%;animation:twinkle 2.4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1)}}
+.wrays{transform-box:view-box;transform-origin:180px 178px;animation:ruSpin 40s linear infinite}
+@media (prefers-reduced-motion:reduce){.spk,.wrays{animation:none}}
+.rkSub{margin:2px 0 10px;color:var(--muted);font-size:14px}
+.rkList{display:flex;flex-direction:column;gap:6px;max-height:52vh;overflow-y:auto}
+.rkRow{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:var(--bg)}
+.rkRow.cur{outline:2px solid var(--ink)}
+.rkRow i{width:18px;height:18px;border-radius:50%;flex:none}
+.rkRow b{flex:1;font-size:15px}
+.rkRow span{font-size:13px;color:var(--muted);text-align:right}
+.rkRow.done b::after{content:" ✓";color:var(--salatDunkel)}
+/* Tab-Leiste nur mit Symbolen: Karte · Döner · Statistik */
+.tabs button{min-height:52px}
+.tabs #tabTracker{flex:1.2}
+.tabs #tabTracker svg{transition:transform .2s}
+.tabs #tabTracker[aria-selected="true"] svg{transform:scale(1.08)}
+.tabs button[aria-selected="true"]{--tabCut:var(--salatHell)}
+.tabs button{--tabCut:var(--bg)}
+/* Tab-Leiste: schlicht, skandinavisch – dünne Linien-Symbole, kein Schatten, ein Punkt markiert die Auswahl */
+.tabs.nordic{gap:0;align-items:stretch;justify-content:space-around;padding:4px 24px calc(4px + var(--safeB));background:var(--bg);border-top:1px solid var(--line)}
+.tabs.nordic button{flex:1;max-width:120px;min-height:52px;padding:6px 0 10px;border-radius:0;background:none;color:var(--muted);position:relative;
+  display:flex;align-items:center;justify-content:center;transition:color .2s}
+.tabs.nordic button[aria-selected="true"]{background:none;color:var(--ink)}
+.tabs.nordic button::after{content:"";position:absolute;left:50%;bottom:5px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:currentColor;opacity:0;transition:opacity .2s}
+.tabs.nordic button[aria-selected="true"]::after{opacity:1}
+.tabs.nordic button:active svg{transform:scale(.92)}
+.tabs.nordic svg{transition:transform .15s}
+/* Übersichtsdöner umdrehen: Rückseite zeigt den Monat */
+.flip{perspective:1200px;cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none}
+.flipIn{position:relative;max-width:400px;margin:0 auto;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.3,1.25,.4,1)}
+.flip.flipped .flipIn{transform:rotateY(180deg)}
+.flipIn>svg{display:block;width:100%;max-width:none;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flipIn>svg.back{position:absolute;inset:0;height:100%;transform:rotateY(180deg)}
+.back .bk{filter:saturate(.85) brightness(.96)}
+.flip:focus-visible .flipIn{outline:2px solid var(--ink);outline-offset:4px;border-radius:12px}
+@media (prefers-reduced-motion:reduce){.flipIn{transition:none}}
+/* Döner-Titel mit Abzeichen */
+.start .hero{position:relative}
+.badge{position:absolute;z-index:3;right:-6px;top:-4px;width:96px;height:96px;border:0;background:none;padding:0;cursor:pointer;filter:drop-shadow(0 4px 8px rgba(40,30,20,.25));
+  transform:rotate(10deg);-webkit-tap-highlight-color:transparent}
+.badge[hidden]{display:none}
+.badge svg{width:100%;height:100%;display:block}
+.badge.pop{animation:badgePop .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes badgePop{from{transform:rotate(-30deg) scale(.2)}}
+.titlebar{display:flex;flex-direction:column;align-items:center;gap:5px;width:100%;margin:8px 0 8px;border:0;background:none;padding:2px 0;cursor:pointer;color:var(--ink)}
+.titlebar .tn{font-size:22px;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+.titlebar .tbar{width:min(240px,70%);height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+.titlebar .tbar i{display:block;height:100%;border-radius:4px;transition:width .6s}
+.titlebar .ts{font-size:13.5px;color:var(--muted);font-weight:600}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 8px;padding:4px 2px 8px}
+.bcell{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.bcell svg{width:78px;height:78px}
+.bcell b{font-size:13px;line-height:1.2}
+.bcell small{font-size:11.5px;color:var(--muted)}
+.bcell.locked b{color:var(--muted)}
+.bcell.locked svg{opacity:.7}
+.bcell.cur svg{filter:drop-shadow(0 0 10px rgba(201,148,18,.6))}
+.shareT{width:100%;margin-top:6px;color:var(--ink);border-radius:12px;padding:12px;font-weight:700;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.badge.pop{animation:none}}
+/* Lorbeerkranz-Effekte */
+.flick{animation:flick 1.8s ease-in-out infinite}
+@keyframes flick{50%{opacity:.78}}
+.ember{animation:ember 2.6s ease-out infinite;opacity:0}
+@keyframes ember{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(-46px)}}
+.prism{animation:prism 8s linear infinite}
+@keyframes prism{to{filter:hue-rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.flick,.ember,.prism{animation:none}.ember{opacity:.8}}
+/* Design „Zielflagge“: Rennsport-Look, dezentes Schachbrett über den ganzen Hintergrund */
+:root[data-theme="light"]{--bg:#F4F4F2;--card:#FFFFFF;--ink:#111111;--muted:#6B6B6B;--line:#DDDDDA;--salatHell:#FFFFFF}
+body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242,.78) 45%,rgba(244,244,242,.9) 100%),
+    conic-gradient(#E6E6E3 25%,#F4F4F2 0 50%,#E6E6E3 0 75%,#F4F4F2 0) 0 0/36px 36px;background-attachment:fixed}
+.go{background:#111;color:#fff;border-radius:10px;letter-spacing:.02em}
+.near{border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1.5px solid #111}
+/* leichte, schwebende Leiste unten */
+.tabs.nordic{left:50%;right:auto;bottom:calc(10px + var(--safeB));transform:translateX(-50%);width:min(250px,70vw);padding:0 10px;gap:0;
+  background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(17,17,17,.08);border-radius:999px;
+  box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.tabs.nordic button{min-height:46px;padding:0 0 6px;color:#9A9A96}
+.tabs.nordic button[aria-selected="true"]{color:#111}
+.tabs.nordic button::after{bottom:6px;background:#D7261E}
+.tabs.nordic svg{width:22px;height:22px}
+.tabs.nordic #tabTracker svg{width:26px;height:22px}
+/* Fakt des Tages als kleiner Knopf unten links am Übersichtsdöner */
+.start .hero{position:relative}
+.factbtn{position:absolute;z-index:4;left:4px;bottom:6px;width:40px;height:40px;border-radius:50%;border:1.5px solid #111;background:#fff;color:#111;
+  display:grid;place-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.factbtn .fdot{position:absolute;top:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:#D7261E;box-shadow:0 0 0 2px #fff;display:none}
+.factbtn.new .fdot{display:block}
+.factbtn.new::before{content:"";position:absolute;inset:-1.5px;border-radius:50%;border:1.5px solid #D7261E;animation:fping 3.2s ease-out infinite}
+@keyframes fping{0%{transform:scale(1);opacity:.7}45%,100%{transform:scale(1.55);opacity:0}}
+.factbtn[aria-expanded="true"]{background:#111;color:#fff}
+.factpop{position:absolute;z-index:5;left:0;bottom:56px;width:min(290px,82%);background:#fff;color:#111;border:1.5px solid #111;border-radius:12px;
+  padding:12px 14px 10px;box-shadow:0 8px 24px rgba(0,0,0,.14);text-align:left;transform-origin:20px 100%;animation:fpop .25s cubic-bezier(.2,1.4,.4,1) both}
+.factpop[hidden]{display:none}
+.factpop::after{content:"";position:absolute;left:14px;bottom:-9px;width:14px;height:14px;background:#fff;border-right:1.5px solid #111;border-bottom:1.5px solid #111;transform:rotate(45deg)}
+.factpop .k{display:block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#D7261E}
+.factpop .t{display:block;font-size:16px;font-weight:800;line-height:1.25;margin:3px 0 4px}
+.factpop .more{border:0;background:none;padding:2px 0;font-size:14px;font-weight:700;color:#111;text-decoration:underline;cursor:pointer}
+@keyframes fpop{from{transform:scale(.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.factbtn.new::before,.factpop{animation:none}}
+/* Döner-Quiz in der Sprechblase */
+.factpop{width:min(320px,88%)}
+.qsc{color:var(--muted);font-weight:600;letter-spacing:0;text-transform:none}
+.qopts{display:flex;flex-direction:column;gap:6px;margin:6px 0 4px}
+.qopt{border:1.5px solid #111;background:#fff;color:#111;border-radius:8px;padding:8px 10px;font:600 14px "Bricolage Grotesque",system-ui,sans-serif;text-align:left;cursor:pointer}
+.qopt:active{transform:scale(.98)}
+.qopt:disabled{cursor:default;opacity:.55}
+.qopt.ok{opacity:1;background:#111;color:#fff}
+.qopt.no{opacity:1;border-color:#D7261E;color:#D7261E;text-decoration:line-through}
+.qres{margin:4px 0 2px;font-size:13.5px;line-height:1.35}
+.qres[hidden],.factpop .more[hidden]{display:none}
+/* Hilfe */
+.helpbtn{position:absolute;z-index:6;right:14px;top:calc(var(--safeT) + 10px);width:34px;height:34px;border-radius:50%;border:1px solid rgba(17,17,17,.12);
+  background:rgba(255,255,255,.8);color:#555;display:grid;place-items:center;cursor:pointer;padding:0}
+.helpbtn:active{transform:scale(.94)}
+.hList{max-height:58vh;overflow-y:auto;margin-top:4px}
+.hItem{border-bottom:1px solid var(--line)}
+.hItem summary{list-style:none;cursor:pointer;padding:12px 2px;font-weight:700;font-size:15.5px;display:flex;justify-content:space-between;align-items:center}
+.hItem summary::-webkit-details-marker{display:none}
+.hItem summary::after{content:"+";font-size:20px;font-weight:400;color:var(--muted)}
+.hItem[open] summary::after{content:"–"}
+.hItem p{margin:0 2px 12px;font-size:14.5px;line-height:1.45;color:var(--ink)}
+/* schwebende Leiste: Startbild geht bis unten, Hinweis „Verlauf“ über der Leiste */
+.start{min-height:calc(100svh - var(--safeB) - var(--safeT) - 10px)}
+.start .down{bottom:calc(var(--nav) + 4px)}
+#viewMap{bottom:0}
+.recenter{bottom:calc(var(--nav) + 12px)}
+.addfab{bottom:calc(var(--nav) + 70px)}
+.mbtn{bottom:calc(var(--nav) + 128px)}
+.maplibregl-ctrl-bottom-right{bottom:calc(var(--nav) + 180px)}
+.mpanel{bottom:calc(var(--nav) + 12px)}
+.gmaps.float{bottom:calc(var(--nav) + 12px)}
+/* Orte in der Statistik */
+.pk{grid-template-columns:repeat(3,1fr)}
+.pk .kpi b{font-size:19px;white-space:nowrap}
+.pk .kpi small{font-size:11.5px;line-height:1.25}
+.cities li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.cities li:last-child{border-bottom:0}
+.cities .r{width:18px;color:var(--muted);font-weight:700;font-size:13px}
+.cities .n{flex:1;min-width:0;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cities .cb{width:80px;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.cities .cb i{display:block;height:100%;background:#111;border-radius:3px}
+.cities .v{width:26px;text-align:right;font-weight:700}
+#placeNote{margin-top:8px}
 </style>
 </head>
 <body>
 <div id="viewTracker">
   <main>
+    <button class="helpbtn" id="helpBtn" type="button" aria-label="So funktioniert's" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.5"/><circle cx="12" cy="7.6" r=".9" fill="currentColor" stroke="none"/></svg></button>
     <section class="start">
     <section class="hero" aria-live="polite">
-      <svg viewBox="0 44 360 252" role="img" aria-labelledby="heroLabel">
-        <title id="heroLabel">Döner und Dürüm diesen Monat</title>
+      <div class="flip" id="heroFlip" role="button" tabindex="0" aria-label="Döner umdrehen: Zahl dieses Monats" aria-pressed="false"><div class="flipIn"><svg id="heroSvg" viewBox="0 44 360 252" role="img" aria-labelledby="heroLabel">
+        <title id="heroLabel">Döner und Dürüm insgesamt</title>
+        <g id="wreath"></g>
         <path d="M9.3 177.6 L25.1 167.8 L40.9 158.0 L56.7 148.2 L72.5 138.4 L88.3 128.6 L104.1 118.8 L119.9 109.0 L135.7 99.2 L151.5 89.4 L167.3 79.6 L192.7 79.6 L208.5 89.4 L224.3 99.2 L240.1 109.0 L255.9 118.8 L271.7 128.6 L287.5 138.4 L303.3 148.2 L319.1 158.0 L334.9 167.8 L350.7 177.6 L338 198 L22 198Z" fill="#8DAA7B"/>
 <circle cx="9.3" cy="177.6" r="13.0" fill="#9DB98B"/>
 <circle cx="15.9" cy="170.5" r="15.4" fill="#8DAA7B"/>
@@ -436,10 +655,38 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
         <text class="num" id="mCount" x="180" y="208" text-anchor="middle">0</text>
         <text class="mon" id="mLabel" x="180" y="232" text-anchor="middle">im November</text>
         <text class="spl" id="mSplit" x="180" y="250" text-anchor="middle"></text>
-      </svg>
+      </svg><svg id="heroBack" class="back" aria-hidden="true"></svg></div></div>
+    <button class="factbtn" id="factBtn" type="button" aria-label="Döner-Quiz" aria-expanded="false" aria-controls="factPop"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 9.2a2.9 2.9 0 1 1 4.3 2.5c-.9.5-1.5 1.1-1.5 2.1v.6"/><circle cx="12" cy="17.6" r=".9" fill="currentColor" stroke="none"/></svg><span class="fdot"></span></button>
+      <div class="factpop" id="factPop" role="dialog" aria-label="Döner-Quiz" hidden><span class="k">Döner-Quiz<span class="qsc" id="qScore"></span></span><span class="t" id="qQuestion"></span><div class="qopts" id="qOpts"></div><p class="qres" id="qRes" hidden></p><button type="button" class="more" id="factCard" hidden>Mehr dazu ›</button></div>
     </section>
 
+    <button class="titlebar" id="titleBar" type="button" aria-haspopup="dialog"><span class="tn" id="titleName"></span><span class="tbar"><i id="titleProg"></i></span><span class="ts" id="titleSub"></span></button>
     <button class="go big" id="openEntry" type="button">Döner eintragen</button>
+    <div class="near" id="nearCard" hidden>
+      <button class="nb" id="nearOpen" type="button" aria-label="Nächsten Döner auf der Karte zeigen">
+        <svg class="npin" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.6 7-12.5A7 7 0 0 0 5 9.5C5 14.4 12 22 12 22z" fill="var(--tomate)"/><circle cx="12" cy="9.5" r="2.6" fill="#fff"/></svg>
+        <svg class="spit" width="34" height="45" viewBox="0 0 30 40" aria-hidden="true">
+          <defs>
+            <clipPath id="spitCone"><path d="M6 6.5 Q15 4.5 24 6.5 L20.5 31 Q15 32.5 9.5 31 Z"/></clipPath>
+            <linearGradient id="spitShade" x1="0" x2="1"><stop offset="0" stop-color="#2F2622" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#2F2622" stop-opacity=".5"/></linearGradient>
+          </defs>
+          <rect x="14" y="1" width="2" height="38" rx="1" fill="#8E8178"/>
+          <g clip-path="url(#spitCone)">
+            <rect x="0" y="0" width="30" height="40" fill="#8C5634"/>
+            <g class="turn">
+              <path d="M-14 4 l3 30 h2.4 l-3-30z M-8 4 l3 30 h2.4 l-3-30z M-2 4 l3 30 h2.4 l-3-30z M4 4 l3 30 h2.4 l-3-30z M10 4 l3 30 h2.4 l-3-30z M16 4 l3 30 h2.4 l-3-30z M22 4 l3 30 h2.4 l-3-30z M28 4 l3 30 h2.4 l-3-30z" fill="#B57A4B"/>
+              <path d="M-11 4 l3 30 h1 l-3-30z M-5 4 l3 30 h1 l-3-30z M1 4 l3 30 h1 l-3-30z M7 4 l3 30 h1 l-3-30z M13 4 l3 30 h1 l-3-30z M19 4 l3 30 h1 l-3-30z M25 4 l3 30 h1 l-3-30z" fill="#6E3F22"/>
+            </g>
+            <path d="M0 12.5 H30 M0 19 H30 M0 25.5 H30" stroke="#6E3F22" stroke-width=".8" opacity=".55"/>
+            <rect x="0" y="0" width="30" height="40" fill="url(#spitShade)"/>
+          </g>
+          <ellipse cx="15" cy="6" rx="9.5" ry="2" fill="#A9A098"/>
+          <ellipse cx="15" cy="33.5" rx="8" ry="1.8" fill="#A9A098"/>
+        </svg>
+        <span class="t"><span class="k">Nächster Döner</span><span class="v" id="nearName"></span><span class="m" id="nearMeta"></span></span>
+      </button>
+      <a class="nr" id="nearRoute" href="#" target="_blank" rel="noopener">Route</a>
+    </div>
     <p class="sub" id="mSub"></p>
     <button class="down" id="toLog" type="button">Verlauf<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </section>
@@ -468,6 +715,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       <section class="card"><h3>Bewertungen</h3><div id="chRate"></div></section>
       <section class="card"><h3>Rekorde</h3><ul class="facts" id="facts"></ul></section>
       <section class="card"><h3>Meistbesucht</h3><ul class="top" id="top" style="margin-top:8px"></ul><p class="empty" id="topEmpty">Ab 3 Besuchen wird ein Laden zum Stammlokal.</p></section>
+      <section class="card" id="cardPlaces"><h3>Orte</h3><div class="kpis pk" id="placeKpis"></div><ul class="top cities" id="cityList" style="margin-top:8px"></ul><p class="cap" id="placeNote" hidden></p></section>
       <section class="card" id="cardBest"><h3>Bestbewertete Läden</h3><ul class="top" id="bestShops" style="margin-top:8px"></ul></section>
     </div>
     <section class="card" id="cardHidden" hidden><h3>Ausgeblendete Läden</h3><p class="cap">Diese Läden zeigt die App auf der Karte und bei der Ladensuche nicht mehr an.</p><ul class="hid" id="hiddenList"></ul></section>
@@ -495,10 +743,10 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   <button class="recenter" id="recenter" type="button" aria-label="Auf meinen Standort zentrieren"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="var(--ink)"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="var(--ink)" stroke-width="2"/></svg></button>
 </div>
 
-<nav class="tabs" role="tablist">
-  <button type="button" role="tab" id="tabTracker" aria-selected="true"><svg width="24" height="22" viewBox="0 0 48 46" aria-hidden="true"><circle cx="10" cy="22" r="5.5" fill="currentColor" opacity=".4"/><circle cx="17" cy="15" r="5.5" fill="currentColor" opacity=".4"/><circle cx="31" cy="15" r="5.5" fill="currentColor" opacity=".4"/><circle cx="38" cy="22" r="5.5" fill="currentColor" opacity=".4"/><path d="M3 26 L22 10 Q24 8.5 26 10 L45 26 Q46.5 27.5 45.5 29.5 C40 44 8 44 2.5 29.5 Q1.5 27.5 3 26Z" fill="currentColor"/></svg>Tracker</button>
-  <button type="button" role="tab" id="tabStats" aria-selected="false"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="12" width="4.5" height="9" rx="1.5" fill="currentColor"/><rect x="9.75" y="4" width="4.5" height="17" rx="1.5" fill="currentColor"/><rect x="16.5" y="8" width="4.5" height="13" rx="1.5" fill="currentColor"/></svg>Statistik</button>
-  <button type="button" role="tab" id="tabMap" aria-selected="false"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 3v15M15 6v15" stroke="currentColor" stroke-width="2"/></svg>Karte</button>
+<nav class="tabs nordic" role="tablist" aria-label="Ansichten">
+  <button type="button" role="tab" id="tabMap" aria-selected="false" aria-label="Karte" title="Karte"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M3.5 6.5 9 4l6 2.5 5.5-2.5v13.5L15 20l-6-2.5-5.5 2.5z"/><path d="M9 4v13.5M15 6.5V20"/></svg></button>
+  <button type="button" role="tab" id="tabTracker" aria-selected="true" aria-label="Döner-Tracker" title="Döner-Tracker"><svg width="30" height="24" viewBox="0 0 30 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M3 13.5 L14 5 Q15 4.3 16 5 L27 13.5 Q27.8 14.6 27 16 C24 21.5 6 21.5 3 16 Q2.2 14.6 3 13.5Z"/><path d="M4.5 11.2 q1.6-2.6 3.6-1.4 q1.4-2.6 3.4-1.3 q1.2-2.4 3.5-1.6 q2.3-.8 3.5 1.6 q2-1.3 3.4 1.3 q2-1.2 3.6 1.4"/><path d="M8 14.6 L15 9.6 L22 14.6"/></svg></button>
+  <button type="button" role="tab" id="tabStats" aria-selected="false" aria-label="Statistik" title="Statistik"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 20V12M12 20V5M19 20v-9M3 20.5h18"/></svg></button>
 </nav>
 
 <div class="layer" id="entry" role="dialog" aria-modal="true" aria-labelledby="eTitle">
@@ -533,6 +781,47 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   </div>
 </div>
 
+<div class="layer" id="helpSheet" role="dialog" aria-modal="true" aria-labelledby="hTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet">
+    <h3 id="hTitle">So funktioniert's</h3>
+    <div class="hList"><details class="hItem" open><summary>Döner eintragen</summary><p>Tippe auf „Döner eintragen“. Laden, Döner oder Dürüm und Preis ausfüllen, fertig. Die Füllung (z. B. Halloumi, Seitan) ist optional und eingeklappt. Danach kannst du den Döner mit 1 bis 5 Döner-Symbolen bewerten.</p></details><details class="hItem"><summary>Nachtragen und Ändern</summary><p>Für einen späteren Eintrag „Wann“ auf die richtige Zeit stellen. Den Laden wählst du über „ändern“, auch direkt auf der Karte. Einen Eintrag im Verlauf antippen, um ihn zu bewerten, zu ändern oder zu löschen.</p></details><details class="hItem"><summary>Übersichtsdöner</summary><p>Die große Zahl zeigt alle Döner seit Beginn. Antippen dreht den Döner um: Auf der Rückseite steht der aktuelle Monat.</p></details><details class="hItem"><summary>Titel und Siegerkranz</summary><p>Pro Jahr gibt es alle 5 Döner einen neuen Titel und alle 15 Döner einen edleren Siegerkranz. Höhere Titel bleiben geheim, bis du sie erreichst. Tippe auf deinen Titel für die Vitrine und zum Teilen. Am 1. Januar beginnt alles neu.</p></details><details class="hItem"><summary>Döner-Quiz</summary><p>Unten links am Übersichtsdöner wartet nach jedem neuen Döner eine Quizfrage. Ein kleiner roter Punkt zeigt, wenn eine neue Frage da ist. „Mehr dazu“ zeigt den Fakt mit Quelle.</p></details><details class="hItem"><summary>Nächster Döner</summary><p>Unter dem Eintragen-Knopf steht der nächste Döner in deiner Nähe. „Route“ öffnet die Navigation, Antippen zeigt ihn auf der Karte.</p></details><details class="hItem"><summary>Karte</summary><p>Rote Punkte sind sichere Döner, hohle Punkte „vielleicht Döner“. Laden antippen: Route, ausblenden oder als Döner bestätigen. Lange auf die Karte drücken trägt einen neuen Laden ein. Im Menü (Ebenen-Symbol) kannst du die Gegend aktualisieren.</p></details><details class="hItem"><summary>Statistik</summary><p>Ausgaben, Durchschnittspreis, Bewertungen, Lieblingsläden und mehr, für 30 Tage, das Jahr oder alles.</p></details><details class="hItem"><summary>Deine Daten</summary><p>Alle Einträge bleiben auf deinem Handy. Bei einem Update die neue Version einfach über die alte installieren, nicht deinstallieren.</p></details></div>
+    <div class="arow"><button type="button" class="prim" data-close>Alles klar</button></div>
+  </div>
+</div>
+
+<div class="layer" id="rankSheet" role="dialog" aria-modal="true" aria-labelledby="rkTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet">
+    <h3 id="rkTitle">Dein Döner-Rang</h3>
+    <p class="rkSub" id="rkSub"></p>
+    <div class="rkList" id="rkList"></div>
+    <div class="arow"><button type="button" class="prim" data-close>Schließen</button></div>
+  </div>
+</div>
+<div class="rankup" id="rankUp" role="dialog" aria-modal="true" aria-labelledby="ruName" hidden>
+  <div class="ruRays" id="ruRays" aria-hidden="true"></div>
+  <div class="ruBox">
+    <p class="ruK">Neuer Titel!</p>
+    <svg id="ruSvg" viewBox="-70 -24 500 420" aria-hidden="true"></svg>
+    <h2 id="ruName"></h2>
+    <p class="ruSub" id="ruSub"></p>
+    <button class="go big" id="ruOk" type="button">Weiter</button>
+  </div>
+</div>
+<canvas id="fw" aria-hidden="true"></canvas>
+
+<div class="layer" id="factSheet" role="dialog" aria-modal="true" aria-labelledby="fsTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet">
+    <p class="fsk" id="fsCat"></p>
+    <h3 id="fsTitle"></h3>
+    <p class="fsx" id="fsText"></p>
+    <p class="fss">Quelle: <a id="fsSrc" href="#" target="_blank" rel="noopener"></a></p>
+    <div class="arow"><button type="button" class="ghost" id="fsNext" style="color:var(--ink)">Noch ein Fakt</button><button type="button" class="prim" data-close>Schließen</button></div>
+  </div>
+</div>
+
 <div class="layer" id="picker" role="dialog" aria-modal="true" aria-labelledby="pTitle">
   <div class="scrim" data-close></div>
   <div class="sheet">
@@ -555,11 +844,26 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     </div>
     <div class="stars" id="stars"></div>
     <p class="rlabel" id="rLabel"></p>
-    <div class="rfill"><p class="rfh">Füllung</p><div id="rChips"></div></div>
+    <div class="rfill">
+      <button class="filltog" id="rFillTog" type="button" aria-expanded="false" aria-controls="rFillPanel">
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Füllung <span class="val" id="rFillVal"></span><span class="opt" id="rFillOpt">angeben (optional)</span></span>
+        <span class="clr" id="rFillClr" role="button" aria-label="Füllung entfernen" hidden>✕</span>
+      </button>
+      <div class="fillpanel" id="rFillPanel"><div id="rChips"></div></div>
+    </div>
+    <div class="rfill redit">
+      <button class="filltog" id="rEditTog" type="button" aria-expanded="false" aria-controls="rEditPanel">
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Details <span class="opt" id="rEditSum"></span></span>
+      </button>
+      <div class="fillpanel" id="rEditPanel"><div>
     <div class="edit">
       <label class="erow"><span>Wann</span><input type="datetime-local" id="rWhen"></label>
       <label class="erow"><span>Preis</span><span class="eprice"><input id="rPrice" type="text" inputmode="decimal" placeholder="–"> €</span></label>
       <div class="erow"><span>Laden</span><button type="button" class="eshop" id="rShop">Ohne Laden</button></div>
+    </div>
+      </div></div>
     </div>
     <div class="arow"><button type="button" class="ghost" id="rDel">Löschen</button><button type="button" class="prim skip" data-close>Fertig</button></div>
   </div>
@@ -890,10 +1194,339 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
       without:["Ohne Laden","Tippen, um einen Laden zu wählen"]}[state]||["Laden finden","Tippen, um den Standort zu nutzen"];
     n.textContent=T[0];m.textContent=T[1];
   }
+  // ---------- Döner-Titel: pro Jahr, alle 10 Döner ein neuer Titel mit eigenem Abzeichen ----------
+  const TITLES=[
+    {n:"Soßen-Rookie",min:5,c:"#D06A4E",ic:"drop"},
+    {n:"Zwiebel-Fan",min:10,c:"#8E5A9E",ic:"onion"},
+    {n:"Salat-Talent",min:15,c:"#5E8F3E",ic:"leaf"},
+    {n:"Soßen-Ass",min:20,c:"#C9921F",ic:"sauce"},
+    {n:"Fladenbrot-Crack",min:25,c:"#D08A2E",ic:"bolt"},
+    {n:"Spieß-Genie",min:30,c:"#9A3E31",ic:"spit"},
+    {n:"Knoblauch-Kommando",min:35,c:"#7B8C9E",ic:"garlic"},
+    {n:"Dürüm-Star",min:40,c:"#3E8E5E",ic:"wrap"},
+    {n:"Imbiss-Insider",min:45,c:"#2E5BB8",ic:"key"},
+    {n:"Schärfe-Profi",min:50,c:"#C0392B",ic:"chili"},
+    {n:"Ayran-VIP",min:55,c:"#3A8FB7",ic:"cup"},
+    {n:"Kebap-Kanone",min:60,c:"#1F4E79",ic:"anchor"},
+    {n:"Tresen-Urgestein",min:65,c:"#5A4636",ic:"dumbbell"},
+    {n:"Drehspieß-Phänomen",min:70,c:"#B4462F",ic:"spin"},
+    {n:"Grill-Instanz",min:75,c:"#8C2F39",ic:"shield"},
+    {n:"Döner-Koryphäe",min:80,c:"#6B3FA0",ic:"hat"},
+    {n:"Imbiss-Elite",min:85,c:"#4B2E83",ic:"laurel"},
+    {n:"Döner-Legende",min:90,c:"#1E6F6A",ic:"star"},
+    {n:"Döner-Ikone",min:95,c:"#2C7FB8",ic:"gem"},
+    {n:"Döner-Majestät",min:100,c:"#C99412",ic:"crown"}
+  ];
+  const yearOf=()=>new Date().getFullYear();
+  const yearCount=()=>{const y=yearOf();return entries.filter(e=>new Date(e.t).getFullYear()===y).length};
+  const titleIdx=n=>{let r=-1;TITLES.forEach((t,k)=>{if(n>=t.min)r=k});return r};
+  const ICONS={
+    drop:'<path d="M0 -24 C10 -10 16 0 16 8 A16 16 0 0 1 -16 8 C-16 0 -10 -10 0 -24Z"/><path d="M-7 6 a7 7 0 0 0 7 7" fill="none" stroke="var(--bc)" stroke-width="3" stroke-linecap="round"/>',
+    onion:'<path d="M0 -24 C4 -16 18 -6 18 6 A18 16 0 0 1 -18 6 C-18 -6 -4 -16 0 -24Z"/><path d="M0 -14 C-8 -6 -9 6 0 18 M0 -14 C8 -6 9 6 0 18" fill="none" stroke="var(--bc)" stroke-width="2.2"/><path d="M-4 20 l-2 5 M0 21 v5 M4 20 l2 5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>',
+    leaf:'<path d="M-18 18 C-20 -6 -2 -22 20 -22 C20 0 6 18 -18 18Z"/><path d="M-14 14 L12 -14" fill="none" stroke="var(--bc)" stroke-width="2.6" stroke-linecap="round"/>',
+    bolt:'<path d="M6 -26 L-14 4 H0 L-6 26 L16 -6 H2Z"/>',
+    garlic:'<path d="M0 -24 C2 -18 16 -8 16 6 C16 16 8 20 0 20 C-8 20 -16 16 -16 6 C-16 -8 -2 -18 0 -24Z"/><path d="M0 -12 C-6 -2 -6 10 0 20 M0 -12 C6 -2 6 10 0 20" fill="none" stroke="var(--bc)" stroke-width="2.2"/>',
+    cup:'<path d="M-14 -16 H14 L10 20 H-10Z"/><path d="M-12 -6 H12" stroke="var(--bc)" stroke-width="2.4"/><path d="M4 -16 L10 -28" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
+    dumbbell:'<rect x="-14" y="-3" width="28" height="6" rx="3"/><rect x="-24" y="-12" width="8" height="24" rx="3"/><rect x="16" y="-12" width="8" height="24" rx="3"/><rect x="-29" y="-7" width="5" height="14" rx="2"/><rect x="24" y="-7" width="5" height="14" rx="2"/>',
+    spin:'<path d="M-18 -4 A18 18 0 0 1 14 -12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M18 4 A18 18 0 0 1 -14 12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M10 -20 l10 6 -10 6z M-10 20 l-10 -6 10 -6z"/><rect x="-4" y="-10" width="8" height="20" rx="3"/>',
+    shield:'<path d="M0 -24 L18 -16 V0 C18 12 8 20 0 24 C-8 20 -18 12 -18 0 V-16Z"/><path d="M0 -14 V14 M-10 -2 H10" stroke="var(--bc)" stroke-width="3" stroke-linecap="round"/>',
+    laurel:'<path d="M-4 22 C-20 14 -24 -4 -14 -20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M4 22 C20 14 24 -4 14 -20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><ellipse cx="-20" cy="6" rx="3.5" ry="7" transform="rotate(-30 -20 6)"/><ellipse cx="-19" cy="-8" rx="3.5" ry="7" transform="rotate(10 -19 -8)"/><ellipse cx="-10" cy="16" rx="3.5" ry="7" transform="rotate(-70 -10 16)"/><ellipse cx="20" cy="6" rx="3.5" ry="7" transform="rotate(30 20 6)"/><ellipse cx="19" cy="-8" rx="3.5" ry="7" transform="rotate(-10 19 -8)"/><ellipse cx="10" cy="16" rx="3.5" ry="7" transform="rotate(70 10 16)"/>',
+    star:'<path d="M0 -24 L6.5 -8 L24 -7 L10.5 4 L15 21 L0 12 L-15 21 L-10.5 4 L-24 -7 L-6.5 -8Z"/>',
+    gem:'<path d="M-20 -6 L-11 -18 H11 L20 -6 L0 22Z"/><path d="M-20 -6 H20 M-11 -18 L-6 -6 L0 22 L6 -6 L11 -18 M-6 -6 L0 -18 L6 -6" fill="none" stroke="var(--bc)" stroke-width="1.8"/>',
+    steps:'<ellipse cx="-9" cy="4" rx="6" ry="10" transform="rotate(-12 -9 4)"/><ellipse cx="9" cy="-5" rx="6" ry="10" transform="rotate(12 9 -5)"/><circle cx="-12" cy="-10" r="2.4"/><circle cx="-6" cy="-11" r="2.4"/><circle cx="6" cy="-20" r="2.4"/><circle cx="12" cy="-19" r="2.4"/>',
+    heart:'<path d="M0 16 C-22 2 -18 -16 -8 -16 C-3 -16 0 -12 0 -9 C0 -12 3 -16 8 -16 C18 -16 22 2 0 16Z"/>',
+    sauce:'<path d="M-4 -24 h8 l2 8 h-12z"/><rect x="-10" y="-16" width="20" height="36" rx="6"/><rect x="-6" y="-4" width="12" height="12" rx="2" fill="var(--bc)"/>',
+    spit:'<path d="M0 -26 V26" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M-14 -16 Q0 -20 14 -16 L9 16 Q0 19 -9 16Z"/><path d="M-11 -8 h22 M-10 0 h20 M-9 8 h18" stroke="var(--bc)" stroke-width="2" stroke-linecap="round"/>',
+    wrap:'<rect x="-11" y="-22" width="22" height="44" rx="11" transform="rotate(-25)"/><path d="M-4 -14 q8 4 0 8 q-8 4 0 8 q8 4 0 8" fill="none" stroke="var(--bc)" stroke-width="2.4" stroke-linecap="round" transform="rotate(-25)"/>',
+    key:'<circle cx="-10" cy="-8" r="10"/><circle cx="-10" cy="-8" r="4" fill="var(--bc)"/><path d="M-2 0 L18 20 M10 12 l5 -5 M14 16 l4 -4" stroke="#fff" stroke-width="5" stroke-linecap="round"/>',
+    chili:'<path d="M-16 -8 C-10 -16 4 -14 10 -6 C16 2 14 16 2 20 C10 10 2 0 -6 -2 C-12 -3 -16 -4 -16 -8Z"/><path d="M-12 -12 q-2 -8 4 -12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
+    anchor:'<circle cx="0" cy="-18" r="5" fill="none" stroke="#fff" stroke-width="3.5"/><path d="M0 -13 V20 M-10 -5 H10 M-18 6 Q-14 20 0 20 Q14 20 18 6" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M-21 9 l3 -6 4 5z M21 9 l-3 -6 -4 5z"/>',
+    hat:'<rect x="-13" y="-22" width="26" height="30" rx="3"/><rect x="-22" y="6" width="44" height="7" rx="3.5"/><rect x="-13" y="-2" width="26" height="5" fill="var(--bc)"/>',
+    crown:'<path d="M-20 12 L-23 -12 L-10 -2 L0 -18 L10 -2 L23 -12 L20 12Z"/><rect x="-20" y="14" width="40" height="7" rx="3"/><circle cx="0" cy="-20" r="3"/><circle cx="-23" cy="-14" r="3"/><circle cx="23" cy="-14" r="3"/>'
+  };
+  // Abzeichen wie ein gestickter Aufnäher
+  function badgeSvg(k,locked){
+    if(locked)return `<g><circle cx="60" cy="60" r="50" fill="#B9AFA6"/><circle cx="60" cy="60" r="43" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 3.2" opacity=".8"/>
+      <text x="60" y="78" text-anchor="middle" font-size="52" font-weight="800" fill="#fff" font-family="Bricolage Grotesque,system-ui,sans-serif">?</text></g>`;
+    const t=TITLES[k],c=t.c,gold=k===TITLES.length-1;
+    let rays="";if(gold){for(let a=0;a<360;a+=15)rays+=`<path d="M60 60 L${60+64*Math.cos((a-4)*Math.PI/180)} ${60+64*Math.sin((a-4)*Math.PI/180)} L${60+64*Math.cos((a+4)*Math.PI/180)} ${60+64*Math.sin((a+4)*Math.PI/180)}Z"/>`}
+    return `<g style="--bc:${c}">${gold?`<g fill="#F3D36B" opacity=".55">${rays}</g>`:""}
+      <circle cx="60" cy="60" r="50" fill="${c}"/>
+      <circle cx="60" cy="60" r="50" fill="none" stroke="#2A1F18" stroke-opacity=".25" stroke-width="2"/>
+      <circle cx="60" cy="60" r="43" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 3.2" opacity=".85"/>
+      <circle cx="60" cy="60" r="36" fill="#000" opacity=".08"/>
+      <g transform="translate(60 56) scale(.95)" fill="#fff">${ICONS[t.ic]}</g>
+      <text x="60" y="94" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" letter-spacing=".05em" font-family="Bricolage Grotesque,system-ui,sans-serif">${t.min}+</text></g>`;
+  }
+  function paintTitle(){
+    const n=yearCount(),k=titleIdx(n),nx=TITLES[k+1];
+    const from=k<0?0:TITLES[k].min,to=nx?nx.min:100,pct=nx?Math.max(0,Math.min(1,(n-from)/(to-from))):1;
+    $("titleName").textContent=k<0?"Döner-Neuling":TITLES[k].n;
+    $("titleName").style.color=k<0?"var(--ink)":TITLES[k].c;
+    $("titleProg").style.width=(pct*100).toFixed(0)+"%";$("titleProg").style.background=k<0?"var(--muted)":TITLES[k].c;
+    $("titleSub").textContent=`${yearOf()}: ${n} Döner`+(nx?` · noch ${nx.min-n} bis zum nächsten Titel`:" · höchster Titel");
+    paintWreath(n,false);
+
+  }
+  // ---------- Lorbeerkranz: alle 15 Döner im Jahr ein edleres Material, ab 125 geheim ----------
+  const WREATHS=[
+    {min:15,n:"Papier",c:"#A89F95",h:"#FFFFFF"},
+    {min:30,n:"Holz",c:"#6E4424",h:"#C9945E"},
+    {min:45,n:"Bronze",c:"#8C5A2B",h:"#E9B07A"},
+    {min:60,n:"Silber",c:"#6F7A85",h:"#EEF2F6"},
+    {min:75,n:"Gold",c:"#A87808",h:"#FFE08A"},
+    {min:90,n:"Platin",c:"#4F7F7C",h:"#E8FFFC"},
+    {min:125,n:"Glut",c:"#A3201A",h:"#FFC14D",secret:true},
+    {min:150,n:"Prisma",c:"#4B35C4",h:"#8FF0FF",secret:true}
+  ];
+  const wreathIdx=n=>{let r=-1;WREATHS.forEach((w,k)=>{if(n>=w.min)r=k});return r};
+  // Siegerkranz wie bei der Siegerehrung im Rennsport: dichter Lorbeer-Hufeisenkranz, oben offen,
+  // unten eine breite Siegerschleife mit der Jahreszahl. Material und Fülle steigen mit der Stufe.
+  function laurelSvg(l,idp,center){
+    const W=WREATHS[l],cx=180,cy=176,rx=206,ry=162,R=Math.PI/180;
+    const hx=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+    const mix=(a,b,t)=>{const A=hx(a),B=hx(b);return "#"+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,"0")).join("")};
+    const paper=l===0,glut=l===6,prisma=l===7;
+    const dark=paper?"#CFC7BC":W.c,light=paper?"#FFFFFF":W.h,edge=paper?"#A79E93":mix(W.c,"#000000",.3);
+    const nPer=17+l*2,base=1+l*.04;
+    const leaf=(fl,fd)=>`<path d="M0 0 C7 -9 20 -10 30 -1 Q15 -.5 0 0Z" fill="${fl}"/><path d="M0 0 Q15 -.5 30 -1 C21 7 8 8 0 0Z" fill="${fd}"/><path d="M0 0 C7 -9 20 -10 30 -1 C21 7 8 8 0 0Z" fill="none" stroke="${edge}" stroke-width=".9" stroke-linejoin="round"/><path d="M3 -.2 H26" stroke="${edge}" stroke-width=".6" opacity=".45"/>`;
+    let back="",g="",front="",k=0;
+    if(l>=4)back+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx+55}" ry="${ry+55}" fill="url(#${idp}g)"/>`;
+    for(const side of [-1,1]){
+      const a0=side<0?96:84,a1=side<0?246:-66;
+      const pt=t=>{const a=(a0+(a1-a0)*t)*R;return [cx+rx*Math.cos(a),cy+ry*Math.sin(a),a]};
+      let d="";for(let j=0;j<=36;j++){const [x,y]=pt(j/36);d+=(j?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}
+      g+=`<path d="${d}" fill="none" stroke="${edge}" stroke-width="5" stroke-linecap="round"/>`;
+      for(let j=0;j<nPer;j++){
+        const t=.03+.94*j/(nPer-1),[x,y,a]=pt(t),dir=a1>a0?1:-1;
+        const tan=Math.atan2(ry*Math.cos(a)*dir,-rx*Math.sin(a)*dir)/R;
+        const sz=base*(1.5-.45*t);
+        // drei Blätter je Knoten: außen, innen, Mitte – ergibt den dichten Siegerkranz
+        for(const [off,ang,sc,sh] of [[-1,46,1,.0],[1,46,1,.18],[0,14,.85,.08]]){
+          const rot=tan+(off===0?(j%2?ang:-ang):off*ang*(side<0?1:-1));
+          let fl=mix(light,dark,sh),fd=mix(dark,"#000000",.1+sh*.4);
+          if(paper){fl=sh>.1?"#F3EFE9":"#FFFFFF";fd="#E2DBD1"}
+          if(glut){fl=mix("#FFD98A","#FF8E3C",t);fd=mix("#D2481F","#8E1C12",t)}
+          if(prisma){const hue=Math.round((t*280+(side<0?0:140)+off*25+360)%360);fl=`hsl(${hue} 90% 74%)`;fd=`hsl(${hue} 72% 48%)`}
+          g+=`<g class="lf${glut?" flick":""}" style="animation-delay:${(k++*.012).toFixed(2)}s" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(sz*sc).toFixed(2)})">${leaf(fl,fd)}</g>`;
+        }
+      }
+    }
+    // Siegerschleife unten
+    const by=cy+ry-6,rc=paper?"#B3261E":l===1?"#2F5D3A":mix(W.c,"#000000",.15),rh=paper?"#D9483E":l===1?"#4E8A5B":W.h;
+    front+=`<g class="medal">
+      <path d="M${cx-30} ${by+8} L${cx-58} ${by+78} L${cx-44} ${by+70} L${cx-38} ${by+86} L${cx-8} ${by+14}Z" fill="${mix(rc,"#000000",.2)}"/>
+      <path d="M${cx+30} ${by+8} L${cx+58} ${by+78} L${cx+44} ${by+70} L${cx+38} ${by+86} L${cx+8} ${by+14}Z" fill="${mix(rc,"#000000",.2)}"/>
+      <path d="M${cx-78} ${by-14} Q${cx} ${by+2} ${cx+78} ${by-14} L${cx+74} ${by+16} Q${cx} ${by+32} ${cx-74} ${by+16}Z" fill="${rc}"/>
+      <path d="M${cx-76} ${by-8} Q${cx} ${by+8} ${cx+76} ${by-8}" fill="none" stroke="${rh}" stroke-width="2.2" opacity=".9"/>
+      <path d="M${cx-74} ${by+10} Q${cx} ${by+26} ${cx+74} ${by+10}" fill="none" stroke="${rh}" stroke-width="2.2" opacity=".9"/>
+      <text x="${cx}" y="${by+12}" text-anchor="middle" font-size="16" font-weight="800" letter-spacing=".12em" fill="#FFFFFF" font-family="Bricolage Grotesque,system-ui,sans-serif">${yearOf()}</text></g>`;
+    if(l>=4){const n=l>=6?7:l>=5?5:3;for(let j=0;j<n;j++){const a=(196+j*(148/(n-1||1)))*R,sx=cx+(rx+34)*Math.cos(a),sy=cy+(ry+28)*Math.sin(a);
+      front+=`<path class="spk" style="animation-delay:${(j*0.4).toFixed(2)}s" d="M${sx} ${sy-8} Q${sx} ${sy} ${sx+8} ${sy} Q${sx} ${sy} ${sx} ${sy+8} Q${sx} ${sy} ${sx-8} ${sy} Q${sx} ${sy} ${sx} ${sy-8}Z" fill="${prisma?"#FFFFFF":light}"/>`}}
+    if(glut){for(let j=0;j<14;j++){const a=(120+j*9)*R*(j%2?1:-1)+(j%2?0:Math.PI),ex=cx+(rx-6)*Math.cos(a),ey=cy+(ry-6)*Math.sin(a);
+      front+=`<circle class="ember" style="animation-delay:${(j*0.27).toFixed(2)}s" cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="2.6" fill="#FFC14D"/>`}}
+    const defs=`<defs><radialGradient id="${idp}g"><stop offset="0" stop-color="${light}" stop-opacity="${l>=5?.55:.4}"/><stop offset="1" stop-color="${light}" stop-opacity="0"/></radialGradient></defs>`;
+    return defs+back+`<g class="${prisma?"prism":""}">${g}</g>`+(center||"")+front;
+  }
+  let shownWreath=null;
+  function paintWreath(n,animate){
+    const l=wreathIdx(n),svg=$("heroSvg"),w=$("wreath");
+    if(l===shownWreath)return;shownWreath=l;
+    w.classList.toggle("grow",!!animate);
+    w.innerHTML=l<0?"":laurelSvg(l,"wh");
+    svg.setAttribute("viewBox",l<0?"0 44 360 252":"-72 -16 504 444");
+  }
+  function openTitles(){
+    const n=yearCount(),k=titleIdx(n),nx=TITLES[k+1];
+    $("rkTitle").textContent=`Deine Titel ${yearOf()}`;
+    $("rkSub").textContent=`${n} Döner in ${yearOf()}`+(nx?` · nächster Titel ab ${nx.min}`:" · alle Titel geholt!")+" · Neustart am 1. Januar";
+    $("rkList").innerHTML=`<div class="bgrid">${TITLES.map((t,j)=>`<div class="bcell${j===k?" cur":""}${j>k?" locked":""}"><svg viewBox="-6 -6 132 132" aria-hidden="true">${badgeSvg(j,j>k)}</svg><b>${j>k?"???":t.n}</b><small>ab ${t.min}</small></div>`).join("")}</div>
+      <button type="button" class="ghost shareT" id="shareT">${k<0?"Fortschritt teilen":"Titel teilen"}</button>`;
+    $("shareT").onclick=shareTitle;
+    openLayer("rankSheet");
+  }
+  async function shareTitle(){
+    const n=yearCount(),k=titleIdx(n);
+    const text=(k<0?`Ich habe ${yearOf()} schon ${n} Döner gegessen!`:`Mein Döner-Titel: ${TITLES[k].n}! ${n} Döner in ${yearOf()}.`)+" 🥙 (Döner-Tracker)";
+    try{if(navigator.share){await navigator.share({text});return}}catch(e){if(e&&e.name==="AbortError")return}
+    try{await navigator.clipboard.writeText(text);toast("Text kopiert – jetzt einfügen und angeben",true)}catch(e){toast(text,true)}
+  }
+  $("titleBar").onclick=openTitles;
+  $("helpBtn").onclick=()=>openLayer("helpSheet");
+  // Rückseite des Übersichtsdöners: gleiche Grafik ohne Vorderseiten-Texte, dafür der Monat
+  let backStats={n:0,label:"",split:""};
+  function buildBack(){
+    const f=$("heroSvg"),b=$("heroBack");
+    b.setAttribute("viewBox",f.getAttribute("viewBox"));
+    b.innerHTML=f.innerHTML;
+    b.querySelectorAll("title").forEach(x=>x.remove());
+    const w=b.querySelector("#wreath");if(w)w.remove();
+    const ids={mCount:"bCount",mLabel:"bLabel",mSplit:"bSplit"};
+    Object.entries(ids).forEach(([a,c])=>{const el=b.querySelector("#"+a);if(el)el.id=c});
+    // alles außer Kranz und Texten leicht abdunkeln (Brot von hinten)
+    [...b.children].forEach(el=>{if(el.tagName!=="text"&&el!==w&&el.tagName!=="defs")el.classList.add("bk")});
+    paintBack();
+  }
+  function paintBack(){
+    const b=$("heroBack");if(!b.querySelector("#bCount"))return;
+    b.querySelector("#bCount").textContent=backStats.n;b.querySelector("#bLabel").textContent=backStats.label;b.querySelector("#bSplit").textContent=backStats.split;
+  }
+  function flipHero(){
+    const f=$("heroFlip"),on=!f.classList.contains("flipped");
+    if(on)buildBack();
+    f.classList.toggle("flipped",on);f.setAttribute("aria-pressed",on);
+  }
+  $("heroFlip").onclick=flipHero;
+  $("heroFlip").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flipHero()}};
+  function fireworks(colors){
+    if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+    const c=$("fw"),x=c.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1);
+    c.style.display="block";c.width=innerWidth*dpr;c.height=innerHeight*dpr;x.scale(dpr,dpr);
+    const P=[],t0=performance.now();let shots=0;
+    const burst=()=>{const bx=innerWidth*(.15+Math.random()*.7),by=innerHeight*(.12+Math.random()*.35),col=colors[shots%colors.length];
+      for(let k=0;k<60;k++){const a=Math.random()*Math.PI*2,v=1.5+Math.random()*3.5;
+        P.push({x:bx,y:by,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,c:Math.random()<.25?"#FFF4D6":col})}shots++};
+    const step=now=>{
+      const el=now-t0;if(shots<7&&el>shots*320)burst();
+      x.clearRect(0,0,innerWidth,innerHeight);
+      for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.06;p.vx*=.985;p.l-=.012;
+        if(p.l>0){x.globalAlpha=p.l;x.fillStyle=p.c;x.beginPath();x.arc(p.x,p.y,2.4,0,7);x.fill()}}
+      x.globalAlpha=1;
+      if(el<3600)requestAnimationFrame(step);else{x.clearRect(0,0,innerWidth,innerHeight);c.style.display="none"}
+    };
+    requestAnimationFrame(step);
+  }
+  let pendingRank=null;
+  function maybeCelebrate(){
+    if(pendingRank==null||document.querySelector(".layer.open")||$("viewTracker").hidden||!$("rankUp").hidden)return;
+    const i=pendingRank;pendingRank=null;celebrate(i);
+  }
+  function celebrate(ev){
+    const {k,w}=ev,n=yearCount(),ru=$("rankUp"),t=k!=null?TITLES[k]:null,W=w!=null?WREATHS[w]:null,nx=k!=null?TITLES[k+1]:null;
+    const glow=t?t.c:W.c;ru.style.setProperty("--ruGlow",glow);ru.style.setProperty("--ruHi","#FFF4D6");
+    ru.querySelector(".ruK").textContent=W&&W.secret?"Geheime Klasse!":t&&W?"Neuer Titel & neuer Kranz!":W?"Neuer Kranz!":(k===TITLES.length-1?"Höchster Titel!":"Neuer Titel!");
+    const centerBadge=t?`<g class="medal" transform="translate(${180-78} ${178-78}) scale(1.3)">${badgeSvg(k)}</g>`:
+      `<g class="medal"><circle cx="180" cy="178" r="84" fill="#FFF7F2"/><text x="180" y="196" text-anchor="middle" font-size="64" font-weight="800" fill="#2A1F18" font-family="Bricolage Grotesque,system-ui,sans-serif">${n}</text><text x="180" y="226" text-anchor="middle" font-size="18" font-weight="600" fill="#6F625A" font-family="Bricolage Grotesque,system-ui,sans-serif">Döner</text></g>`;
+    const curW=wreathIdx(n);
+    $("ruSvg").setAttribute("viewBox",curW<0?"-10 -10 380 380":"-76 -20 512 450");
+    $("ruSvg").innerHTML=`<g class="grow">${curW>=0?laurelSvg(curW,"wr",centerBadge):centerBadge}</g>`;
+    $("ruName").textContent=t?t.n:`${W.n}-Kranz`;
+    const parts=[`${n} Döner in ${yearOf()}`];
+    if(t&&W)parts.push(`neuer Kranz: ${W.n}`);
+    if(t&&nx)parts.push(`nächster Titel ab ${nx.min}`);
+    if(!t&&W&&W.secret)parts.push("diesen Kranz kennt sonst niemand");
+    $("ruSub").textContent=parts.join(" · ");
+    ru.classList.remove("out");ru.hidden=false;
+    fireworks([glow,W?W.h:"#F3D36B","#F3D36B","#FFF4D6"]);
+    try{navigator.vibrate&&navigator.vibrate([60,40,120])}catch(e){}
+  }
+  $("ruOk").onclick=()=>{
+    const ru=$("rankUp");ru.classList.add("out");
+    setTimeout(()=>{ru.hidden=true;ru.classList.remove("out");scrollTo({top:0,behavior:"smooth"});shownWreath=null;paintWreath(yearCount(),true);paintTitle();
+      },330);
+  };
+  {const mo=new MutationObserver(()=>setTimeout(maybeCelebrate,380));
+    document.querySelectorAll(".layer").forEach(l=>mo.observe(l,{attributes:true,attributeFilter:["class"]}));
+    mo.observe($("viewTracker"),{attributes:true,attributeFilter:["hidden"]});}
+  function checkRank(){
+    const n=yearCount(),k=titleIdx(n),w=wreathIdx(n),y=yearOf();
+    const get=key=>{try{return parseInt(localStorage.getItem(key)??"-1",10)}catch(e){return -1}};
+    const kT="doener-title3-seen-"+y,kW="doener-wreath-seen-"+y;
+    const ev={k:k>get(kT)?k:null,w:w>get(kW)?w:null};
+    if(ev.k!=null||ev.w!=null){
+      try{localStorage.setItem(kT,String(Math.max(k,get(kT))));localStorage.setItem(kW,String(Math.max(w,get(kW))))}catch(e){}
+      pendingRank=ev;setTimeout(maybeCelebrate,600);
+    }
+    paintTitle();
+  }
+
+
+  // ---------- Döner-Fakt des Tages (offline, mit Quellen; Stand 11/2026) ----------
+  const FACTS=[["Wort","„Döner“ heißt „drehend“","Döner kommt vom türkischen Verb dönmek, sich drehen. Döner Kebap bedeutet wörtlich etwa „Drehbraten“.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Wort","Shawarma ist auch „gedreht“","Der arabische Name Shawarma geht auf ein anderes türkisches Wort zurück: çevirme, ebenfalls „drehen“.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Wort","Gyros hieß erst „Ntonér“","In Griechenland hieß das Gericht zuerst wie das türkische Original (ντονέρ). Später setzte sich Gyros durch, griechisch für „Drehung“, eine Lehnübersetzung von Döner.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Wort","Im Iran: „türkischer Kebab“","Im Persischen heißt Döner „kebab torki“, also türkischer Kebab.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Wort","Der Trompo ist ein Kreisel","In Mexiko heißt der Fleischspieß „trompo“. So heißt auf Spanisch auch der Spielkreisel, dem der Spieß ähnelt.","CNN / CTV News, 2026","https://www.ctvnews.ca/world/article/how-roasted-meats-went-spinning-all-the-way-around-the-world/",0],["Wort","Kebab: ein altes Wort im Englischen","„Kebab“ wird im Englischen seit dem späten 17. Jahrhundert verwendet. „Doner kebab“ taucht dagegen erst ab Mitte des 20. Jahrhunderts auf.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Wort","Dürüm heißt „Rolle“","Dürüm kommt vom türkischen dürmek, aufrollen. Gerollt wird in dünnes Yufka- oder Lavash-Brot.","Wikipedia: Dürüm","https://en.wikipedia.org/wiki/D%C3%BCr%C3%BCm",0],["Wort","1908 erstmals gedruckt","Das Wort „döner“ erscheint laut der Food-Historikerin Mary Işın erst 1908 gedruckt, in einem Roman von Hüseyin Rahmi Gürpınar. Gesprochen wurde es vermutlich schon früher.","CNN / CTV News, 2026","https://www.ctvnews.ca/world/article/how-roasted-meats-went-spinning-all-the-way-around-the-world/",0],["Geschichte","Gedrehtes Fleisch schon im 15. Jahrhundert","Die Historikerin Mary Işın fand osmanische Texte aus dem 15. Jahrhundert, die gedrehtes Spießfleisch als „çevirme kebabı“ beschreiben.","CNN / CTV News, 2026","https://www.ctvnews.ca/world/article/how-roasted-meats-went-spinning-all-the-way-around-the-world/",0],["Geschichte","Der Spieß wird senkrecht","Der Überlieferung nach stellte İskender Efendi in Bursa im 19. Jahrhundert den Spieß senkrecht, oft wird 1867 genannt. Jahr und Urheber sind nicht sicher belegt.","Daily Sabah, 2014","https://dailysabah.com/food/2014/03/22/iskender-kebab-the-quintessential-comfort-food",1],["Geschichte","Zwei Köche, eine Idee","Nach einer anderen Darstellung kamen im 19. Jahrhundert zwei Köche unabhängig auf den senkrechten Spieß: Hamdi aus Kastamonu und İskender aus Bursa.","Journal Frankfurt","https://www.familie.journal-frankfurt.de/gastro_news/restauranttests-34/Doener-fuer-alle-Eine-Liebeserklaerung-13712.html",1],["Geschichte","İskender Kebap ist eine Marke","Beim İskender Kebap liegt Dönerfleisch auf Pide-Stücken, dazu Tomatensoße, heiße Butter und Joghurt. Die Nachfahren von İskender Efendi haben den Namen als Marke schützen lassen.","Daily Sabah, 2014","https://dailysabah.com/food/2014/03/22/iskender-kebab-the-quintessential-comfort-food",0],["Geschichte","Istanbul in den 1940ern","Bekannt wurde der Döner in Istanbul ab den 1940er Jahren, unter anderem durch den Gastronomen Beyti Güler.","Wikipedia: Kadir Nurman","https://en.wikipedia.org/wiki/Kadir_Nurman",0],["Geschichte","Im Brot schon in Istanbul","Döner im Brot gab es in Istanbul mindestens seit Mitte der 1960er Jahre, also vor dem Berliner Döner. So beliebt wie in Deutschland wurde er dort aber nie.","tageskarte.io (dpa), 2022","https://www.tageskarte.io/gastronomie/detail/50-jahre-doener-kebab-die-entwicklung-des-german-doeners.html",0],["Geschichte","Kein Re-Import aus Berlin","Oft heißt es, der Döner im Fladenbrot sei in Berlin erfunden und dann in die Türkei „zurückgebracht“ worden. Der Döner-Historiker Eberhard Seidel hält das für falsch.","tageskarte.io (dpa), 2022","https://www.tageskarte.io/gastronomie/detail/50-jahre-doener-kebab-die-entwicklung-des-german-doeners.html",1],["Deutschland","Bahnhof Zoo, 1972","Der Verein Türkischer Dönerhersteller in Europa nennt Kadir Nurman als den, der 1972 am Bahnhof Zoo in West-Berlin Döner im Fladenbrot verkaufte. Mehrere Personen beanspruchen diese Rolle; gesichert ist keiner der Ansprüche.","Wikipedia: Kadir Nurman","https://en.wikipedia.org/wiki/Kadir_Nurman",1],["Deutschland","Der erste Berliner Döner war schlicht","Nurmans Döner hatte nur Fleisch, Zwiebeln und etwas Salat. Später fand er, heute seien zu viele Zutaten drin.","The Local, 2020","https://www.thelocal.de/20200814/the-history-of-the-dner-kebab",0],["Deutschland","Ohne Patent, ohne Reichtum","Kadir Nurman ließ seine Idee nie schützen und verdiente nichts am späteren Döner-Boom.","The Local, 2020","https://www.thelocal.de/20200814/the-history-of-the-dner-kebab",0],["Deutschland","Ein Preis für das Lebenswerk","2011 zeichnete der Verband der Dönerhersteller Kadir Nurman für sein Lebenswerk aus. Er starb im Oktober 2013 in Berlin.","Wikipedia: Kadir Nurman","https://en.wikipedia.org/wiki/Kadir_Nurman",0],["Deutschland","Über Stuttgart nach Berlin","Nurman kam 1960 mit 26 Jahren nach Stuttgart und zog 1966 nach Berlin, bevor er 1972 seinen Imbiss eröffnete.","Wikipedia: Kadir Nurman","https://en.wikipedia.org/wiki/Kadir_Nurman",0],["Deutschland","Reutlingen, 1969?","Nevzat Salim aus Bursa erklärte 2012, er habe schon 1969 in Reutlingen Döner verkauft, drei Jahre vor Nurman.","The Local, 2020","https://www.thelocal.de/20200814/the-history-of-the-dner-kebab",1],["Deutschland","Noch ein Anspruch: 1971","Auch der Berliner Gastronom Mehmet Aygün sagt, er habe schon 1971 Döner verkauft.","Abendzeitung (dpa), 2013","https://www.abendzeitung-muenchen.de/panorama/vater-des-doeners-kadir-nurman-stirbt-mit-80-art-211369",1],["Deutschland","Döner gab es schon vorher","Laut Eberhard Seidel ist nachgewiesen, dass es Döner Kebab schon vor 1972 in einigen türkischen Restaurants in Deutschland gab.","tageskarte.io (dpa), 2022","https://www.tageskarte.io/gastronomie/detail/50-jahre-doener-kebab-die-entwicklung-des-german-doeners.html",0],["Deutschland","Warum gerade Berlin?","Seidel erklärt den Erfolg mit Berlins offener, bunter Szene und vielen Menschen mit wenig Geld, für die der Döner viel Essen für wenig Geld war.","tageskarte.io (dpa), 2022","https://www.tageskarte.io/gastronomie/detail/50-jahre-doener-kebab-die-entwicklung-des-german-doeners.html",0],["Deutschland","Bestellt wird „scharf“","In Berlin wird die scharfe Soße selbst bei Bestellungen auf Türkisch oft mit dem deutschen Wort „scharf“ verlangt, ein Zeichen für den deutsch-türkischen Mix des Berliner Döners.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Welt","Eine Spieß-Familie","Shawarma, Gyros, der kanadische Donair und die mexikanischen Tacos al pastor stammen alle vom senkrechten Drehspieß ab, der im 19. Jahrhundert im Osmanischen Reich entstand.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Welt","Tacos al pastor: libanesische Wurzeln","Libanesische Einwanderer brachten Ende des 19. und Anfang des 20. Jahrhunderts Shawarma nach Mexiko. Daraus wurden Tacos al pastor; bis in die 1920er ersetzte Schwein weitgehend das Lamm.","Wikipedia: Al pastor","https://en.wikipedia.org/wiki/Al_pastor",0],["Welt","Tacos árabes","In Puebla entstanden in den 1930er Jahren die „Tacos árabes“: Shawarma-Fleisch in einem pitaähnlichen Brot, dem „pan árabe“.","Wikipedia: Al pastor","https://en.wikipedia.org/wiki/Al_pastor",0],["Welt","Donair mit süßer Soße","In Halifax (Kanada) entwickelte Peter Gamoulakos in den 1970ern den Donair: Rindfleisch statt Lamm und eine süße Soße aus Dosenmilch, Zucker, Essig und Knoblauch.","Wikipedia: Donair","https://en.wikipedia.org/wiki/Donair",0],["Welt","Offizielles Stadtessen","2015 erklärte Halifax den Donair zum offiziellen Essen der Stadt.","CBC News, 2015","https://www.cbc.ca/news/canada/nova-scotia/halifax-donair-official-food-1.3355840",0],["Welt","London, 1966","Der erste Dönerladen in London öffnete 1966. Ende der 1970er waren sie auch in britischen Provinzstädten verbreitet.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Welt","Gyros in New York, 1971","Gyros war 1971 bereits in Griechenland und in New York beliebt.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Welt","Döner im Bánh mì","In Vietnam gibt es den Döner im Bánh-mì-Baguette, dort mit Schweinefleisch statt Rind oder Lamm.","Wikipedia: Doner kebab","https://en.wikipedia.org/wiki/Doner_kebab",0],["Welt","Der deutsche Döner wandert aus","Döner nach deutscher Art gibt es inzwischen auch in New York, London und Dubai. An Berlins bekanntem Imbiss Mustafa's steht man oft bis zu einer Stunde an.","Hyphen, 2023","https://hyphenonline.com/2023/03/10/doner-kebab-germany-favourite-fast-food/",0],["Recht","Höchstens 60 % Hackfleisch","Ein Döner Kebab darf in Deutschland höchstens 60 % Hackfleisch enthalten. Mindestens 40 % müssen also ganze Fleischscheiben sein.","Rechtslupe, 2024","https://www.rechtslupe.de/strafrecht/doener-kebab-oder-drehfleischspiess-3322403",0],["Recht","Was in den Spieß darf","Außer Fleisch sind im Döner Kebab üblicherweise nur Salz, Gewürze und gegebenenfalls Eier, Zwiebeln, Öl, Milch und Joghurt drin.","LGL Bayern","https://www.lgl.bayern.de/lebensmittel/ueberwachung/et_schwerpunktaktivitaeten_fleischdrehspiesse.htm",0],["Recht","Hähnchen-Döner: nur Scheiben","Beim Hähnchen- oder Puten-Döner ist Hackfleisch nicht erlaubt, nur Fleischscheiben. Der Hautanteil darf höchstens 18 % betragen.","Rechtslupe, 2024","https://www.rechtslupe.de/strafrecht/doener-kebab-oder-drehfleischspiess-3322403",0],["Recht","Döner oder Drehspieß?","Hat ein Spieß mehr als 60 % Hackfleisch oder etwa Paniermehl, darf er nicht „Döner“ heißen. Dann ist es ein „Drehspieß“.","Lebensmittelüberwachung Bremen","https://www.lmtvet.bremen.de/sixcms/media.php/13/Info_35_Kennzeichnung_von_Doener_Kebab.pdf",0],["Recht","Kein Schwein im Döner","Ein Spieß mit Schweinefleisch darf in Deutschland nicht als Döner Kebab verkauft werden.","Stadt Kassel, Merkblatt","https://kassel.de/service/media/Dateien_und_Verzeichnisse/14-Doener-Kebab.pdf",0],["Recht","Jeder dritte Döner ein Drehspieß","In NRW führten Behörden ab Herbst 2024 rund 1.250 Döner-Kontrollen durch. In 428 Fällen wurde ein Drehspieß fälschlich als Döner verkauft.","HOGAPAGE (dpa), 2025","https://www.hogapage.de/nachrichten/wirtschaft/gastronomie/ministerium-jeder-dritte-d%C3%B6ner-in-wahrheit-ein-drehspie%C3%9F/",0],["Recht","Veganer Döner ist erlaubt","Für pflanzliche Varianten gelten eigene Leitsätze. Die Bezeichnung „veganer Döner Kebab“ ist danach unter bestimmten Bedingungen zulässig.","Lebensmittelüberwachung Jena","https://zvl.jena.de/system/files/2025-03/6%20D%C3%B6ner%20und%20vegetarische%20D%C3%B6ner.pdf",0],["Politik","Der EU-Döner-Streit","Ein türkischer Dönerverband wollte Döner als „garantiert traditionelle Spezialität“ EU-weit schützen lassen. Am 23. September 2025 zog er den Antrag zurück.","LTO, 2025","https://www.lto.de/recht/nachrichten/n/antrag-traditionelle-speisen-zurueckgezogen-regulierung-deutsche-doener-daemmerung",0],["Politik","Kalb wäre verboten gewesen","Laut dem Antrag hätte Döner-Fleisch von mindestens 16 Monate alten Rindern oder 6 Monate alten Schafen stammen müssen. Das in Deutschland übliche Kalb- und Jungrindfleisch wäre damit raus gewesen.","tageskarte.io, 2024","https://www.tageskarte.io/politik/detail/doener-debatte-geht-in-heisse-phase.html",0],["Politik","Kein Gemüsedöner mehr?","Wäre der EU-Antrag durchgegangen, hätte es keinen „Gemüsedöner“ unter diesem Namen mehr geben dürfen.","tageskarte.io, 2024","https://www.tageskarte.io/politik/detail/doener-debatte-geht-in-heisse-phase.html",0],["Politik","Einspruch aus Deutschland","Gegen den EU-Antrag legten unter anderem das Bundeslandwirtschaftsministerium, der Verein Türkischer Dönerhersteller in Europa und der Hotel- und Gaststättenverband DEHOGA Einspruch ein.","ORF, 2024","https://orf.at/stories/3366080/",0],["Politik","Die Kälbermäster waren auch dagegen","Sogar der Bundesverband der Kälbermäster trug im Lobbyregister des Bundestags seinen Einspruch gegen den türkischen Döner-Antrag ein.","Lobbyregister Bundestag","https://www.lobbyregister.bundestag.de/inhalte-der-interessenvertretung/regelungsvorhabensuche/RV0014494/187935",0],["Politik","60 Kilo Döner im Präsidentenflugzeug","Bundespräsident Steinmeier nahm im April 2024 einen 60 Kilogramm schweren Dönerspieß und den Berliner Imbisswirt Arif Keleş mit auf seinen Türkei-Besuch.","Schwäbische Zeitung (dpa), 2024","https://www.schwaebische.de/politik/steinmeier-reist-mit-doenerspiess-in-die-tuerkei-2463776",0],["Politik","Die Dönerpreisbremse","Die Linke forderte im Mai 2024 eine „Dönerpreisbremse“: höchstens 4,90 € pro Döner, für junge Leute 2,90 €. Den Rest sollte der Staat zahlen.","IamExpat, 2024","https://www.iamexpat.de/expat-info/german-expat-news/bundestag-proposal-calls-4-90-euro-doner-price-cap",0],["Politik","„Olaf-Abi, mach Döner drei Euro!“","Das wurde Kanzler Olaf Scholz wegen der gestiegenen Dönerpreise zugerufen. In sozialen Medien wurde daraufhin eine „Dönerpreisbremse“ gefordert.","Berliner Zeitung, 2024","https://www.berliner-zeitung.de/politik-gesellschaft/kein-witz-die-linke-fordert-doenerpreisbremse-und-doenergutscheine-fuer-alle-li.2212066",0],["Politik","Ayran statt Bier","Ayran besteht aus Joghurt, Wasser und Salz. Erdoğan erklärte ihn 2013 zum türkischen Nationalgetränk.","taz; Wikipedia: Ayran","https://taz.de/Politik-des-Trinkens/!5442940/",0],["Zahlen","Berlin, die Döner-Metropole","Laut Eberhard Seidel gab es 2022 rund 18.500 Döner-Imbisse und türkische Restaurants in Deutschland, etwa 1.600 davon in Berlin. Eine amtliche Zählung gibt es nicht.","deutschland.de, 2022","https://www.deutschland.de/de/topic/leben/deutschland-tuerkei-doener-kebap-deutsch-tuerkisches-gericht",0],["Zahlen","550 Tonnen am Tag","Nach Angaben des Dönerhersteller-Verbands ATDID werden in Deutschland täglich etwa 550 Tonnen Döner gegessen. Noch einmal so viel wird für den Export produziert.","deutschland.de, 2022","https://www.deutschland.de/de/topic/leben/deutschland-tuerkei-doener-kebap-deutsch-tuerkisches-gericht",0],["Zahlen","Milliardengeschäft","Laut ATDID setzt die Döner-Branche in Deutschland jährlich rund 2,4 Milliarden Euro um, europaweit etwa 3,5 Milliarden.","deutschland.de, 2022","https://www.deutschland.de/de/topic/leben/deutschland-tuerkei-doener-kebap-deutsch-tuerkisches-gericht",0],["Zahlen","60.000 Arbeitsplätze","Der Verband der Dönerhersteller beziffert die Zahl der Beschäftigten in der Döner-Branche auf etwa 60.000.","ORF, 2025","https://orf.at/stories/3406515/",0],["Zahlen","1,3 Milliarden Döner im Jahr","In Deutschland werden laut einer Rechnung der Linken jährlich etwa 1,3 Milliarden Döner gegessen.","Berliner Zeitung, 2024","https://www.berliner-zeitung.de/politik-gesellschaft/kein-witz-die-linke-fordert-doenerpreisbremse-und-doenergutscheine-fuer-alle-li.2212066",0],["Zahlen","Was ein Döner kostet","Laut Lieferando kostete ein Döner 2024 in den zehn größten deutschen Städten im Schnitt 6 Euro. In Berlin lag der Schnitt im Januar 2024 bei 7,30 Euro.","IamExpat / Berliner Zeitung, 2024","https://www.iamexpat.de/expat-info/german-expat-news/bundestag-proposal-calls-4-90-euro-doner-price-cap",0],["Zahlen","Jeder Dritte jeden Monat","Laut einer YouGov-Umfrage vom Mai 2025 isst gut jeder dritte Mensch in Deutschland mindestens einmal im Monat Döner.","Berliner Zeitung, 2025","https://www.berliner-zeitung.de/article/preiskampf-in-der-hauptstadt-wird-der-doener-wieder-billiger-10023170",0],["Zahlen","40 Tonnen aus einer Fabrik","Allein der Hersteller Birtat produziert nach Gewerkschaftsangaben 35 bis 40 Tonnen Dönerspieße pro Tag.","tageskarte.io","https://www.tageskarte.io/industrie/detail/doener-streik-in-grossfabrik-bleiben-jetzt-die-spiesse-stehen.html",0],["Rekorde","Das größte Döner-Sandwich","Das größte Döner-Sandwich der Welt wog 413 kg. Es entstand 2004 in Albury, Australien.","Guinness World Records","https://www.guinnessworldrecords.com/world-records/largest-doner-kebab-sandwich",0],["Rekorde","Ein Tonnen-Döner aus Ankara","2012 wurde in Ankara ein Dönerspieß mit 1.198 kg gemessen. Zehn Köche verarbeiteten dafür das Fleisch von sieben Rindern.","ITV News, 2012","https://www.itv.com/news/2012-06-13/one-ton-doner-kebab-smashes-world-record",0],["Rekorde","Erster Guinness-Spieß: Dubai","Der erste von Guinness geprüfte Rekord-Dönerspieß stand in Dubai: 468 kg schwer und 2,95 m hoch.","Guinness World Records","https://www.guinnessworldrecords.com/news/2011/9/worlds-largest-doner-gets-roasted-in-dubai",0],["Rekorde","2,6 Tonnen in Erbil","Im Mai 2026 wurde in Erbil (Irak) ein Dönerspieß mit 2.672 kg als neuer Weltrekord registriert. Daraus wurden über 4.000 Döner gespendet.","Gouvernement Erbil, 2026","https://www.hawlergov.org/app/node/13122",0],["Rekorde","550 kg Döner mit Pommes","Die größte Portion Dönerfleisch mit Pommes wog 550 kg. Ein Imbiss in Campbelltown, Australien, schaffte sie im Oktober 2024.","Guinness World Records","https://www.guinnessworldrecords.com/world-records/586982-largest-serving-of-doner-kebab-meat-and-chips",0],["Rekorde","Rekord im Mall of Berlin","2017 wurde in der Mall of Berlin ein 423,5 kg schwerer Döner serviert. Den Rekord bestätigte das Rekord-Institut für Deutschland, nicht Guinness.","The Local, 2017","https://www.thelocal.de/20171023/berliners-break-world-record-with-423-kg-dner-kebab",0]];
+  // feste, gemischte Reihenfolge: aufeinanderfolgende Tage bringen unterschiedliche Themen
+  const FORDER=(()=>{const a=FACTS.map((_,i)=>i);let x=20261111;
+    for(let i=a.length-1;i>0;i--){x=(x*1103515245+12345)%2147483648;const j=x%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a})();
+  const dayNo=()=>{const d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)};
+  let factPos=0;
+  function factOfDay(){return FORDER[dayNo()%FORDER.length]}
+  function paintFactCard(){}   // ersetzt durch das Döner-Quiz
+  function showFact(i){const f=FACTS[i];
+    $("fsCat").textContent=f[0];if(f[5]){const t=document.createElement("span");t.className="tag";t.textContent="umstritten";$("fsCat").append(t)}
+    $("fsTitle").textContent=f[1];$("fsText").textContent=f[2];$("fsSrc").textContent=f[3];$("fsSrc").href=f[4]}
+  // ---------- Döner-Quiz: nach jedem neuen Eintrag eine neue Frage zu den belegten Fakten ----------
+  // 100 Fragen: [Fakt-Nr., Frage, richtig, falsch, falsch] – jede Antwort stammt aus einem belegten Fakt
+  const QUIZ=[[0,"Was bedeutet „döner“ auf Deutsch?","drehend","gefüllt","gegrillt"],[1,"Auf welches türkische Wort geht „Shawarma“ zurück?","çevirme (drehen)","şiş (Spieß)","ekmek (Brot)"],[2,"Wie hieß Gyros in Griechenland zuerst?","Ntonér","Souvlaki","Pita"],[3,"Wie heißt Döner auf Persisch?","kebab torki","kebab irani","kebab rumi"],[4,"Was bedeutet „trompo“, der mexikanische Name für den Spieß?","Kreisel","Turm","Trommel"],[5,"Seit wann gibt es das Wort „Kebab“ im Englischen?","seit dem späten 17. Jahrhundert","seit 1950","seit 1990"],[6,"Was bedeutet „Dürüm“?","Rolle","Brot","Soße"],[7,"In welchem Jahr erschien das Wort „döner“ laut Mary Işın zum ersten Mal gedruckt?","1908","1867","1972"],[8,"Aus welchem Jahrhundert stammen die ältesten bekannten Texte über gedrehtes Spießfleisch?","15. Jahrhundert","19. Jahrhundert","20. Jahrhundert"],[9,"In welcher Stadt soll der Spieß zuerst senkrecht gestellt worden sein?","Bursa","Berlin","Athen"],[10,"Welcher Koch soll neben İskender ebenfalls den senkrechten Spieß erfunden haben?","Hamdi aus Kastamonu","Beyti aus Istanbul","Kadir aus Berlin"],[11,"Was gehört zum İskender Kebap?","Tomatensoße, Butter und Joghurt","Pommes und Mayo","Käse und Ananas"],[12,"Ab wann wurde der Döner in Istanbul bekannt?","ab den 1940er Jahren","ab den 1990er Jahren","erst nach 2000"],[13,"Seit wann gab es Döner im Brot mindestens in Istanbul?","seit Mitte der 1960er","seit 2001","seit 1989"],[14,"Wurde der Döner im Fladenbrot laut Eberhard Seidel in Berlin erfunden und in die Türkei „zurückgebracht“?","Nein, das hält er für falsch","Ja, genau so","Nein, er kam aus Wien"],[15,"Wo soll Kadir Nurman 1972 Döner im Fladenbrot verkauft haben?","am Bahnhof Zoo","am Hamburger Hafen","in München am Marienplatz"],[16,"Was war im ersten Berliner Döner von Kadir Nurman?","Fleisch, Zwiebeln, etwas Salat","Fleisch, Rotkohl, drei Soßen","Hähnchen und Pommes"],[17,"Wie viel verdiente Kadir Nurman am Döner-Boom?","nichts, er ließ die Idee nie schützen","Millionen durch ein Patent","einen Anteil an jedem Döner"],[18,"Wofür wurde Kadir Nurman 2011 ausgezeichnet?","für sein Lebenswerk","als Koch des Jahres","für den größten Döner"],[19,"In welche Stadt kam Kadir Nurman 1960 zuerst?","Stuttgart","Köln","Hamburg"],[20,"Wo will Nevzat Salim schon 1969 Döner verkauft haben?","Reutlingen","Frankfurt","Dortmund"],[21,"Wer sagt, er habe schon 1971 in Berlin Döner verkauft?","Mehmet Aygün","Arif Keleş","Beyti Güler"],[22,"Gab es Döner Kebab vor 1972 schon in Deutschland?","ja, in einigen türkischen Restaurants","nein, erst ab 1980","nein, nur in Österreich"],[23,"Womit erklärt Seidel den Döner-Erfolg in Berlin?","offene Szene, viele Menschen mit wenig Geld","Berlin hatte die meisten Grills","ein Gesetz von 1970"],[24,"Wie wird die scharfe Soße in Berlin oft bestellt, selbst auf Türkisch?","„scharf“","„acı“ mit Handzeichen","„chili“"],[25,"Welches Gericht stammt NICHT vom senkrechten Drehspieß ab?","Currywurst","Tacos al pastor","Donair"],[26,"Wer brachte Shawarma nach Mexiko?","libanesische Einwanderer","spanische Seefahrer","griechische Köche"],[27,"Wie heißen die Shawarma-Tacos aus Puebla?","Tacos árabes","Tacos turcos","Tacos griegos"],[28,"Was ist besonders an der Donair-Soße aus Halifax?","sie ist süß","sie ist grün","sie ist eiskalt"],[29,"Wozu erklärte Halifax den Donair 2015?","zum offiziellen Essen der Stadt","zum Weltkulturerbe","zum verbotenen Essen"],[30,"Wann öffnete der erste Dönerladen in London?","1966","1999","2008"],[31,"Wo war Gyros 1971 schon beliebt?","in Griechenland und New York","nur in Australien","nur in Japan"],[32,"Welches Fleisch kommt in Vietnam in den Döner-Bánh-mì?","Schwein","Kalb","Lamm"],[33,"Wie lange steht man laut Hyphen bei Mustafa's in Berlin oft an?","bis zu einer Stunde","nie, es gibt keine Schlange","einen ganzen Tag"],[34,"Wie viel Hackfleisch darf ein Döner Kebab in Deutschland höchstens haben?","60 %","10 %","100 %"],[35,"Was darf außer Fleisch in den Döner-Spieß?","Salz, Gewürze, Zwiebeln, Joghurt","Paniermehl und Stärke","Käse und Speck"],[36,"Was ist beim Hähnchen-Döner nicht erlaubt?","Hackfleisch","Gewürze","Joghurt"],[37,"Wie heißt ein Spieß mit mehr als 60 % Hackfleisch?","Drehspieß","Superdöner","Hackspieß deluxe"],[38,"Darf ein Spieß mit Schweinefleisch in Deutschland „Döner Kebab“ heißen?","nein","ja, immer","nur in Bayern"],[39,"Wie oft fanden Kontrolleure in NRW einen falsch benannten Drehspieß?","in 428 Fällen","in 2 Fällen","in jedem Fall"],[40,"Darf ein veganer Döner „veganer Döner Kebab“ heißen?","ja, unter bestimmten Bedingungen","nein, nie","nur mit Fleischanteil"],[41,"Was wollte ein türkischer Verband bei der EU für den Döner erreichen?","Schutz als traditionelle Spezialität","ein Verbot von Dürüm","eine Döner-Steuer"],[42,"Welches Fleisch wäre nach dem EU-Antrag verboten gewesen?","Kalbfleisch","Lammfleisch","Rindfleisch älterer Tiere"],[43,"Was hätte es nach dem EU-Antrag unter diesem Namen nicht mehr geben dürfen?","Gemüsedöner","Dürüm","Lahmacun"],[44,"Wer legte unter anderem Einspruch gegen den EU-Antrag ein?","das Bundeslandwirtschaftsministerium","die NASA","der DFB"],[45,"Welcher Verband trug sich sogar im Lobbyregister gegen den Antrag ein?","die Kälbermäster","die Bäcker","die Fischer"],[46,"Was nahm Bundespräsident Steinmeier 2024 mit in die Türkei?","einen 60-kg-Dönerspieß","einen Bratwurststand","ein Fass Ayran"],[47,"Wie viel sollte ein Döner nach der „Dönerpreisbremse“ höchstens kosten?","4,90 €","9,90 €","1,00 €"],[48,"Was wurde Olaf Scholz zugerufen?","„Olaf-Abi, mach Döner drei Euro!“","„Olaf, mehr Soße!“","„Döner für alle, jeden Tag!“"],[49,"Woraus besteht Ayran?","Joghurt, Wasser, Salz","Milch, Honig, Zimt","Tee, Zucker, Zitrone"],[50,"Wie viele Döner-Imbisse und türkische Restaurants gab es 2022 laut Seidel in Deutschland?","rund 18.500","rund 500","rund 1 Million"],[51,"Wie viel Döner wird laut ATDID täglich in Deutschland gegessen?","etwa 550 Tonnen","etwa 5 Tonnen","etwa 50.000 Tonnen"],[52,"Wie viel setzt die Döner-Branche in Deutschland laut ATDID jährlich um?","rund 2,4 Milliarden Euro","rund 24 Millionen Euro","rund 240 Milliarden Euro"],[53,"Wie viele Menschen arbeiten laut Verband in der Döner-Branche?","etwa 60.000","etwa 600","etwa 6 Millionen"],[54,"Wie viele Döner werden laut einer Rechnung der Linken jährlich in Deutschland gegessen?","etwa 1,3 Milliarden","etwa 13 Millionen","etwa 130 Milliarden"],[55,"Was kostete ein Döner 2024 laut Lieferando im Schnitt in den zehn größten Städten?","6 Euro","3 Euro","12 Euro"],[56,"Wie viele Menschen in Deutschland essen laut YouGov mindestens einmal im Monat Döner?","gut jeder Dritte","jeder Hundertste","fast alle"],[57,"Wie viel Dönerspieße produziert Birtat laut Gewerkschaft am Tag?","35 bis 40 Tonnen","35 bis 40 Kilo","350 bis 400 Tonnen"],[58,"Wie schwer war das größte Döner-Sandwich der Welt?","413 kg","41 kg","4.130 kg"],[59,"Wie schwer war der Rekord-Dönerspieß von Ankara 2012?","1.198 kg","119 kg","11.980 kg"],[60,"Wo stand der erste von Guinness geprüfte Rekord-Dönerspieß?","in Dubai","in Berlin","in Tokio"],[61,"Wie schwer war der Rekord-Spieß von Erbil im Mai 2026?","2.672 kg","267 kg","26.720 kg"],[62,"Wo entstand die größte Portion Dönerfleisch mit Pommes?","in Campbelltown, Australien","in Kreuzberg","in Istanbul"],[63,"Wer bestätigte den 423,5-kg-Döner in der Mall of Berlin?","das Rekord-Institut für Deutschland","Guinness World Records","der Bundestag"],[19,"Wie alt war Kadir Nurman, als er 1960 nach Deutschland kam?","26 Jahre","16 Jahre","46 Jahre"],[19,"In welchem Jahr zog Kadir Nurman nach Berlin?","1966","1972","1980"],[18,"Wann starb Kadir Nurman?","im Oktober 2013","im Mai 1999","im Januar 2021"],[20,"Aus welcher türkischen Stadt stammt Nevzat Salim?","Bursa","Izmir","Antalya"],[7,"Was für ein Buch war die erste bekannte gedruckte Erwähnung von „döner“?","ein Roman","ein Kochbuch","eine Zeitung"],[8,"Wie nannten osmanische Texte des 15. Jahrhunderts gedrehtes Spießfleisch?","çevirme kebabı","şiş kebabı","adana kebabı"],[6,"In welches Brot wird ein Dürüm gerollt?","dünnes Yufka- oder Lavash-Brot","Baguette","Brötchen"],[11,"Wer hat den Namen „İskender Kebap“ als Marke schützen lassen?","die Nachfahren von İskender Efendi","die Stadt Istanbul","ein deutscher Imbiss"],[11,"Worauf liegt das Fleisch beim İskender Kebap?","auf Pide-Stücken","auf Reis","auf Pommes"],[12,"Welcher Gastronom machte den Döner in Istanbul ab den 1940ern bekannt?","Beyti Güler","Kadir Nurman","Arif Keleş"],[2,"Was bedeutet das griechische Wort „Gyros“?","Drehung","Fleisch","Brot"],[28,"Wer entwickelte den Donair in Halifax?","Peter Gamoulakos","Kadir Nurman","Beyti Güler"],[28,"Welches Fleisch nahm der Donair statt Lamm?","Rindfleisch","Hähnchen","Fisch"],[26,"Welches Fleisch ersetzte bei den Tacos al pastor bis in die 1920er weitgehend das Lamm?","Schwein","Pute","Ziege"],[27,"Wie heißt das pitaähnliche Brot der Tacos árabes?","pan árabe","pan dulce","tortilla"],[27,"In welcher Stadt entstanden die Tacos árabes?","Puebla","Cancún","Tijuana"],[30,"Wann waren Dönerläden auch in britischen Provinzstädten verbreitet?","Ende der 1970er","Ende der 1940er","erst ab 2010"],[36,"Wie hoch darf der Hautanteil beim Geflügel-Döner höchstens sein?","18 %","50 %","80 %"],[37,"Was darf neben zu viel Hackfleisch ebenfalls nicht in einen echten Döner Kebab?","Paniermehl","Salz","Zwiebeln"],[39,"Wie viele Döner-Kontrollen gab es in NRW ab Herbst 2024 ungefähr?","rund 1.250","rund 12","rund 125.000"],[41,"Wann wurde der EU-Antrag für den Döner zurückgezogen?","am 23. September 2025","am 1. Januar 2020","er läuft noch"],[42,"Wie alt hätten Rinder laut EU-Antrag mindestens sein müssen?","16 Monate","4 Wochen","10 Jahre"],[42,"Wie alt hätten Schafe laut EU-Antrag mindestens sein müssen?","6 Monate","6 Tage","6 Jahre"],[44,"Welcher Gaststättenverband legte Einspruch gegen den EU-Antrag ein?","DEHOGA","ADAC","FIFA"],[46,"Wie heißt der Berliner Imbisswirt, der mit Steinmeier in die Türkei flog?","Arif Keleş","Mehmet Aygün","Nevzat Salim"],[46,"Wann reiste Steinmeier mit dem Dönerspieß in die Türkei?","im April 2024","im Dezember 1999","im Juli 2016"],[47,"Wie viel sollte ein Döner für junge Leute nach der „Dönerpreisbremse“ kosten?","2,90 €","0 €","5,90 €"],[49,"Wann erklärte Erdoğan Ayran zum türkischen Nationalgetränk?","2013","1923","2023"],[50,"Wie viele Döner-Imbisse und türkische Restaurants gab es 2022 laut Seidel in Berlin?","etwa 1.600","etwa 16","etwa 16.000"],[51,"Wie viel Döner wird laut ATDID zusätzlich zum Verzehr in Deutschland für den Export produziert?","noch einmal so viel","nichts","das Zehnfache"],[52,"Wie viel setzt die Döner-Branche laut ATDID europaweit jährlich um?","etwa 3,5 Milliarden Euro","etwa 35 Millionen Euro","etwa 350 Milliarden Euro"],[55,"Was kostete ein Döner in Berlin im Januar 2024 laut Lieferando im Schnitt?","7,30 Euro","3,70 Euro","13,70 Euro"],[58,"In welchem Jahr entstand das größte Döner-Sandwich in Albury?","2004","1984","2024"],[59,"Das Fleisch von wie vielen Rindern steckte im Ankara-Rekordspieß 2012?","sieben","zwei","siebzig"],[60,"Wie hoch war der erste von Guinness geprüfte Rekord-Dönerspieß in Dubai?","2,95 m","29,5 cm","29,5 m"],[61,"Wie viele Döner wurden aus dem Erbil-Rekordspieß gespendet?","über 4.000","genau 40","über 400.000"]];
+  const QORDER=(()=>{const a=QUIZ.map((_,i)=>i);let x=20261112;for(let i=a.length-1;i>0;i--){x=(x*1103515245+12345)%2147483648;const j=x%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a})();
+  const QKEY="doener-quiz-v2";
+  const qLoad=()=>{try{return JSON.parse(localStorage.getItem(QKEY)||"{}")}catch(e){return {}}};
+  const qSave=d=>{try{localStorage.setItem(QKEY,JSON.stringify(d))}catch(e){}if(Prefs)Prefs.set({key:QKEY,value:JSON.stringify(d)}).catch(()=>{})};
+  const qCur=()=>QORDER[entries.length%QORDER.length];
+  function qOrder(fi){const o=[0,1,2];let x=fi*7+3;for(let i=2;i>0;i--){x=(x*1103515245+12345)%2147483648;const j=x%(i+1);[o[i],o[j]]=[o[j],o[i]]}return o}
+  function paintQuiz(){
+    const d=qLoad(),fi=qCur(),q=QUIZ[fi].slice(1),key=String(entries.length),pick=d.a&&d.a[key];
+    const answered=pick!=null&&pick.f===fi;
+    $("qQuestion").textContent=q[0];
+    $("qScore").textContent=d.n?` · ${d.r||0} von ${d.n} richtig`:"";
+    const box=$("qOpts");box.innerHTML="";
+    qOrder(fi).forEach(k=>{const b=document.createElement("button");b.type="button";b.className="qopt";b.textContent=q[1+k];
+      if(answered){b.disabled=true;if(k===0)b.classList.add("ok");else if(k===pick.k)b.classList.add("no")}
+      b.onclick=e=>{e.stopPropagation();answerQuiz(fi,k)};box.appendChild(b)});
+    const f=FACTS[QUIZ[fi][0]];
+    $("qRes").hidden=!answered;$("factCard").hidden=!answered;
+    if(answered)$("qRes").innerHTML=`<b>${pick.k===0?"Richtig!":"Leider falsch."}</b> `+esc(f[1])+(f[5]?" (umstritten)":"");
+  }
+  function answerQuiz(fi,k){
+    const d=qLoad(),key=String(entries.length);d.a=d.a||{};
+    if(d.a[key]&&d.a[key].f===fi)return;
+    d.a[key]={f:fi,k};d.n=(d.n||0)+1;if(k===0)d.r=(d.r||0)+1;
+    qSave(d);paintQuiz();paintFactHint();
+    try{navigator.vibrate&&navigator.vibrate(k===0?30:[20,40,20])}catch(e){}
+  }
+  $("factCard").onclick=()=>{factPos=FORDER.indexOf(QUIZ[qCur()][0]);showFact(FORDER[factPos]);setFactPop(false);openLayer("factSheet")};
+  // Hinweis: solange die Frage zum aktuellen Stand noch offen ist
+  function paintFactHint(){const d=qLoad(),p=d.a&&d.a[String(entries.length)];$("factBtn").classList.toggle("new",!(p&&p.f===qCur()))}
+  function setFactPop(open){if(open)paintQuiz();$("factPop").hidden=!open;$("factBtn").setAttribute("aria-expanded",open)}
+  $("factBtn").onclick=e=>{e.stopPropagation();setFactPop($("factPop").hidden)};
+  document.addEventListener("click",e=>{if(!$("factPop").hidden&&!e.target.closest("#factPop,#factBtn"))setFactPop(false)});
+  $("fsNext").onclick=()=>{factPos=(factPos+1)%FORDER.length;showFact(FORDER[factPos])};
+  paintFactCard();
+  // nächster sicherer Döner (gespeicherte Läden + besuchte), offline
+  let nearShop=null,nearLoading=false;
+  function nearestTo(p){
+    const stats=Object.values(shopStats()).filter(s=>s.lat!=null&&!hidden[s.id]);
+    const cand=[...shopsNear(p,25000,2),...stats];
+    if(!cand.length)return null;
+    const n=cand.map(s=>({...s,d:dist(p,s)})).sort((a,b)=>a.d-b.d)[0];
+    const st=stats.find(v=>v.key===(n.key||shopKey(n)));
+    return {...n,st};
+  }
+  function paintNearest(){
+    const p=pos||mapPos,card=$("nearCard");
+    let n=p&&base?nearestTo(p):null;
+    if(n||!nearLoading)nearShop=n;
+    card.classList.toggle("loading",!nearShop&&nearLoading);
+    if(!nearShop&&nearLoading){   // Suche läuft: Drehspieß
+      $("nearName").textContent="Suche den nächsten Döner …";$("nearMeta").textContent="";
+      card.setAttribute("aria-busy","true");card.hidden=false;return}
+    card.removeAttribute("aria-busy");
+    if(!nearShop){card.hidden=true;return}
+    n=nearShop;
+    $("nearName").textContent=n.name;
+    $("nearMeta").textContent=[fmtDist(n.d),n.st?(n.st.stamm?"Stammlokal":n.st.visits+"× da"):"Neu für dich"].join(" · ");
+    $("nearRoute").href=routeUrl(n);card.hidden=false;
+  }
+  $("nearOpen").onclick=()=>{
+    const n=nearShop;if(!n)return;
+    mapPos=mapPos||pos;show("map");
+    const go=()=>{map.jumpTo({center:[n.lon,n.lat],zoom:16});if(popRef)popRef.remove();
+      popRef=new maplibregl.Popup({offset:14,closeButton:false,maxWidth:"260px"}).setLngLat([n.lon,n.lat]).setHTML(popup(n.st||n,!!n.st)).addTo(map)};
+    if(map)setTimeout(go,60);
+  };
   async function locate(){
-    setShopUI("loc");
-    try{pos=await getPos()}catch(e){setShopUI(String(e&&e.message)==="denied"?"denied":"err");return}
-    nearby=await findShops(pos);
+    setShopUI("loc");nearLoading=true;paintNearest();
+    try{pos=await getPos()}catch(e){nearLoading=false;paintNearest();setShopUI(String(e&&e.message)==="denied"?"denied":"err");return}
+    await loadBase();nearLoading=false;paintNearest();
+    nearby=await findShops(pos);paintNearest();
     shop=nearby[0]||null;
     setShopUI(nearby.length?null:(nearby.err?"err":"none"));
   }
@@ -981,7 +1614,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     rateId=id;rateFresh=!editing;const e=entries.find(x=>x.id===id);if(!e)return;
     $("rPrice").value=e.price!=null?String(e.price).replace(".",","):"";
     $("rShop").textContent=e.shop?e.shop.name:"Ohne Laden";
-    titleRater(e);paintKind($("rKind"),kindOf(e));paintRFill(e);
+    titleRater(e);paintKind($("rKind"),kindOf(e));if(rFillEntry!==e){rFillOpen=false;rEditOpen=false}paintRFill(e);setTimeout(paintREdit,0);
     paintStars(e.rating||0);
     const d=new Date(e.t),z=n=>String(n).padStart(2,"0");
     $("rWhen").value=`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
@@ -990,7 +1623,26 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   function titleRater(e){const k=nameOf(e);
     $("rTitle").textContent=e.shop?`Wie war der ${k} bei ${e.shop.name}?`:`Wie war der ${k}?`}
-  function paintRFill(e){fillChips($("rChips"),e.fill||null,f=>{if(f)e.fill=f;else delete e.fill;save();render();titleRater(e);paintRFill(e)})}
+  // Details (Wann, Preis, Laden) eingeklappt mit Kurzfassung
+  let rEditOpen=false;
+  function paintREdit(){
+    $("rEditTog").setAttribute("aria-expanded",rEditOpen);$("rEditPanel").classList.toggle("open",rEditOpen);
+    const e=entries.find(x=>x.id===rateId);if(!e)return;
+    const d=new Date(e.t),today=new Date().toDateString()===d.toDateString();
+    const when=(today?"heute":d.toLocaleDateString("de-DE",{day:"numeric",month:"short"}))+" "+d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+    $("rEditSum").textContent=[when,e.price!=null?e.price.toLocaleString("de-DE",{style:"currency",currency:"EUR"}):null,e.shop?e.shop.name:null].filter(Boolean).join(" · ");
+  }
+  $("rEditTog").onclick=()=>{rEditOpen=!rEditOpen;paintREdit()};
+  ["rWhen","rPrice"].forEach(id=>$(id).addEventListener("change",()=>setTimeout(paintREdit,0)));
+  let rFillOpen=false,rFillEntry=null;
+  function paintRFill(e){
+    rFillEntry=e;const f=e.fill&&FILL[e.fill]?e.fill:null;
+    $("rFillTog").setAttribute("aria-expanded",rFillOpen);$("rFillPanel").classList.toggle("open",rFillOpen);
+    $("rFillVal").textContent=f?FILL[f].n:"";$("rFillOpt").hidden=!!f;$("rFillClr").hidden=!f;
+    fillChips($("rChips"),f,nf=>{if(nf)e.fill=nf;else delete e.fill;rFillOpen=false;save();render();titleRater(e);paintRFill(e)});
+  }
+  $("rFillTog").onclick=()=>{rFillOpen=!rFillOpen;if(rFillEntry)paintRFill(rFillEntry)};
+  $("rFillClr").onclick=ev=>{ev.stopPropagation();const e=rFillEntry;if(!e)return;delete e.fill;rFillOpen=false;save();render();titleRater(e);paintRFill(e)};
   function paintKind(group,k){group.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k))}
   const fullName=(k,f)=>!(f&&FILL[f])?KIND[k]:(f==="kalb"&&k==="doener"?"Kalbsdöner":`${FILL[f].p}-${KIND[k]}`);
   const nameOf=e=>fullName(kindOf(e),e.fill);
@@ -1075,14 +1727,20 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     return new Date(t).toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"short"})}
 
   function render(){
+    try{paintNearest()}catch(e){}
+    try{paintFactHint()}catch(e){}
     const now=new Date(),mStart=new Date(now.getFullYear(),now.getMonth(),1).getTime();
     const w=new Date(sod(now));w.setDate(w.getDate()-((w.getDay()+6)%7));
     const all=entries.slice().sort((a,b)=>b.t-a.t),month=all.filter(e=>e.t>=mStart);
     const mD=month.filter(e=>kindOf(e)==="doener").length,mR=month.length-mD,mn=now.toLocaleDateString("de-DE",{month:"long"});
-    $("mLabel").textContent="im "+mn;
-    const mV=month.filter(e=>isVeg(e.fill)).length;
-    $("mSplit").textContent=`${mD} Döner · ${mR} Dürüm`+(mV?` · ${mV} ohne Fleisch`:"");
-    $("mCount").textContent=month.length;
+    // große Zahl: alle Döner seit Beginn; darunter Aufteilung und der aktuelle Monat
+    const aD=all.filter(e=>kindOf(e)==="doener").length,aR=all.length-aD;
+    $("mLabel").textContent="insgesamt";
+    $("mSplit").textContent=`${aD} Döner · ${aR} Dürüm · ↻ Monat`;
+    $("mCount").textContent=all.length;
+    backStats={n:month.length,label:"im "+mn,split:`${mD} Döner · ${mR} Dürüm`+(month.some(e=>isVeg(e.fill))?` · ${month.filter(e=>isVeg(e.fill)).length} ohne Fleisch`:"")};
+    if($("heroFlip").classList.contains("flipped"))paintBack();
+    try{checkRank()}catch(e){}
     const last=all[0];
     $("mSub").textContent=last?`Zuletzt: ${rel(last.t)}${last.shop?", "+last.shop.name:""}`:"Noch keiner eingetragen.";
 
@@ -1162,9 +1820,57 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     labels.forEach((l,i)=>{o+=`<text x="${X(i)}" y="${H-6}" text-anchor="middle" font-size="11" fill="var(--muted)">${l}</text>`});
     return o+"</svg>";
   }
+  // ---------- Orte: Städte zu den Einträgen (einmal online ermittelt, dann gespeichert) ----------
+  const CITYKEY="doener-city-cache-v1";
+  let cityCache=(()=>{try{return JSON.parse(localStorage.getItem(CITYKEY)||"{}")}catch(e){return {}}})();
+  const ptOf=e=>e.shop&&e.shop.lat!=null?{lat:e.shop.lat,lon:e.shop.lon}:e.loc?{lat:e.loc.lat,lon:e.loc.lon}:null;
+  const cellKey=p=>(Math.round(p.lat*50)/50).toFixed(2)+","+(Math.round(p.lon*50)/50).toFixed(2);   // ca. 2 km Raster
+  let cityQueue=[],cityBusy=false,placeList=[];
+  async function fetchCities(){
+    if(cityBusy)return;cityBusy=true;
+    while(cityQueue.length){
+      const k=cityQueue.shift();if(cityCache[k])continue;
+      const [lat,lon]=k.split(",");
+      try{
+        const j=await httpJson(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&accept-language=de&lat=${lat}&lon=${lon}`,12000);
+        const a=(j&&j.address)||{};
+        cityCache[k]={c:a.city||a.town||a.village||a.municipality||a.county||a.state||"Unbekannt",k:a.country||"",t:Date.now()};
+        try{localStorage.setItem(CITYKEY,JSON.stringify(cityCache))}catch(e){}
+        if(Prefs)Prefs.set({key:CITYKEY,value:JSON.stringify(cityCache)}).catch(()=>{});
+        paintPlaces(placeList);
+      }catch(e){cityQueue=[];break}            // offline: später erneut versuchen
+      await new Promise(r=>setTimeout(r,1100));  // höchstens 1 Anfrage pro Sekunde (Nominatim-Regel)
+    }
+    cityBusy=false;
+  }
+  function paintPlaces(E){
+    placeList=E;
+    const withPt=E.map(e=>({e,p:ptOf(e)})).filter(x=>x.p);
+    const groups={},countries=new Set(),missing=new Set();
+    withPt.forEach(({p})=>{const k=cellKey(p),c=cityCache[k];
+      if(!c){missing.add(k);return}
+      const g=groups[c.c]||(groups[c.c]={n:0,lat:0,lon:0,pts:[]});g.n++;g.pts.push(p);if(c.k)countries.add(c.k)});
+    const list=Object.entries(groups).sort((a,b)=>b[1].n-a[1].n);
+    $("cardPlaces").hidden=!withPt.length;
+    if(!withPt.length)return;
+    // weitester Döner, gemessen von der Stadt mit den meisten Dönern
+    let far=null;
+    if(list.length){const home=list[0][1],hc={lat:home.pts.reduce((a,p)=>a+p.lat,0)/home.n,lon:home.pts.reduce((a,p)=>a+p.lon,0)/home.n};
+      withPt.forEach(({p})=>{const d=dist(hc,p);if(!far||d>far.d)far={d,p}});
+      if(far)far.city=(cityCache[cellKey(far.p)]||{}).c}
+    const K=[[list.length,list.length===1?"Stadt":"Städte"],[countries.size>1?countries.size:(list[0]?list[0][0]:"–"),countries.size>1?"Länder":"meiste Döner"],
+      [far&&far.d>2000?Math.round(far.d/1000).toLocaleString("de-DE")+" km":"–",far&&far.d>2000?`weitester: ${esc(far.city||"?")}`:"weitester Döner"]];
+    $("placeKpis").innerHTML=K.map(k=>`<div class="kpi"><b>${esc(String(k[0]))}</b><small>${k[1]}</small></div>`).join("");
+    const max=list.length?list[0][1].n:1;
+    $("cityList").innerHTML=list.slice(0,8).map(([c,g],i)=>`<li><span class="r">${i+1}</span><span class="n">${esc(c)}</span><span class="cb"><i style="width:${(g.n/max*100).toFixed(0)}%"></i></span><span class="v">${g.n}</span></li>`).join("");
+    const m=missing.size;$("placeNote").hidden=!m;
+    if(m){$("placeNote").textContent=`${m} Ort${m>1?"e werden":" wird"} noch ermittelt – dafür braucht die App kurz Internet.`;
+      missing.forEach(k=>{if(!cityQueue.includes(k))cityQueue.push(k)});fetchCities()}
+  }
   function renderStats(){
     renderHidden();
     const now=new Date(), E=entries.filter(inRange).sort((a,b)=>a.t-b.t);
+    try{paintPlaces(E)}catch(e){}
     $("statsEmpty").hidden=E.length>0;$("statsBody").hidden=!E.length;
     // 12 Monate (unabhängig vom Filter)
     const months=[],mLabels=[];
@@ -1258,7 +1964,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
     }catch(e){}};
     if(styleReady)run();else map.once("load",run);
   }
-  const dark=()=>window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
+  const dark=()=>document.documentElement.dataset.theme!=="light"&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
   const STYLE=()=>"https://tiles.openfreemap.org/styles/liberty";
   function pinEl(cls,label,size){
     const d=document.createElement("div");d.className="pin "+cls;d.style.width=d.style.height=size+"px";d.textContent=label;return d}
@@ -1315,7 +2021,7 @@ h2{font-size:18px;font-weight:800;margin:28px 0 8px}
   }
   function drawMap(){
     if(!map)return;
-    ensureShopLayer();
+    ensureShopLayer();paintNearest();
     markers.forEach(m=>m.remove());markers=[];
     const stats=Object.values(shopStats()).filter(s=>s.lat!=null&&!hidden[s.id]);
     stats.forEach(s=>addMarker(s.lat,s.lon,pinEl(s.stamm?"s":"v",s.visits,s.stamm?32:28),popup(s,true)));
