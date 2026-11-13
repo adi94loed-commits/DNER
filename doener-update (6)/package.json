@@ -1,0 +1,22 @@
+{
+  "name": "doener-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Döner-Tracker als Android-App",
+  "scripts": {
+    "android:init": "cap add android && node scripts/patch-android.js",
+    "android:sync": "cap sync android",
+    "android:open": "cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/geolocation": "8.2.4",
+    "@capacitor/preferences": "8.0.1",
+    "@capacitor/share": "8.0.3",
+    "@capacitor/filesystem": "8.1.5"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3"
+  }
+}
