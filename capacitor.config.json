@@ -3,6 +3,6 @@
   "appName": "Döner-Tracker",
   "webDir": "www",
   "android": {
-    "backgroundColor": "#F6F7F2"
+    "backgroundColor": "#0B0620"
   }
 }

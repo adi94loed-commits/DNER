@@ -1,4 +1,4 @@
-// Ergänzt Standort-Berechtigungen und eine feste Signatur,
+// Ergänzt Standort- und Kamera-Berechtigungen (Döner-Foto) und eine feste Signatur,
 // damit Updates sich über die alte App installieren lassen (Daten bleiben erhalten).
 const fs = require("fs");
 const path = require("path");
@@ -8,7 +8,9 @@ let m = fs.readFileSync(manifest, "utf8");
 const perms = [
   '<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />',
   '<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />',
-  '<uses-feature android:name="android.hardware.location.gps" android:required="false" />'
+  '<uses-feature android:name="android.hardware.location.gps" android:required="false" />',
+  '<uses-permission android:name="android.permission.CAMERA" />',
+  '<uses-feature android:name="android.hardware.camera" android:required="false" />'
 ];
 const missing = perms.filter(p => !m.includes(p.match(/name="([^"]+)"/)[1]));
 if (missing.length) {
@@ -35,6 +37,18 @@ if (fs.existsSync(groovy)) {
   }
 }
 console.log("Signatur: ok");
+
+// Versionsnummer bei jedem GitHub-Lauf erhöhen, damit Android das Update sicher über die alte App installiert
+// doener-tracker-version
+const run = parseInt(process.env.GITHUB_RUN_NUMBER || "1", 10) + 100;
+for (const f of [groovy, kts]) {
+  if (!fs.existsSync(f)) continue;
+  let g = fs.readFileSync(f, "utf8");
+  g = g.replace(/versionCode\s*=?\s*\d+/, m => m.replace(/\d+$/, String(run)))
+       .replace(/versionName\s*=?\s*"[^"]*"/, m => m.replace(/"[^"]*"$/, `"1.${run}"`));
+  fs.writeFileSync(f, g);
+}
+console.log("Version: " + run);
 
 // App-Icon und Startbild übernehmen
 function copyDir(src, dst) {

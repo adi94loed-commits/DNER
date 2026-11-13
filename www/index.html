@@ -561,9 +561,85 @@ body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242
 .cities .cb i{display:block;height:100%;background:#111;border-radius:3px}
 .cities .v{width:26px;text-align:right;font-weight:700}
 #placeNote{margin-top:8px}
+/* Döner-Foto */
+.photobtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;padding:12px;border-radius:10px;border:1.5px dashed #111;background:#fff;color:#111;font:700 15px "Bricolage Grotesque",system-ui,sans-serif;cursor:pointer}
+.phSeg{display:flex;gap:6px;margin:6px 0 10px}
+.phSeg button{flex:1;border:1.5px solid #111;background:#fff;color:#111;border-radius:8px;padding:8px;font-weight:700;cursor:pointer}
+.phSeg button[aria-pressed="true"]{background:#111;color:#fff}
+.phImg{display:block;width:100%;max-height:52vh;object-fit:contain;border-radius:8px;background:#eee}
+/* ===== 80er-Jahre: Neon, Chrom, Sonnenuntergang ===== */
+:root[data-theme="light"]{--bg:#0B0620;--card:rgba(26,12,56,.82);--ink:#F7ECFF;--muted:#B5A6D6;--line:rgba(0,240,255,.22);--salatHell:rgba(26,12,56,.82)}
+body{background:#0B0620;color:var(--ink)}
+#flagBg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+body::after{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--safeT) + 4px);z-index:900;pointer-events:none;
+  background:linear-gradient(90deg,#00F0FF,#FF2E88,#FFE66D,#FF2E88,#00F0FF)}
+/* Neon-Knöpfe */
+.go{background:linear-gradient(90deg,#FF2E88,#FF7A18);color:#fff;border-radius:8px;font-style:italic;text-transform:uppercase;letter-spacing:.08em;
+  text-shadow:0 0 8px rgba(255,255,255,.5);box-shadow:0 0 18px rgba(255,46,136,.55),inset 0 1px 0 rgba(255,255,255,.4)}
+.prim,.arow .prim{background:linear-gradient(90deg,#FF2E88,#FF7A18)!important;color:#fff!important;box-shadow:0 0 14px rgba(255,46,136,.45)}
+.ghost,.arow .ghost{background:transparent!important;border:1.5px solid #00F0FF!important;color:#00F0FF!important}
+/* Karten und Fenster: dunkles Glas mit Neonkante */
+.near,.card,.kpi,.seg,.factpop,.qopt,.photobtn,.price,.shop,.kind,.sheet{background:var(--card)!important;color:var(--ink)}
+.near,.card,.kpi,.factpop{border:1px solid rgba(0,240,255,.4)!important;box-shadow:0 0 14px rgba(0,240,255,.15);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:10px}
+.sheet{background:#160A33!important;border-top:2px solid #FF2E88;box-shadow:0 -6px 30px rgba(255,46,136,.3)}
+.scrim{background:rgba(5,2,15,.6)}
+.near .nr,#mcRoute{background:#00F0FF!important;color:#0B0620!important}
+.qopt{border-color:rgba(0,240,255,.5)!important;color:var(--ink)!important}
+.qopt.ok{background:#00F0FF!important;color:#0B0620!important}
+.qopt.no{border-color:#FF2E88!important;color:#FF2E88!important}
+.factpop::after{background:#1A0C38;border-color:rgba(0,240,255,.4)}
+.factpop .k,.fact .k{color:#FF2E88}
+.factpop .more{color:#00F0FF}
+.factbtn{background:#1A0C38;border-color:#00F0FF;color:#00F0FF;box-shadow:0 0 12px rgba(0,240,255,.45)}
+.factbtn .fdot{background:#FF2E88;box-shadow:0 0 0 2px #1A0C38}
+.factbtn.new::before{border-color:#FF2E88}
+.helpbtn{background:rgba(26,12,56,.7);border-color:rgba(0,240,255,.4);color:#00F0FF}
+input,select,textarea{background:rgba(11,6,32,.6)!important;color:var(--ink)!important;border-color:rgba(0,240,255,.35)!important}
+.kind button[aria-pressed="true"],.seg button[aria-selected="true"],.seg .on{background:rgba(255,46,136,.25)!important;color:#fff!important}
+.chip{background:rgba(255,255,255,.08)!important;color:var(--ink)!important}
+.chip.veg{background:rgba(0,240,255,.12)!important}
+.chip[aria-pressed="true"]{background:#FF2E88!important;color:#fff!important}
+.photobtn{border-color:#00F0FF!important;color:#00F0FF!important}
+.phSeg button{background:transparent;border-color:#00F0FF;color:#00F0FF}.phSeg button[aria-pressed="true"]{background:#00F0FF;color:#0B0620}
+/* Chrom-Schrift */
+.titlebar .tn{font-style:italic;text-transform:uppercase;letter-spacing:.04em;font-size:26px;
+  background:linear-gradient(180deg,#FFFFFF 0%,#BDE8FF 42%,#3B2A6B 50%,#FFB3E6 58%,#FFFFFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;
+  filter:drop-shadow(0 0 6px rgba(255,46,136,.6))}
+.titlebar .ts,.sub,.down,.near .k,.near .m{color:var(--muted)!important}
+.titlebar .tbar{background:rgba(255,255,255,.12)}
+.titlebar .tbar i{background:linear-gradient(90deg,#00F0FF,#FF2E88)!important;box-shadow:0 0 10px rgba(255,46,136,.6)}
+#viewStats h1,.st-h{font-style:italic;text-transform:uppercase;letter-spacing:.04em;color:#fff;text-shadow:0 0 10px #FF2E88,0 0 22px rgba(255,46,136,.6)}
+.card h3,.kpi small{text-transform:uppercase;letter-spacing:.06em;color:#00F0FF}
+.kpi b{color:#fff;text-shadow:0 0 8px rgba(0,240,255,.5)}
+.bar i,.wd i,.bars i{background:linear-gradient(180deg,#FF2E88,#FF7A18)!important}
+.stars svg path{fill:rgba(255,255,255,.2)!important}.stars .on svg path{fill:#FFB347!important;filter:drop-shadow(0 0 6px rgba(255,179,71,.8))}
+.log li{border-color:var(--line)!important}.log .rt span{background:rgba(255,255,255,.2)}.log .rt .on{background:#FFB347}
+.ruRays{opacity:.18}
+/* Leiste unten */
+.tabs.nordic{background:rgba(22,10,51,.85)!important;border:1px solid rgba(0,240,255,.35)!important;box-shadow:0 0 18px rgba(0,240,255,.2)}
+.tabs.nordic button{color:#8E7FB8}.tabs.nordic button[aria-selected="true"]{color:#00F0FF;filter:drop-shadow(0 0 6px rgba(0,240,255,.8))}
+.tabs.nordic button::after{background:#FF2E88}
+/* Übersichtsdöner im 80er-Stil */
+.hero .num{fill:url(#chrome);filter:drop-shadow(0 0 6px rgba(255,46,136,.8));font-style:italic}
+.hero .mon{fill:#00F0FF;opacity:1;font-style:italic;text-transform:uppercase;letter-spacing:.12em;font-size:13px}
+.hero .spl{fill:#E9DBFF;opacity:.8}
+.flipIn>svg.back .bk{filter:hue-rotate(40deg) brightness(.9)}
+/* Übersichtsdöner „Sunset“ */
+.hero .num{fill:#FFFFFF;stroke:#2A0B4A;stroke-width:3;paint-order:stroke;filter:drop-shadow(0 0 8px rgba(255,46,136,.7));font-style:italic}
+.hero .mon{fill:#FFFFFF;opacity:1;font-style:italic;text-transform:uppercase;letter-spacing:.12em;font-size:12.5px;stroke:#2A0B4A;stroke-width:2.5;paint-order:stroke}
+.hero .spl{fill:#FFF3D6;opacity:1;font-size:12px;stroke:#2A0B4A;stroke-width:2.5;paint-order:stroke}
+/* Kranz-Effekte */
+.fog ellipse{opacity:.16;filter:blur(18px);animation:fogDrift 9s ease-in-out infinite}
+.fog ellipse:nth-child(2){animation-delay:-3s}.fog ellipse:nth-child(3){animation-delay:-6s}
+@keyframes fogDrift{0%,100%{transform:translate(0,0);opacity:.12}50%{transform:translate(14px,-8px);opacity:.24}}
+.glitchA{animation:glA 2.4s steps(1) infinite}.glitchB{animation:glB 2.4s steps(1) infinite}
+@keyframes glA{0%,86%,100%{transform:translate(-3px,0)}88%{transform:translate(-9px,2px)}92%{transform:translate(4px,-2px)}}
+@keyframes glB{0%,86%,100%{transform:translate(3px,0)}88%{transform:translate(9px,-2px)}92%{transform:translate(-4px,2px)}}
+@media (prefers-reduced-motion:reduce){.fog ellipse,.glitchA,.glitchB{animation:none}}
 </style>
 </head>
 <body>
+<canvas id="flagBg" aria-hidden="true"></canvas>
 <div id="viewTracker">
   <main>
     <button class="helpbtn" id="helpBtn" type="button" aria-label="So funktioniert's" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.5"/><circle cx="12" cy="7.6" r=".9" fill="currentColor" stroke="none"/></svg></button>
@@ -572,89 +648,24 @@ body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242
       <div class="flip" id="heroFlip" role="button" tabindex="0" aria-label="Döner umdrehen: Zahl dieses Monats" aria-pressed="false"><div class="flipIn"><svg id="heroSvg" viewBox="0 44 360 252" role="img" aria-labelledby="heroLabel">
         <title id="heroLabel">Döner und Dürüm insgesamt</title>
         <g id="wreath"></g>
-        <path d="M9.3 177.6 L25.1 167.8 L40.9 158.0 L56.7 148.2 L72.5 138.4 L88.3 128.6 L104.1 118.8 L119.9 109.0 L135.7 99.2 L151.5 89.4 L167.3 79.6 L192.7 79.6 L208.5 89.4 L224.3 99.2 L240.1 109.0 L255.9 118.8 L271.7 128.6 L287.5 138.4 L303.3 148.2 L319.1 158.0 L334.9 167.8 L350.7 177.6 L338 198 L22 198Z" fill="#8DAA7B"/>
-<circle cx="9.3" cy="177.6" r="13.0" fill="#9DB98B"/>
-<circle cx="15.9" cy="170.5" r="15.4" fill="#8DAA7B"/>
-<circle cx="26.5" cy="170.0" r="14.3" fill="#8DAA7B"/>
-<circle cx="33.0" cy="162.9" r="11.3" fill="#9DB98B"/>
-<circle cx="39.6" cy="155.8" r="10.8" fill="#8DAA7B"/>
-<circle cx="50.2" cy="155.3" r="13.5" fill="#8DAA7B"/>
-<circle cx="56.7" cy="148.1" r="15.5" fill="#9DB98B"/>
-<circle cx="63.3" cy="141.1" r="13.8" fill="#8DAA7B"/>
-<circle cx="74.0" cy="140.7" r="10.9" fill="#8DAA7B"/>
-<circle cx="80.4" cy="133.4" r="11.1" fill="#9DB98B"/>
-<circle cx="87.0" cy="126.5" r="14.1" fill="#8DAA7B"/>
-<circle cx="97.7" cy="126.0" r="15.5" fill="#8DAA7B"/>
-<circle cx="104.0" cy="118.6" r="13.3" fill="#9DB98B"/>
-<circle cx="110.7" cy="111.8" r="10.7" fill="#8DAA7B"/>
-<circle cx="121.4" cy="111.3" r="11.5" fill="#8DAA7B"/>
-<circle cx="127.7" cy="103.9" r="14.5" fill="#9DB98B"/>
-<circle cx="134.5" cy="97.1" r="15.3" fill="#8DAA7B"/>
-<circle cx="145.1" cy="96.6" r="12.7" fill="#8DAA7B"/>
-<circle cx="151.4" cy="89.1" r="10.5" fill="#9DB98B"/>
-<circle cx="158.2" cy="82.4" r="12.0" fill="#8DAA7B"/>
-<circle cx="168.8" cy="81.9" r="14.9" fill="#8DAA7B"/>
-<circle cx="350.7" cy="177.6" r="13.0" fill="#9DB98B"/>
-<circle cx="344.1" cy="170.5" r="15.4" fill="#8DAA7B"/>
-<circle cx="333.5" cy="170.0" r="14.3" fill="#8DAA7B"/>
-<circle cx="327.0" cy="162.9" r="11.3" fill="#9DB98B"/>
-<circle cx="320.4" cy="155.8" r="10.8" fill="#8DAA7B"/>
-<circle cx="309.8" cy="155.3" r="13.5" fill="#8DAA7B"/>
-<circle cx="303.3" cy="148.1" r="15.5" fill="#9DB98B"/>
-<circle cx="296.7" cy="141.1" r="13.8" fill="#8DAA7B"/>
-<circle cx="286.0" cy="140.7" r="10.9" fill="#8DAA7B"/>
-<circle cx="279.6" cy="133.4" r="11.1" fill="#9DB98B"/>
-<circle cx="273.0" cy="126.5" r="14.1" fill="#8DAA7B"/>
-<circle cx="262.3" cy="126.0" r="15.5" fill="#8DAA7B"/>
-<circle cx="256.0" cy="118.6" r="13.3" fill="#9DB98B"/>
-<circle cx="249.3" cy="111.8" r="10.7" fill="#8DAA7B"/>
-<circle cx="238.6" cy="111.3" r="11.5" fill="#8DAA7B"/>
-<circle cx="232.3" cy="103.9" r="14.5" fill="#9DB98B"/>
-<circle cx="225.5" cy="97.1" r="15.3" fill="#8DAA7B"/>
-<circle cx="214.9" cy="96.6" r="12.7" fill="#8DAA7B"/>
-<circle cx="208.6" cy="89.1" r="10.5" fill="#9DB98B"/>
-<circle cx="201.8" cy="82.4" r="12.0" fill="#8DAA7B"/>
-<circle cx="191.2" cy="81.9" r="14.9" fill="#8DAA7B"/>
-<rect x="16.4" y="164.5" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-12 29.4 167.5)"/>
-<rect x="62.7" y="133.4" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-57 75.7 136.4)"/>
-<rect x="104.8" y="109.7" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-12 117.8 112.7)"/>
-<rect x="140.7" y="89.8" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(3 153.7 92.8)"/>
-<rect x="317.6" y="164.5" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-173 330.6 167.5)"/>
-<rect x="271.3" y="133.4" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-173 284.3 136.4)"/>
-<rect x="229.2" y="109.7" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-113 242.2 112.7)"/>
-<rect x="193.3" y="89.8" width="26" height="6" rx="3" fill="#7E5C7C" transform="rotate(-173 206.3 92.8)"/>
-<g transform="translate(94.7 117.6) rotate(-32)"><path d="M-19 6 A19 19 0 0 1 19 6Z" fill="#BC5840"/><path d="M-13 6 A13 13 0 0 1 13 6Z" fill="#E59A84"/><circle cx="-6.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="6.3" cy="-2" r="2" fill="#F4DFD6"/></g>
-<g transform="translate(259.0 113.7) rotate(32)"><path d="M-19 6 A19 19 0 0 1 19 6Z" fill="#BC5840"/><path d="M-13 6 A13 13 0 0 1 13 6Z" fill="#E59A84"/><circle cx="-6.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="6.3" cy="-2" r="2" fill="#F4DFD6"/></g>
-<g transform="translate(34.6 154.9) rotate(-32)"><path d="M-16 6 A16 16 0 0 1 16 6Z" fill="#BC5840"/><path d="M-10 6 A10 10 0 0 1 10 6Z" fill="#E59A84"/><circle cx="-5.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="5.3" cy="-2" r="2" fill="#F4DFD6"/></g>
-<g transform="translate(322.2 152.9) rotate(32)"><path d="M-16 6 A16 16 0 0 1 16 6Z" fill="#BC5840"/><path d="M-10 6 A10 10 0 0 1 10 6Z" fill="#E59A84"/><circle cx="-5.3" cy="-2" r="2" fill="#F4DFD6"/><circle cx="5.3" cy="-2" r="2" fill="#F4DFD6"/></g>
-<g transform="translate(22.5 177.7) rotate(-36)"><path d="M-16.2 2 C-16.2 -6 -8.1 -9 0 -7 C8.1 -10 16.2 -6 16.2 1 C13.2 8 -12.2 9 -16.2 2Z" fill="#8C5634"/><path d="M-11.2 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(49.4 157.5) rotate(-32)"><path d="M-16.1 2 C-16.1 -6 -8.1 -9 0 -7 C8.1 -10 16.1 -6 16.1 1 C13.1 8 -12.1 9 -16.1 2Z" fill="#8C5634"/><path d="M-11.1 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(78.9 141.5) rotate(-34)"><path d="M-16.3 2 C-16.3 -6 -8.1 -9 0 -7 C8.1 -10 16.3 -6 16.3 1 C13.3 8 -12.3 9 -16.3 2Z" fill="#8C5634"/><path d="M-11.3 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(105.7 121.4) rotate(-44)"><path d="M-17.7 2 C-17.7 -6 -8.8 -9 0 -7 C8.8 -10 17.7 -6 17.7 1 C14.7 8 -13.7 9 -17.7 2Z" fill="#8C5634"/><path d="M-12.7 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(135.2 105.4) rotate(-22)"><path d="M-16.5 2 C-16.5 -6 -8.2 -9 0 -7 C8.2 -10 16.5 -6 16.5 1 C13.5 8 -12.5 9 -16.5 2Z" fill="#8C5634"/><path d="M-11.5 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(162.1 92.3) rotate(-40)"><path d="M-18.5 2 C-18.5 -6 -9.3 -9 0 -7 C9.3 -10 18.5 -6 18.5 1 C15.5 8 -14.5 9 -18.5 2Z" fill="#8C5634"/><path d="M-13.5 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(337.5 177.7) rotate(-135)"><path d="M-18.3 2 C-18.3 -6 -9.2 -9 0 -7 C9.2 -10 18.3 -6 18.3 1 C15.3 8 -14.3 9 -18.3 2Z" fill="#8C5634"/><path d="M-13.3 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(310.6 157.5) rotate(-151)"><path d="M-19.9 2 C-19.9 -6 -10.0 -9 0 -7 C10.0 -10 19.9 -6 19.9 1 C16.9 8 -15.9 9 -19.9 2Z" fill="#8C5634"/><path d="M-14.9 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(281.1 141.5) rotate(-162)"><path d="M-19.4 2 C-19.4 -6 -9.7 -9 0 -7 C9.7 -10 19.4 -6 19.4 1 C16.4 8 -15.4 9 -19.4 2Z" fill="#8C5634"/><path d="M-14.4 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(254.3 121.4) rotate(-155)"><path d="M-16.6 2 C-16.6 -6 -8.3 -9 0 -7 C8.3 -10 16.6 -6 16.6 1 C13.6 8 -12.6 9 -16.6 2Z" fill="#8C5634"/><path d="M-11.6 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(224.8 105.4) rotate(-160)"><path d="M-17.2 2 C-17.2 -6 -8.6 -9 0 -7 C8.6 -10 17.2 -6 17.2 1 C14.2 8 -13.2 9 -17.2 2Z" fill="#8C5634"/><path d="M-12.2 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<g transform="translate(197.9 92.3) rotate(-139)"><path d="M-16.7 2 C-16.7 -6 -8.4 -9 0 -7 C8.4 -10 16.7 -6 16.7 1 C13.7 8 -12.7 9 -16.7 2Z" fill="#8C5634"/><path d="M-11.7 -1 q5 -3 10 0 t10 0" fill="none" stroke="#6E4127" stroke-width="2" stroke-linecap="round"/></g>
-<path d="M160 96 C164 84 176 80 184 84 C192 80 202 86 200 96Z" fill="#8C5634"/>
-<ellipse cx="61.5" cy="145.3" rx="10" ry="6" transform="rotate(-32 61.5 145.3)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
-<ellipse cx="293.8" cy="142.3" rx="10" ry="6" transform="rotate(-148 293.8 142.3)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
-<ellipse cx="214.8" cy="93.3" rx="10" ry="6" transform="rotate(-148 214.8 93.3)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
-<ellipse cx="119.9" cy="109.0" rx="10" ry="6" transform="rotate(-32 119.9 109.0)" fill="none" stroke="#C9A5BE" stroke-width="4"/>
-<path d="M37.3 173.2 Q42.5 160.6 49.6 161.4 T62.5 150.5" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M94.1 138.0 Q99.4 125.3 106.5 126.2 T119.4 115.2" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M322.7 173.2 Q317.5 160.6 310.4 161.4 T297.5 150.5" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M265.9 138.0 Q260.6 125.3 253.5 126.2 T240.6 115.2" fill="none" stroke="#FBF7F0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 196 L166 104 Q180 95 194 104 L338 196 Q346 204 338 216 C300 302 60 302 22 216 Q14 204 22 196Z" fill="#E6CB9C"/>
-<path d="M40 236 C90 286 270 286 320 236" fill="none" stroke="#D2AF78" stroke-width="5" stroke-linecap="round" opacity=".7"/>
-<path d="M24 197 L166 106 Q180 97 194 106 L336 197" fill="none" stroke="#F3E4C6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-<g fill="#F6EBD6" opacity=".9"><ellipse cx="96" cy="222" rx="3" ry="1.8" transform="rotate(34 96 222)"/><ellipse cx="132" cy="196" rx="3" ry="1.8" transform="rotate(33 132 196)"/><ellipse cx="250" cy="200" rx="3" ry="1.8" transform="rotate(-16 250 200)"/><ellipse cx="282" cy="236" rx="3" ry="1.8" transform="rotate(7 282 236)"/><ellipse cx="74" cy="250" rx="3" ry="1.8" transform="rotate(-28 74 250)"/><ellipse cx="300" cy="214" rx="3" ry="1.8" transform="rotate(30 300 214)"/><ellipse cx="230" cy="276" rx="3" ry="1.8" transform="rotate(-32 230 276)"/><ellipse cx="120" cy="272" rx="3" ry="1.8" transform="rotate(32 120 272)"/><ellipse cx="160" cy="160" rx="3" ry="1.8" transform="rotate(-33 160 160)"/><ellipse cx="206" cy="158" rx="3" ry="1.8" transform="rotate(39 206 158)"/></g>
-        <text class="num" id="mCount" x="180" y="208" text-anchor="middle">0</text>
-        <text class="mon" id="mLabel" x="180" y="232" text-anchor="middle">im November</text>
-        <text class="spl" id="mSplit" x="180" y="250" text-anchor="middle"></text>
+        <defs>
+          <filter id="neon" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <linearGradient id="breadFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A1460" stop-opacity=".92"/><stop offset="1" stop-color="#14072C" stop-opacity=".95"/></linearGradient>
+          <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#BDE8FF"/><stop offset=".5" stop-color="#3B2A6B"/><stop offset=".58" stop-color="#FFB3E6"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient>
+          <clipPath id="breadClip"><path d="M28 172 L172 80 Q180 75 188 80 L332 172 Q344 182 336 200 C304 276 56 276 24 200 Q16 182 28 172Z"/></clipPath>
+        </defs>
+        <g class="dv dv-sunset" transform="translate(180 176) scale(1.1) translate(-180 -176)">
+          <defs><linearGradient id="sunBread" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE66D"/><stop offset=".45" stop-color="#FF8A3D"/><stop offset=".75" stop-color="#FF2E88"/><stop offset="1" stop-color="#7A1A6E"/></linearGradient>
+            <clipPath id="sunClip"><path d="M28 172 L172 80 Q180 75 188 80 L332 172 Q344 182 336 200 C304 276 56 276 24 200 Q16 182 28 172Z"/></clipPath></defs>
+          <path d="M36 166 L172 82 L188 82 L324 166" fill="none" stroke="#00F0FF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M44 156 L172 76 L188 76 L316 156" fill="none" stroke="#39FF88" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 8"/>
+          <path d="M28 172 L172 80 Q180 75 188 80 L332 172 Q344 182 336 200 C304 276 56 276 24 200 Q16 182 28 172Z" fill="url(#sunBread)"/>
+          <g clip-path="url(#sunClip)" fill="#2A0B4A"><rect x="0" y="196" width="360" height="2.0"/><rect x="0" y="210" width="360" height="3.6"/><rect x="0" y="224" width="360" height="5.2"/><rect x="0" y="238" width="360" height="6.8"/><rect x="0" y="252" width="360" height="8.4"/><rect x="0" y="266" width="360" height="10.0"/></g>
+          <path d="M28 172 L172 80 Q180 75 188 80 L332 172 Q344 182 336 200 C304 276 56 276 24 200 Q16 182 28 172Z" fill="none" stroke="#2A0B4A" stroke-width="5" stroke-linejoin="round"/>
+        </g>
+        <text class="num" id="mCount" x="180" y="204" text-anchor="middle">0</text>
+        <text class="mon" id="mLabel" x="180" y="226" text-anchor="middle">insgesamt</text>
+        <text class="spl" id="mSplit" x="180" y="243" text-anchor="middle"></text>
       </svg><svg id="heroBack" class="back" aria-hidden="true"></svg></div></div>
     <button class="factbtn" id="factBtn" type="button" aria-label="Döner-Quiz" aria-expanded="false" aria-controls="factPop"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 9.2a2.9 2.9 0 1 1 4.3 2.5c-.9.5-1.5 1.1-1.5 2.1v.6"/><circle cx="12" cy="17.6" r=".9" fill="currentColor" stroke="none"/></svg><span class="fdot"></span></button>
       <div class="factpop" id="factPop" role="dialog" aria-label="Döner-Quiz" hidden><span class="k">Döner-Quiz<span class="qsc" id="qScore"></span></span><span class="t" id="qQuestion"></span><div class="qopts" id="qOpts"></div><p class="qres" id="qRes" hidden></p><button type="button" class="more" id="factCard" hidden>Mehr dazu ›</button></div>
@@ -781,11 +792,21 @@ body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242
   </div>
 </div>
 
+<div class="layer" id="photoSheet" role="dialog" aria-modal="true" aria-labelledby="phTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet">
+    <h3 id="phTitle">Dein Döner-Foto</h3>
+    <div class="phSeg" role="group" aria-label="Rahmen"><button type="button" data-f="flag" aria-pressed="true">Zielflagge</button><button type="button" data-f="clean" aria-pressed="false">Schlicht</button></div>
+    <img class="phImg" id="phImg" alt="Vorschau des Döner-Fotos mit Rahmen">
+    <div class="arow"><button type="button" class="ghost" id="phNew">Neues Foto</button><button type="button" class="prim" id="phShare">Teilen</button></div>
+  </div>
+</div>
+
 <div class="layer" id="helpSheet" role="dialog" aria-modal="true" aria-labelledby="hTitle">
   <div class="scrim" data-close></div>
   <div class="sheet">
     <h3 id="hTitle">So funktioniert's</h3>
-    <div class="hList"><details class="hItem" open><summary>Döner eintragen</summary><p>Tippe auf „Döner eintragen“. Laden, Döner oder Dürüm und Preis ausfüllen, fertig. Die Füllung (z. B. Halloumi, Seitan) ist optional und eingeklappt. Danach kannst du den Döner mit 1 bis 5 Döner-Symbolen bewerten.</p></details><details class="hItem"><summary>Nachtragen und Ändern</summary><p>Für einen späteren Eintrag „Wann“ auf die richtige Zeit stellen. Den Laden wählst du über „ändern“, auch direkt auf der Karte. Einen Eintrag im Verlauf antippen, um ihn zu bewerten, zu ändern oder zu löschen.</p></details><details class="hItem"><summary>Übersichtsdöner</summary><p>Die große Zahl zeigt alle Döner seit Beginn. Antippen dreht den Döner um: Auf der Rückseite steht der aktuelle Monat.</p></details><details class="hItem"><summary>Titel und Siegerkranz</summary><p>Pro Jahr gibt es alle 5 Döner einen neuen Titel und alle 15 Döner einen edleren Siegerkranz. Höhere Titel bleiben geheim, bis du sie erreichst. Tippe auf deinen Titel für die Vitrine und zum Teilen. Am 1. Januar beginnt alles neu.</p></details><details class="hItem"><summary>Döner-Quiz</summary><p>Unten links am Übersichtsdöner wartet nach jedem neuen Döner eine Quizfrage. Ein kleiner roter Punkt zeigt, wenn eine neue Frage da ist. „Mehr dazu“ zeigt den Fakt mit Quelle.</p></details><details class="hItem"><summary>Nächster Döner</summary><p>Unter dem Eintragen-Knopf steht der nächste Döner in deiner Nähe. „Route“ öffnet die Navigation, Antippen zeigt ihn auf der Karte.</p></details><details class="hItem"><summary>Karte</summary><p>Rote Punkte sind sichere Döner, hohle Punkte „vielleicht Döner“. Laden antippen: Route, ausblenden oder als Döner bestätigen. Lange auf die Karte drücken trägt einen neuen Laden ein. Im Menü (Ebenen-Symbol) kannst du die Gegend aktualisieren.</p></details><details class="hItem"><summary>Statistik</summary><p>Ausgaben, Durchschnittspreis, Bewertungen, Lieblingsläden und mehr, für 30 Tage, das Jahr oder alles.</p></details><details class="hItem"><summary>Deine Daten</summary><p>Alle Einträge bleiben auf deinem Handy. Bei einem Update die neue Version einfach über die alte installieren, nicht deinstallieren.</p></details></div>
+    <div class="hList"><details class="hItem" open><summary>Döner eintragen</summary><p>Tippe auf „Döner eintragen“. Laden, Döner oder Dürüm und Preis ausfüllen, fertig. Die Füllung (z. B. Halloumi, Seitan) ist optional und eingeklappt. Danach kannst du den Döner mit 1 bis 5 Döner-Symbolen bewerten.</p></details><details class="hItem"><summary>Nachtragen und Ändern</summary><p>Für einen späteren Eintrag „Wann“ auf die richtige Zeit stellen. Den Laden wählst du über „ändern“, auch direkt auf der Karte. Einen Eintrag im Verlauf antippen, um ihn zu bewerten, zu ändern oder zu löschen.</p></details><details class="hItem"><summary>Übersichtsdöner</summary><p>Die große Zahl zeigt alle Döner seit Beginn. Antippen dreht den Döner um: Auf der Rückseite steht der aktuelle Monat.</p></details><details class="hItem"><summary>Titel und Siegerkranz</summary><p>Pro Jahr gibt es alle 5 Döner einen neuen Titel und alle 10 Döner einen neuen Neon-Siegerkranz in einer neuen Farbe. Höhere Titel bleiben geheim, bis du sie erreichst. Tippe auf deinen Titel für die Vitrine und zum Teilen. Am 1. Januar beginnt alles neu.</p></details><details class="hItem"><summary>Döner-Quiz</summary><p>Unten links am Übersichtsdöner wartet nach jedem neuen Döner eine Quizfrage. Ein kleiner roter Punkt zeigt, wenn eine neue Frage da ist. „Mehr dazu“ zeigt den Fakt mit Quelle.</p></details><details class="hItem"><summary>Nächster Döner</summary><p>Unter dem Eintragen-Knopf steht der nächste Döner in deiner Nähe. „Route“ öffnet die Navigation, Antippen zeigt ihn auf der Karte.</p></details><details class="hItem"><summary>Karte</summary><p>Rote Punkte sind sichere Döner, hohle Punkte „vielleicht Döner“. Laden antippen: Route, ausblenden oder als Döner bestätigen. Lange auf die Karte drücken trägt einen neuen Laden ein. Im Menü (Ebenen-Symbol) kannst du die Gegend aktualisieren.</p></details><details class="hItem"><summary>Statistik</summary><p>Ausgaben, Durchschnittspreis, Bewertungen, Lieblingsläden und mehr, für 30 Tage, das Jahr oder alles.</p></details><details class="hItem"><summary>Deine Daten</summary><p>Alle Einträge bleiben auf deinem Handy. Bei einem Update die neue Version einfach über die alte installieren, nicht deinstallieren.</p></details></div>
     <div class="arow"><button type="button" class="prim" data-close>Alles klar</button></div>
   </div>
 </div>
@@ -865,6 +886,8 @@ body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242
     </div>
       </div></div>
     </div>
+    <button type="button" class="photobtn" id="rPhoto"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l1.6-2.4h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.2" r="3.6"/></svg>Döner-Foto machen &amp; teilen</button>
+    <input type="file" id="photoIn" accept="image/*" capture="environment" hidden>
     <div class="arow"><button type="button" class="ghost" id="rDel">Löschen</button><button type="button" class="prim skip" data-close>Fertig</button></div>
   </div>
 </div>
@@ -1270,71 +1293,82 @@ body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242
   }
   // ---------- Lorbeerkranz: alle 15 Döner im Jahr ein edleres Material, ab 125 geheim ----------
   const WREATHS=[
-    {min:15,n:"Papier",c:"#A89F95",h:"#FFFFFF"},
-    {min:30,n:"Holz",c:"#6E4424",h:"#C9945E"},
-    {min:45,n:"Bronze",c:"#8C5A2B",h:"#E9B07A"},
-    {min:60,n:"Silber",c:"#6F7A85",h:"#EEF2F6"},
-    {min:75,n:"Gold",c:"#A87808",h:"#FFE08A"},
-    {min:90,n:"Platin",c:"#4F7F7C",h:"#E8FFFC"},
-    {min:125,n:"Glut",c:"#A3201A",h:"#FFC14D",secret:true},
-    {min:150,n:"Prisma",c:"#4B35C4",h:"#8FF0FF",secret:true}
+    {min:10,n:"Mint",c:"#3DFFB0"},
+    {min:20,n:"Cyan",c:"#00E5FF"},
+    {min:30,n:"Azur",c:"#3D8BFF"},
+    {min:40,n:"Violett",c:"#9B5CFF"},
+    {min:50,n:"Magenta",c:"#E040FB"},
+    {min:60,n:"Pink",c:"#FF2E88"},
+    {min:70,n:"Rot",c:"#FF3B3B"},
+    {min:80,n:"Orange",c:"#FF8A3D"},
+    {min:90,n:"Gold",c:"#FFD23F"},
+    {min:100,n:"Regenbogen",c:"#FFFFFF",rainbow:true},
+    {min:110,n:"Plasma",c:"#FF4FD8",secret:true},
+    {min:120,n:"Glitch",c:"#00F0FF",secret:true},
+    {min:130,n:"Supernova",c:"#FFFFFF",secret:true}
   ];
   const wreathIdx=n=>{let r=-1;WREATHS.forEach((w,k)=>{if(n>=w.min)r=k});return r};
   // Siegerkranz wie bei der Siegerehrung im Rennsport: dichter Lorbeer-Hufeisenkranz, oben offen,
   // unten eine breite Siegerschleife mit der Jahreszahl. Material und Fülle steigen mit der Stufe.
+  // Neon-Siegerkranz: Blätter als Leuchtröhren in der Farbe der Stufe. Mit jeder Stufe mehr Blätter,
+  // stärkeres Leuchten; ab 50 eine zweite Kontur, ab 70 Funkeln, 100 Regenbogen, geheim Plasma/Glitch/Supernova.
   function laurelSvg(l,idp,center){
     const W=WREATHS[l],cx=180,cy=176,rx=206,ry=162,R=Math.PI/180;
-    const hx=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
-    const mix=(a,b,t)=>{const A=hx(a),B=hx(b);return "#"+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,"0")).join("")};
-    const paper=l===0,glut=l===6,prisma=l===7;
-    const dark=paper?"#CFC7BC":W.c,light=paper?"#FFFFFF":W.h,edge=paper?"#A79E93":mix(W.c,"#000000",.3);
-    const nPer=17+l*2,base=1+l*.04;
-    const leaf=(fl,fd)=>`<path d="M0 0 C7 -9 20 -10 30 -1 Q15 -.5 0 0Z" fill="${fl}"/><path d="M0 0 Q15 -.5 30 -1 C21 7 8 8 0 0Z" fill="${fd}"/><path d="M0 0 C7 -9 20 -10 30 -1 C21 7 8 8 0 0Z" fill="none" stroke="${edge}" stroke-width=".9" stroke-linejoin="round"/><path d="M3 -.2 H26" stroke="${edge}" stroke-width=".6" opacity=".45"/>`;
+    const plasma=W.n==="Plasma",glitch=W.n==="Glitch",nova=W.n==="Supernova";
+    const nPer=13+Math.round(l*1.4),blur=(1.8+l*.18).toFixed(2),sw=(1.8+l*.08).toFixed(2);
+    const colAt=(t,side)=>W.rainbow||plasma?`hsl(${Math.round((t*300+(side<0?0:150))%360)} 100% 62%)`:W.c;
+    const FULL="M0 0 C7 -9 20 -10 30 -1 C21 7 8 8 0 0Z";
     let back="",g="",front="",k=0;
-    if(l>=4)back+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx+55}" ry="${ry+55}" fill="url(#${idp}g)"/>`;
-    for(const side of [-1,1]){
-      const a0=side<0?96:84,a1=side<0?246:-66;
-      const pt=t=>{const a=(a0+(a1-a0)*t)*R;return [cx+rx*Math.cos(a),cy+ry*Math.sin(a),a]};
-      let d="";for(let j=0;j<=36;j++){const [x,y]=pt(j/36);d+=(j?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}
-      g+=`<path d="${d}" fill="none" stroke="${edge}" stroke-width="5" stroke-linecap="round"/>`;
-      for(let j=0;j<nPer;j++){
-        const t=.03+.94*j/(nPer-1),[x,y,a]=pt(t),dir=a1>a0?1:-1;
-        const tan=Math.atan2(ry*Math.cos(a)*dir,-rx*Math.sin(a)*dir)/R;
-        const sz=base*(1.5-.45*t);
-        // drei Blätter je Knoten: außen, innen, Mitte – ergibt den dichten Siegerkranz
-        for(const [off,ang,sc,sh] of [[-1,46,1,.0],[1,46,1,.18],[0,14,.85,.08]]){
-          const rot=tan+(off===0?(j%2?ang:-ang):off*ang*(side<0?1:-1));
-          let fl=mix(light,dark,sh),fd=mix(dark,"#000000",.1+sh*.4);
-          if(paper){fl=sh>.1?"#F3EFE9":"#FFFFFF";fd="#E2DBD1"}
-          if(glut){fl=mix("#FFD98A","#FF8E3C",t);fd=mix("#D2481F","#8E1C12",t)}
-          if(prisma){const hue=Math.round((t*280+(side<0?0:140)+off*25+360)%360);fl=`hsl(${hue} 90% 74%)`;fd=`hsl(${hue} 72% 48%)`}
-          g+=`<g class="lf${glut?" flick":""}" style="animation-delay:${(k++*.012).toFixed(2)}s" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(sz*sc).toFixed(2)})">${leaf(fl,fd)}</g>`;
+    if(l>=3)back+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx+40}" ry="${ry+40}" fill="url(#${idp}g)"/>`;
+    if(nova){let r="";for(let a=0;a<360;a+=10)r+=`<path d="M${cx} ${cy} L${cx+300*Math.cos((a-1.6)*R)} ${cy+300*Math.sin((a-1.6)*R)} L${cx+300*Math.cos((a+1.6)*R)} ${cy+300*Math.sin((a+1.6)*R)}Z"/>`;
+      back+=`<g class="wrays" fill="#FFFFFF" opacity=".22">${r}</g>`}
+    const ring=(scale,op)=>{let o="";
+      for(const side of [-1,1]){
+        const a0=side<0?96:84,a1=side<0?246:-66;
+        const pt=t=>{const a=(a0+(a1-a0)*t)*R;return [cx+rx*scale*Math.cos(a),cy+ry*scale*Math.sin(a),a]};
+        let d="";for(let j=0;j<=36;j++){const [x,y]=pt(j/36);d+=(j?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}
+        o+=`<path d="${d}" fill="none" stroke="${colAt(.5,side)}" stroke-width="${sw}" stroke-linecap="round" opacity="${op}"/>`;
+        for(let j=0;j<nPer;j++){
+          const t=.03+.94*j/(nPer-1),[x,y,a]=pt(t),dir=a1>a0?1:-1;
+          const tan=Math.atan2(ry*Math.cos(a)*dir,-rx*Math.sin(a)*dir)/R,sz=(1.25-.4*t)*scale;
+          for(const [off,ang] of [[-1,46],[1,46],[0,12]]){
+            const rot=tan+(off===0?(j%2?ang:-ang):off*ang*(side<0?1:-1)),c=colAt(t,side);
+            o+=`<g class="lf" style="animation-delay:${(k++*.012).toFixed(2)}s" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(sz*(off===0?.85:1)).toFixed(2)})"><path d="${FULL}" fill="${c}" fill-opacity="${nova?.35:.12}" stroke="${c}" stroke-width="${sw}" stroke-linejoin="round" opacity="${op}"/></g>`;
+          }
         }
       }
-    }
-    // Siegerschleife unten
-    const by=cy+ry-6,rc=paper?"#B3261E":l===1?"#2F5D3A":mix(W.c,"#000000",.15),rh=paper?"#D9483E":l===1?"#4E8A5B":W.h;
-    front+=`<g class="medal">
-      <path d="M${cx-30} ${by+8} L${cx-58} ${by+78} L${cx-44} ${by+70} L${cx-38} ${by+86} L${cx-8} ${by+14}Z" fill="${mix(rc,"#000000",.2)}"/>
-      <path d="M${cx+30} ${by+8} L${cx+58} ${by+78} L${cx+44} ${by+70} L${cx+38} ${by+86} L${cx+8} ${by+14}Z" fill="${mix(rc,"#000000",.2)}"/>
-      <path d="M${cx-78} ${by-14} Q${cx} ${by+2} ${cx+78} ${by-14} L${cx+74} ${by+16} Q${cx} ${by+32} ${cx-74} ${by+16}Z" fill="${rc}"/>
-      <path d="M${cx-76} ${by-8} Q${cx} ${by+8} ${cx+76} ${by-8}" fill="none" stroke="${rh}" stroke-width="2.2" opacity=".9"/>
-      <path d="M${cx-74} ${by+10} Q${cx} ${by+26} ${cx+74} ${by+10}" fill="none" stroke="${rh}" stroke-width="2.2" opacity=".9"/>
-      <text x="${cx}" y="${by+12}" text-anchor="middle" font-size="16" font-weight="800" letter-spacing=".12em" fill="#FFFFFF" font-family="Bricolage Grotesque,system-ui,sans-serif">${yearOf()}</text></g>`;
-    if(l>=4){const n=l>=6?7:l>=5?5:3;for(let j=0;j<n;j++){const a=(196+j*(148/(n-1||1)))*R,sx=cx+(rx+34)*Math.cos(a),sy=cy+(ry+28)*Math.sin(a);
-      front+=`<path class="spk" style="animation-delay:${(j*0.4).toFixed(2)}s" d="M${sx} ${sy-8} Q${sx} ${sy} ${sx+8} ${sy} Q${sx} ${sy} ${sx} ${sy+8} Q${sx} ${sy} ${sx-8} ${sy} Q${sx} ${sy} ${sx} ${sy-8}Z" fill="${prisma?"#FFFFFF":light}"/>`}}
-    if(glut){for(let j=0;j<14;j++){const a=(120+j*9)*R*(j%2?1:-1)+(j%2?0:Math.PI),ex=cx+(rx-6)*Math.cos(a),ey=cy+(ry-6)*Math.sin(a);
-      front+=`<circle class="ember" style="animation-delay:${(j*0.27).toFixed(2)}s" cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="2.6" fill="#FFC14D"/>`}}
-    const defs=`<defs><radialGradient id="${idp}g"><stop offset="0" stop-color="${light}" stop-opacity="${l>=5?.55:.4}"/><stop offset="1" stop-color="${light}" stop-opacity="0"/></radialGradient></defs>`;
-    return defs+back+`<g class="${prisma?"prism":""}">${g}</g>`+(center||"")+front;
+      return o};
+    g+=ring(1,1);
+    if(l>=4)g+=ring(.9,.45);                         // zweite, innere Kontur
+    // Stufen-Schild unten im 80er-Stil: schräge Neon-Tafel mit Tempo-Streifen statt Schleife
+    const by=cy+ry+4,c=W.rainbow?"#FF2E88":W.c,name=W.n.toUpperCase(),wd=Math.max(120,name.length*15+46);
+    const x0=cx-wd/2,x1=cx+wd/2,sk=12;
+    const grad=W.rainbow?`<linearGradient id="${idp}rb" x1="0" x2="1"><stop offset="0" stop-color="#00F0FF"/><stop offset=".33" stop-color="#39FF88"/><stop offset=".66" stop-color="#FFD23F"/><stop offset="1" stop-color="#FF2E88"/></linearGradient>`:"";
+    const strokeC=W.rainbow?`url(#${idp}rb)`:c;
+    const stripes=side=>{const xs=side<0?x0-8:x1+8;let o="";[0,7,14].forEach((dy,i)=>{const len=34-i*8;
+      o+=`<path d="M${xs} ${by-8+dy} h${side*len}" stroke="${strokeC}" stroke-width="${3-i*.6}" stroke-linecap="round" opacity="${1-i*.25}"/>`});return o};
+    front+=`<g class="medal">${grad?`<defs>${grad}</defs>`:""}
+      ${stripes(-1)}${stripes(1)}
+      <path d="M${x0+sk} ${by-18} H${x1+sk} L${x1-sk} ${by+16} H${x0-sk}Z" fill="#14072C" fill-opacity=".92" stroke="${strokeC}" stroke-width="2.6" filter="url(#${idp}n)"/>
+      <path d="M${x0+sk+5} ${by-13} H${x1+sk-5} M${x0-sk+5} ${by+11} H${x1-sk-5}" stroke="${strokeC}" stroke-width=".8" opacity=".5"/>
+      <text x="${cx}" y="${by+6}" text-anchor="middle" font-size="19" font-weight="800" font-style="italic" letter-spacing=".16em" fill="#FFFFFF" stroke="${c}" stroke-width=".6" filter="url(#${idp}n)" font-family="Bricolage Grotesque,system-ui,sans-serif">${name}</text></g>`;
+    if(l>=6){const n=Math.min(9,3+(l-6)*2);for(let j=0;j<n;j++){const a=(196+j*(148/(n-1||1)))*R,sx=cx+(rx+34)*Math.cos(a),sy=cy+(ry+28)*Math.sin(a);
+      front+=`<path class="spk" style="animation-delay:${(j*0.37).toFixed(2)}s" d="M${sx} ${sy-8} Q${sx} ${sy} ${sx+8} ${sy} Q${sx} ${sy} ${sx} ${sy+8} Q${sx} ${sy} ${sx-8} ${sy} Q${sx} ${sy} ${sx} ${sy-8}Z" fill="#FFFFFF"/>`}}
+    const defs=`<defs><radialGradient id="${idp}g"><stop offset="0" stop-color="${W.rainbow?"#FF2E88":W.c}" stop-opacity="${(.12+l*.03).toFixed(2)}"/><stop offset="1" stop-color="${W.c}" stop-opacity="0"/></radialGradient>
+      <filter id="${idp}n" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${blur}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+    let body=`<g filter="url(#${idp}n)">${g}</g>`;
+    if(glitch)body=`<g class="glitchA" transform="translate(-3 0)" opacity=".7" style="mix-blend-mode:screen">${g.replace(/#00F0FF/g,"#FF2E88")}</g><g class="glitchB" transform="translate(3 0)" opacity=".7" style="mix-blend-mode:screen">${g}</g>`+body;
+    return defs+back+`<g class="${plasma?"prism":""}">${body}</g>`+(center||"")+front;
   }
+  // Cyber-Nebel unter 10 Döner: deutet an, dass hier noch etwas fehlt
+  const FOG=`<g class="fog"><ellipse cx="60" cy="200" rx="110" ry="70" fill="#00F0FF"/><ellipse cx="300" cy="190" rx="110" ry="70" fill="#FF2E88"/><ellipse cx="180" cy="290" rx="170" ry="50" fill="#9B5CFF"/></g>`;
   let shownWreath=null;
   function paintWreath(n,animate){
     const l=wreathIdx(n),svg=$("heroSvg"),w=$("wreath");
     if(l===shownWreath)return;shownWreath=l;
     w.classList.toggle("grow",!!animate);
-    w.innerHTML=l<0?"":laurelSvg(l,"wh");
-    svg.setAttribute("viewBox",l<0?"0 44 360 252":"-72 -16 504 444");
+    w.innerHTML=l<0?FOG:laurelSvg(l,"wh");
+    svg.setAttribute("viewBox",l<0?"-40 20 440 300":"-72 -16 504 444");
   }
   function openTitles(){
     const n=yearCount(),k=titleIdx(n),nx=TITLES[k+1];
@@ -1352,6 +1386,93 @@ body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242
     try{await navigator.clipboard.writeText(text);toast("Text kopiert – jetzt einfügen und angeben",true)}catch(e){toast(text,true)}
   }
   $("titleBar").onclick=openTitles;
+  // ---------- 80er-Hintergrund: Neon-Sonnenuntergang, Berge und eine Rennstrecke aus Gitterlinien, die auf dich zufährt ----------
+  (()=>{
+    const cv=$("flagBg"),x=cv.getContext("2d"),still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+    let W=0,H=0,last=0,mtn=[];
+    function size(){const dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+      let seed=7;const r=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};mtn=[];for(let i=0;i<=24;i++)mtn.push(r())}
+    function draw(t){
+      const hz=H*.46;                                   // Horizont
+      const sky=x.createLinearGradient(0,0,0,hz);sky.addColorStop(0,"#0B0620");sky.addColorStop(.55,"#2A0B4A");sky.addColorStop(1,"#7A1A6E");
+      x.fillStyle=sky;x.fillRect(0,0,W,hz);
+      // Sterne
+      x.fillStyle="rgba(255,255,255,.7)";for(let i=0;i<40;i++){const sx=(i*97.13)%W,sy=(i*53.71)%(hz*.7);x.globalAlpha=.25+.5*Math.abs(Math.sin(t*.8+i));x.fillRect(sx,sy,1.6,1.6)}x.globalAlpha=1;
+      // Berge
+      x.beginPath();x.moveTo(0,hz);mtn.forEach((m,i)=>{const px=i/(mtn.length-1)*W,py=hz-(i%2?m*H*.09+H*.02:m*H*.04);x.lineTo(px,py)});x.lineTo(W,hz);x.closePath();
+      x.fillStyle="#1A0733";x.fill();x.strokeStyle="rgba(0,240,255,.55)";x.lineWidth=1.2;x.stroke();
+      // Boden mit Neon-Gitter
+      const fl=x.createLinearGradient(0,hz,0,H);fl.addColorStop(0,"#1A0733");fl.addColorStop(1,"#0B0620");x.fillStyle=fl;x.fillRect(0,hz,W,H-hz);
+      x.strokeStyle="rgba(255,46,136,.75)";x.lineWidth=1.2;
+      const off=(t*.55)%1;
+      for(let k=0;k<18;k++){const z=(k+off)/18,y=hz+(H-hz)*Math.pow(z,2.2);x.globalAlpha=Math.min(1,z*1.6);x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke()}
+      x.globalAlpha=1;x.strokeStyle="rgba(0,240,255,.6)";
+      for(let i=-12;i<=12;i++){x.beginPath();x.moveTo(W/2+i*W*.03,hz);x.lineTo(W/2+i*W*.32,H);x.stroke()}
+      // Horizont-Leuchten
+      const hg=x.createLinearGradient(0,hz-6,0,hz+14);hg.addColorStop(0,"rgba(255,46,136,0)");hg.addColorStop(.4,"rgba(255,46,136,.9)");hg.addColorStop(1,"rgba(255,46,136,0)");x.fillStyle=hg;x.fillRect(0,hz-6,W,20);
+    }
+    function loop(now){if(!document.hidden&&now-last>33){last=now;draw(now/1000)}requestAnimationFrame(loop)}
+    size();addEventListener("resize",()=>{size();draw(performance.now()/1000)});
+    if(still)draw(0);else requestAnimationFrame(loop);
+  })();
+  // ---------- Döner-Foto: Bild mit Rahmen (Titel, Zahl, Laden) erzeugen und über das Teilen-Menü verschicken ----------
+  let phSrc=null,phFrame="flag",phBlob=null,phEntry=null;
+  $("rPhoto").onclick=()=>{phEntry=entries.find(x=>x.id===rateId)||null;$("photoIn").value="";$("photoIn").click()};
+  $("phNew").onclick=()=>{$("photoIn").value="";$("photoIn").click()};
+  $("photoIn").onchange=()=>{const f=$("photoIn").files[0];if(!f)return;
+    const img=new Image();img.onload=()=>{phSrc=img;closeLayer("rater");openLayer("photoSheet");composePhoto()};img.src=URL.createObjectURL(f)};
+  document.querySelectorAll(".phSeg button").forEach(b=>b.onclick=()=>{phFrame=b.dataset.f;
+    document.querySelectorAll(".phSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));composePhoto()});
+  function badgeImage(k){return new Promise(res=>{if(k<0)return res(null);
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 132 132" width="264" height="264">${badgeSvg(k).replace(/var\(--bc\)/g,TITLES[k].c)}</svg>`;
+    const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)})}
+  async function composePhoto(){
+    if(!phSrc)return;try{await document.fonts.ready}catch(e){}
+    const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+    const n=yearCount(),k=titleIdx(n),t=k>=0?TITLES[k]:null,e=phEntry,total=entries.length;
+    const shop=e&&e.shop?e.shop.name:"",when=new Date(e?e.t:Date.now()).toLocaleDateString("de-DE",{day:"numeric",month:"long",year:"numeric"});
+    const kind=e?fullName(kindOf(e),e.fill):"Döner";
+    const F=(w,sz)=>`${w} ${sz}px "Bricolage Grotesque",system-ui,sans-serif`;
+    const cover=(img,X,Y,w,h)=>{const r=Math.max(w/img.width,h/img.height),iw=img.width*r,ih=img.height*r;
+      x.save();x.beginPath();x.rect(X,Y,w,h);x.clip();x.drawImage(img,X+(w-iw)/2,Y+(h-ih)/2,iw,ih);x.restore()};
+    const badge=await badgeImage(k);
+    if(phFrame==="flag"){
+      cover(phSrc,0,0,W,H);
+      // Zielflaggen-Streifen oben
+      const q=36;for(let r=0;r<2;r++)for(let i=0;i<W/q;i++){x.fillStyle=(i+r)%2?"#111":"#fff";x.globalAlpha=.92;x.fillRect(i*q,r*q,q,q)}x.globalAlpha=1;
+      // dunkles Band unten
+      const g=x.createLinearGradient(0,H-520,0,H);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(.45,"rgba(0,0,0,.62)");g.addColorStop(1,"rgba(0,0,0,.86)");x.fillStyle=g;x.fillRect(0,H-520,W,520);
+      if(badge)x.drawImage(badge,56,H-330,250,250);
+      const tx=badge?336:64;x.fillStyle="#fff";x.textBaseline="alphabetic";
+      x.font=F(800,84);x.fillText(`DÖNER #${total}`,tx,H-230);
+      x.font=F(800,52);x.fillStyle=t?"#FFD27A":"#fff";x.fillText(t?t.n:kind,tx,H-160);
+      x.font=F(600,36);x.fillStyle="rgba(255,255,255,.85)";x.fillText([shop,when].filter(Boolean).join(" · "),tx,H-100);
+      x.font=F(700,28);x.fillStyle="#D7261E";x.textAlign="right";x.fillText("DÖNER-TRACKER",W-48,H-44);x.textAlign="left";
+    }else{
+      x.fillStyle="#FFFFFF";x.fillRect(0,0,W,H);
+      cover(phSrc,48,48,W-96,H-360);
+      x.fillStyle="#111";x.font=F(800,72);x.fillText(`Döner #${total}`,64,H-200);
+      x.font=F(700,44);x.fillStyle=t?t.c:"#111";x.fillText(t?t.n:kind,64,H-134);
+      x.font=F(600,32);x.fillStyle="#6B6B6B";x.fillText([kind,shop,when].filter(Boolean).join(" · "),64,H-80);
+      if(badge)x.drawImage(badge,W-250,H-300,200,200);
+    }
+    c.toBlob(b=>{phBlob=b;$("phImg").src=URL.createObjectURL(b)},"image/jpeg",.9);
+  }
+  $("phShare").onclick=async()=>{
+    if(!phBlob)return;const n=entries.length,k=titleIdx(yearCount());
+    const file=new File([phBlob],`doener-${n}.jpg`,{type:"image/jpeg"});
+    const text=k>=0?`Döner #${n} – ${TITLES[k].n}! 🥙`:`Döner #${n}! 🥙`;
+    // installierte App: Bild in den Cache schreiben und über das Android-Teilen-Menü verschicken
+    if(native&&Cap.Share&&Cap.Filesystem){
+      try{const b64=await new Promise(r=>{const f=new FileReader();f.onload=()=>r(String(f.result).split(",")[1]);f.readAsDataURL(phBlob)});
+        const w=await Cap.Filesystem.writeFile({path:file.name,data:b64,directory:"CACHE"});
+        await Cap.Share.share({title:"Döner-Foto",text,files:[w.uri],dialogTitle:"Döner-Foto teilen"});return}
+      catch(e){if(/cancel/i.test(String(e&&e.message)))return;toast("Teilen hat nicht geklappt: "+(e&&e.message||e),true);return}
+    }
+    try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text});return}}catch(e){if(e&&e.name==="AbortError")return}
+    const a=document.createElement("a");a.href=URL.createObjectURL(phBlob);a.download=file.name;document.body.appendChild(a);a.click();a.remove();
+    toast("Foto gespeichert – jetzt in WhatsApp & Co. teilen",true);
+  };
   $("helpBtn").onclick=()=>openLayer("helpSheet");
   // Rückseite des Übersichtsdöners: gleiche Grafik ohne Vorderseiten-Texte, dafür der Monat
   let backStats={n:0,label:"",split:""};
@@ -1431,7 +1552,7 @@ body{background:linear-gradient(180deg,rgba(244,244,242,.25) 0%,rgba(244,244,242
   function checkRank(){
     const n=yearCount(),k=titleIdx(n),w=wreathIdx(n),y=yearOf();
     const get=key=>{try{return parseInt(localStorage.getItem(key)??"-1",10)}catch(e){return -1}};
-    const kT="doener-title3-seen-"+y,kW="doener-wreath-seen-"+y;
+    const kT="doener-title3-seen-"+y,kW="doener-wreath2-seen-"+y;
     const ev={k:k>get(kT)?k:null,w:w>get(kW)?w:null};
     if(ev.k!=null||ev.w!=null){
       try{localStorage.setItem(kT,String(Math.max(k,get(kT))));localStorage.setItem(kW,String(Math.max(w,get(kW))))}catch(e){}

@@ -58,3 +58,14 @@ Wichtig: Wird die App deinstalliert, sind die Einträge weg.
 
 Ladendaten © OpenStreetMap-Mitwirkende (ODbL), abgefragt über die Overpass-API.
 Schrift: Bricolage Grotesque (SIL Open Font License).
+
+
+## Update einspielen (Einträge bleiben erhalten)
+
+1. Den **Inhalt** des Update-Ordners in das bestehende Repository hochladen
+   („Add file“ → „Upload files“) und vorhandene Dateien überschreiben lassen.
+   Nichts löschen, vor allem nicht `www/data` (dort liegt die Döner-Basis).
+2. „APK bauen“ startet von selbst. Wenn der Lauf grün ist, die APK unter „Artifacts“ laden.
+3. Die neue APK auf dem Handy öffnen und **über die alte App installieren**,
+   nicht vorher deinstallieren. Jede neue APK hat eine höhere Versionsnummer,
+   Android akzeptiert sie deshalb als Update.
