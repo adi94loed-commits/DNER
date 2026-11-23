@@ -72,7 +72,7 @@ Schrift: Bricolage Grotesque (SIL Open Font License).
 
 ## Design wechseln
 
-Oben rechts auf der Startseite das Zahnrad antippen. Dort gibt es „80er Neon“, „Rennsport“ und „Klassisch“ sowie die Anleitung „So funktioniert's“.
+Oben rechts auf der Startseite das Zahnrad antippen. Dort gibt es die Designs „80er Neon“, „Rennsport“, „Mittelalter“ und „Klassisch“, die Kartendarstellung „Standard“, „Dunkel“ oder „Alte Karte“ sowie die Anleitung „So funktioniert's“.
 
 ## Zum Mitnehmen und Laden-Steckbrief
 

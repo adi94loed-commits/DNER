@@ -725,6 +725,42 @@ html[data-design="retro"] .ichip[aria-pressed="true"]{background:#FF2E88;border-
 .pinf{font-size:12.5px;margin-top:3px;color:#2E7D32;font-weight:600}
 .pinfo{border:0;background:none;padding:6px 4px;margin-left:8px;font-weight:700;text-decoration:underline;cursor:pointer;color:inherit}
 .setVer{margin:10px 2px 0;font-size:11.5px;color:var(--muted);text-align:center}
+/* Kartendarstellung */
+#map.antique .maplibregl-canvas{filter:sepia(.82) saturate(.7) contrast(.93) brightness(1.03) hue-rotate(-6deg)}
+#map.antique::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,0) 55%,rgba(110,70,25,.38) 100%),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .28 0 0 0 0 .12 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+#map.darkf .maplibregl-canvas{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.9)}
+.mstyle{margin-bottom:4px}
+/* ===== Design „Mittelalter“: Pergament, Wachssiegel, alte Schrift ===== */
+@font-face{font-family:"MedievalSharp";src:url(fonts/medievalsharp-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+:root[data-design="medieval"]{--bg:#EFE2C3;--card:rgba(250,242,222,.93);--ink:#3B2414;--muted:#7A5C3E;--line:#CDB386;--salatHell:rgba(250,242,222,.93)}
+html[data-design="medieval"] body{background:
+  radial-gradient(ellipse at 50% 30%,rgba(255,250,235,.55),rgba(255,250,235,0) 60%),
+  radial-gradient(ellipse at center,rgba(0,0,0,0) 60%,rgba(120,80,30,.28) 100%),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .15 0 0 0 .14 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),
+  #EFE2C3;background-attachment:fixed}
+html[data-design="medieval"] #flagBg{display:none}
+html[data-design="medieval"] .go{background:linear-gradient(180deg,#9B2323,#651010);color:#F7E7C1;border:2px solid #C9A24A;border-radius:8px;
+  font-family:"MedievalSharp","Bricolage Grotesque",serif;letter-spacing:.03em;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 3px 0 #4A0B0B}
+html[data-design="medieval"] .near,html[data-design="medieval"] .card,html[data-design="medieval"] .kpi,html[data-design="medieval"] .factpop,
+html[data-design="medieval"] .pending,html[data-design="medieval"] .cmpbtn{border:1.5px solid #8A6A3E;box-shadow:inset 0 0 0 3px rgba(205,179,134,.45),0 2px 8px rgba(80,50,20,.12);border-radius:6px}
+html[data-design="medieval"] .near .nr{background:#3B5E2B;color:#F7E7C1}
+html[data-design="medieval"] .titlebar .tn,html[data-design="medieval"] .st-h,html[data-design="medieval"] .card h3,html[data-design="medieval"] .sheet h3,
+html[data-design="medieval"] #ruName{font-family:"MedievalSharp","Bricolage Grotesque",serif;font-weight:400;letter-spacing:.02em}
+html[data-design="medieval"] .titlebar .tn{color:#7A1414;font-size:27px}
+html[data-design="medieval"] .titlebar .tbar{background:rgba(90,60,30,.18)}
+html[data-design="medieval"] .titlebar .tbar i{background:linear-gradient(90deg,#C9A24A,#8B6B1F)!important}
+html[data-design="medieval"] .sheet{background:#F3E7CC;border-top:3px solid #8A6A3E}
+html[data-design="medieval"] .prim,html[data-design="medieval"] .arow .prim{background:linear-gradient(180deg,#9B2323,#651010);color:#F7E7C1;border:1.5px solid #C9A24A}
+html[data-design="medieval"] .factbtn,html[data-design="medieval"] .helpbtn{background:#F7EBD0;border:1.5px solid #8A6A3E;color:#5A3A1E}
+html[data-design="medieval"] .factbtn .fdot{background:#9B2323}
+html[data-design="medieval"] .tabs.nordic{background:linear-gradient(180deg,#5A3920,#3A2412);border:1.5px solid #C9A24A;box-shadow:0 6px 18px rgba(60,35,15,.35)}
+html[data-design="medieval"] .tabs.nordic button{color:#D8C39A}html[data-design="medieval"] .tabs.nordic button[aria-selected="true"]{color:#F7D774}
+html[data-design="medieval"] .tabs.nordic button::after{background:#F7D774}
+html[data-design="medieval"] .ichip[aria-pressed="true"],html[data-design="medieval"] .chip[aria-pressed="true"]{background:#7A1414;border-color:#7A1414;color:#F7E7C1}
+html[data-design="medieval"] .dsgn button[aria-checked="true"]{border-color:#7A1414;box-shadow:0 0 0 2px rgba(122,20,20,.3)}
+html[data-design="medieval"] .hero .num{fill:#3B2414;font-family:"MedievalSharp","Bricolage Grotesque",serif;font-weight:400;letter-spacing:0}
 </style>
 </head>
 <body>
@@ -1017,10 +1053,17 @@ html[data-design="retro"] .ichip[aria-pressed="true"]{background:#FF2E88;border-
     <div class="dsgn" role="radiogroup" aria-label="Design">
       <button type="button" role="radio" data-d="retro"><i style="background:linear-gradient(180deg,#0B0620 0 45%,#7A1A6E 45% 52%,#1A0733 52%),repeating-linear-gradient(90deg,transparent 0 8px,rgba(0,240,255,.6) 8px 9px)"></i><b>80er Neon</b><small>Neon-Gitter, Sunset-Döner, leuchtender Kranz</small></button>
       <button type="button" role="radio" data-d="flag"><i style="background:conic-gradient(#111 25%,#fff 0 50%,#111 0 75%,#fff 0) 0 0/12px 12px"></i><b>Rennsport</b><small>Helles Grau mit wehender Zielflagge</small></button>
+      <button type="button" role="radio" data-d="medieval"><i style="background:radial-gradient(circle at 70% 60%,#8B1E1E 0 22%,transparent 23%),linear-gradient(135deg,#F3E4C4,#D9BE8C)"></i><b>Mittelalter</b><small>Pergament, Wachssiegel, alte Schrift</small></button>
       <button type="button" role="radio" data-d="classic"><i style="background:linear-gradient(135deg,#F6F1E7,#E9DCC3)"></i><b>Klassisch</b><small>Ruhiges Creme, ohne Bewegung</small></button>
     </div>
+    <p class="setK">Karte</p>
+    <div class="dsgn mstyle" role="radiogroup" aria-label="Kartendarstellung">
+      <button type="button" role="radio" data-m="standard"><i style="background:linear-gradient(135deg,#F2EFE9 0 60%,#AAD3DF 60%)"></i><b>Standard</b><small>Hell und klar</small></button>
+      <button type="button" role="radio" data-m="dark"><i style="background:linear-gradient(135deg,#1E2228 0 60%,#2B3A4A 60%)"></i><b>Dunkel</b><small>Für abends und nachts</small></button>
+      <button type="button" role="radio" data-m="antique"><i style="background:radial-gradient(circle,#E8D3A6,#B88F55)"></i><b>Alte Karte</b><small>Sepia wie eine antike Landkarte</small></button>
+    </div>
     <button type="button" class="ghost setHelp" id="openHelp">So funktioniert's</button>
-    <p class="setVer">App-Stand: 23.11.2026 · mit iPhone-Web-App</p>
+    <p class="setVer">App-Stand: 24.11.2026 · Mittelalter-Design, Kartenstile</p>
     <div class="arow"><button type="button" class="prim" data-close>Fertig</button></div>
   </div>
 </div>
@@ -4178,8 +4221,15 @@ var qrcode = function() {
   };
   $("helpBtn").onclick=()=>{paintDesign();openLayer("setSheet")};
   $("openHelp").onclick=()=>{closeLayer("setSheet");setTimeout(()=>openLayer("helpSheet"),200)};
-  function paintDesign(){const d=document.documentElement.dataset.design;document.querySelectorAll(".dsgn button").forEach(b=>b.setAttribute("aria-checked",b.dataset.d===d))}
-  document.querySelectorAll(".dsgn button").forEach(b=>b.onclick=()=>{
+  function paintDesign(){const d=document.documentElement.dataset.design,m=mapStyle();
+    document.querySelectorAll(".dsgn button[data-d]").forEach(b=>b.setAttribute("aria-checked",b.dataset.d===d));
+    document.querySelectorAll(".dsgn button[data-m]").forEach(b=>b.setAttribute("aria-checked",b.dataset.m===m))}
+  document.querySelectorAll(".dsgn button[data-m]").forEach(b=>b.onclick=()=>{
+    try{localStorage.setItem("doener-mapstyle",b.dataset.m)}catch(e){}
+    if(Prefs)Prefs.set({key:"doener-mapstyle",value:b.dataset.m}).catch(()=>{});
+    paintDesign();applyMapStyle(true);
+  });
+  document.querySelectorAll(".dsgn button[data-d]").forEach(b=>b.onclick=()=>{
     document.documentElement.dataset.design=b.dataset.d;
     try{localStorage.setItem("doener-design",b.dataset.d)}catch(e){}
     if(Prefs)Prefs.set({key:"doener-design",value:b.dataset.d}).catch(()=>{});
@@ -4803,7 +4853,19 @@ var qrcode = function() {
     if(styleReady)run();else map.once("load",run);
   }
   const dark=()=>document.documentElement.dataset.theme!=="light"&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
-  const STYLE=()=>"https://tiles.openfreemap.org/styles/liberty";
+  // Kartendarstellung: Standard, Dunkel (dunkler Kartenstil) oder Alte Karte (Sepia-Filter + Pergament-Rand)
+  const mapStyle=()=>{try{return localStorage.getItem("doener-mapstyle")||"standard"}catch(e){return "standard"}};
+  let darkFallback=false;
+  const STYLE=()=>mapStyle()==="dark"&&!darkFallback?"https://tiles.openfreemap.org/styles/dark":"https://tiles.openfreemap.org/styles/liberty";
+  function applyMapStyle(rebuild){
+    const el=$("map"),m=mapStyle();
+    el.classList.toggle("antique",m==="antique");el.classList.toggle("darkf",m==="dark"&&darkFallback);
+    if(rebuild&&map){   // Karte mit neuem Stil neu aufbauen (Läden, Marker und Ring werden wieder gezeichnet)
+      const c=map.getCenter(),z=map.getZoom();if(popRef)popRef.remove();
+      markers.forEach(x=>x.remove());markers=[];map.remove();map=null;styleReady=false;shopRev=-1;
+      if(!$("viewMap").hidden){initMap();map.jumpTo({center:c,zoom:z})}
+    }
+  }
   function pinEl(cls,label,size){
     const d=document.createElement("div");d.className="pin "+cls;d.style.width=d.style.height=size+"px";d.textContent=label;return d}
   function addMarker(lat,lon,el,html){
@@ -4914,8 +4976,11 @@ var qrcode = function() {
       attributionControl:{compact:true,customAttribution:"Döner-Daten: OpenStreetMap-Mitwirkende, Foursquare OS Places"},dragRotate:false,pitchWithRotate:false});
     map.on("dragstart",()=>setMenu(false));map.on("click",()=>{if(!$("mPanel").hidden)setMenu(false)});
     map.touchZoomRotate.disableRotation();
-    map.on("load",()=>{styleReady=true;drawMap()});
-    map.on("error",e=>{console.warn("Karte:",e&&e.error&&e.error.message)});
+    map.on("load",()=>{styleReady=true;drawMap();if(wide)drawRing()});
+    map.on("error",e=>{console.warn("Karte:",e&&e.error&&e.error.message);
+      // dunkler Stil nicht erreichbar: Standardkarte dunkel einfärben
+      if(mapStyle()==="dark"&&!darkFallback&&!styleReady){darkFallback=true;applyMapStyle(true)}});
+    applyMapStyle(false);
     map.on("contextmenu",e=>{openAdder(false,"map");
       addPos={lat:e.lngLat.lat,lon:e.lngLat.lng};whereText("Pin gesetzt ✓ – zum Feinjustieren ziehen");
       if(mini)mini.jumpTo({center:[addPos.lon,addPos.lat],zoom:17});showTmp()});

@@ -1,5 +1,5 @@
 /* Offline-Speicher für die Web-App (iPhone & Browser). In der Android-App wird er nicht verwendet. */
-const CACHE="doener-web-v1";
+const CACHE="doener-web-v2";
 const CORE=["./","index.html","manifest.webmanifest","vendor/maplibre-gl.js","vendor/maplibre-gl.css",
   "fonts/bricolage-grotesque-latin-400-normal.woff2","fonts/bricolage-grotesque-latin-600-normal.woff2","fonts/bricolage-grotesque-latin-800-normal.woff2",
   "icons/icon-192.png","icons/apple-touch-icon.png"];
