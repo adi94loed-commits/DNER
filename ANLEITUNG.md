@@ -69,3 +69,11 @@ Schrift: Bricolage Grotesque (SIL Open Font License).
 3. Die neue APK auf dem Handy öffnen und **über die alte App installieren**,
    nicht vorher deinstallieren. Jede neue APK hat eine höhere Versionsnummer,
    Android akzeptiert sie deshalb als Update.
+
+## Design wechseln
+
+Oben rechts auf der Startseite das Zahnrad antippen. Dort gibt es „80er Neon“, „Rennsport“ und „Klassisch“ sowie die Anleitung „So funktioniert's“.
+
+## Zum Mitnehmen und Laden-Steckbrief
+
+Beim Eintragen „Zum Mitnehmen“ einschalten, dann wird später bewertet (Schnell-Sterne auf der Startseite). Während der Wartezeit lässt sich im Steckbrief antippen, was der Laden anbietet. Der Steckbrief erscheint im Laden-Popup auf der Karte und bei „Nächster Döner“.
