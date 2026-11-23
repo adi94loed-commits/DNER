@@ -77,3 +77,15 @@ Oben rechts auf der Startseite das Zahnrad antippen. Dort gibt es „80er Neon�
 ## Zum Mitnehmen und Laden-Steckbrief
 
 Beim Eintragen „Zum Mitnehmen“ einschalten, dann wird später bewertet (Schnell-Sterne auf der Startseite). Während der Wartezeit lässt sich im Steckbrief antippen, was der Laden anbietet. Der Steckbrief erscheint im Laden-Popup auf der Karte und bei „Nächster Döner“.
+
+
+## iPhone (Web-App)
+
+Einmalig einrichten:
+1. Repository muss öffentlich sein (oder GitHub Pro).
+2. Auf GitHub: Settings → Pages → „Build and deployment“ → Source: **GitHub Actions**.
+3. Unter „Actions“ den Lauf „Web-App veröffentlichen“ abwarten (oder per „Run workflow“ starten).
+4. Die Adresse steht im Lauf und unter Settings → Pages, z. B. `https://adi94loed-commits.github.io/DNER/`.
+
+Auf dem iPhone: Adresse in **Safari** öffnen → Teilen → **„Zum Home-Bildschirm“**. Danach startet die App wie eine normale App im Vollbild.
+Jede Änderung an `www` wird automatisch neu veröffentlicht.

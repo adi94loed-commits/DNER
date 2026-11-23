@@ -6,6 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F6F7F2">
 <title>Döner-Tracker</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0B0620">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Döner">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="stylesheet" href="vendor/maplibre-gl.css">
 <style>
 @font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-grotesque-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
@@ -1012,7 +1020,7 @@ html[data-design="retro"] .ichip[aria-pressed="true"]{background:#FF2E88;border-
       <button type="button" role="radio" data-d="classic"><i style="background:linear-gradient(135deg,#F6F1E7,#E9DCC3)"></i><b>Klassisch</b><small>Ruhiges Creme, ohne Bewegung</small></button>
     </div>
     <button type="button" class="ghost setHelp" id="openHelp">So funktioniert's</button>
-    <p class="setVer">App-Stand: 23.11.2026 · Zahnrad, Steckbrief, Zum Mitnehmen, Vergleich</p>
+    <p class="setVer">App-Stand: 23.11.2026 · mit iPhone-Web-App</p>
     <div class="arow"><button type="button" class="prim" data-close>Fertig</button></div>
   </div>
 </div>
@@ -3907,6 +3915,8 @@ var qrcode = function() {
     try{if(navigator.share){await navigator.share({text});return}}catch(e){if(e&&e.name==="AbortError")return}
     try{await navigator.clipboard.writeText(text);toast("Text kopiert – jetzt einfügen und angeben",true)}catch(e){toast(text,true)}
   }
+  // Web-App (iPhone/Browser): Offline-Speicher anmelden; in der Android-App nicht nötig
+  if(!native&&"serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
   $("titleBar").onclick=openTitles;
   // ---------- Laden-Steckbrief „Was gibt's hier?“ (pro Laden, nur auf dem Handy gespeichert) ----------
   const IKEY="doener-shopinfo-v1";
