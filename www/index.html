@@ -761,6 +761,22 @@ html[data-design="medieval"] .tabs.nordic button::after{background:#F7D774}
 html[data-design="medieval"] .ichip[aria-pressed="true"],html[data-design="medieval"] .chip[aria-pressed="true"]{background:#7A1414;border-color:#7A1414;color:#F7E7C1}
 html[data-design="medieval"] .dsgn button[aria-checked="true"]{border-color:#7A1414;box-shadow:0 0 0 2px rgba(122,20,20,.3)}
 html[data-design="medieval"] .hero .num{fill:#3B2414;font-family:"MedievalSharp","Bricolage Grotesque",serif;font-weight:400;letter-spacing:0}
+/* Döner-Run */
+.game{position:fixed;inset:0;z-index:3200;background:#0E0A1E;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none}
+.game[hidden]{display:none}
+#gameCv{width:100vw;max-width:760px;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;aspect-ratio:9/5}
+.gHud{position:absolute;left:50%;top:calc(var(--safeT) + 14px);transform:translateX(-50%);width:min(100vw,760px);display:flex;justify-content:space-between;padding:0 16px;box-sizing:border-box;
+  font:800 15px ui-monospace,"Courier New",monospace;color:#fff;letter-spacing:.08em;text-shadow:2px 2px 0 #000}
+.gMsg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;
+  background:rgba(14,10,30,.82);border:3px solid #fff;padding:16px 20px;font-family:ui-monospace,"Courier New",monospace;color:#fff;max-width:86vw;box-shadow:6px 6px 0 #000}
+.gMsg[hidden]{display:none}
+.gMsg b{font-size:24px;letter-spacing:.12em;color:#F2C14E}
+.gMsg span{font-size:14px}.gMsg small{font-size:12px;opacity:.8}.gMsg em{font-style:normal;font-size:13px;color:#F2C14E;animation:gBlink 1s steps(2) infinite}
+@keyframes gBlink{50%{opacity:0}}
+.gClose{position:absolute;right:14px;bottom:calc(var(--safeB) + 18px);width:46px;height:46px;border:3px solid #fff;background:#C8312B;color:#fff;font:800 18px ui-monospace,monospace;cursor:pointer;box-shadow:4px 4px 0 #000}
+.gameBtn{margin-top:14px}
+.factbtn.gamebtn{left:auto;right:4px}
+.factbtn.gamebtn .fdot{display:none}
 </style>
 </head>
 <body>
@@ -874,7 +890,8 @@ html[data-design="medieval"] .hero .num{fill:#3B2414;font-family:"MedievalSharp"
         <text class="mon" id="mLabel" x="180" y="226" text-anchor="middle">insgesamt</text>
         <text class="spl" id="mSplit" x="180" y="243" text-anchor="middle"></text>
       </svg><svg id="heroBack" class="back" aria-hidden="true"></svg></div></div>
-    <button class="factbtn" id="factBtn" type="button" aria-label="Döner-Quiz" aria-expanded="false" aria-controls="factPop"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 9.2a2.9 2.9 0 1 1 4.3 2.5c-.9.5-1.5 1.1-1.5 2.1v.6"/><circle cx="12" cy="17.6" r=".9" fill="currentColor" stroke="none"/></svg><span class="fdot"></span></button>
+    <button class="factbtn gamebtn" id="openGame" type="button" aria-label="Döner-Run spielen"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M7 7h10a5 5 0 0 1 5 5v1.5a3.5 3.5 0 0 1-6.3 2.1L14.5 14h-5l-1.2 1.6A3.5 3.5 0 0 1 2 13.5V12a5 5 0 0 1 5-5z"/><path d="M7 10v4M5 12h4"/><circle cx="16" cy="11" r=".9" fill="currentColor" stroke="none"/><circle cx="18" cy="13" r=".9" fill="currentColor" stroke="none"/></svg></button>
+      <button class="factbtn" id="factBtn" type="button" aria-label="Döner-Quiz" aria-expanded="false" aria-controls="factPop"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 9.2a2.9 2.9 0 1 1 4.3 2.5c-.9.5-1.5 1.1-1.5 2.1v.6"/><circle cx="12" cy="17.6" r=".9" fill="currentColor" stroke="none"/></svg><span class="fdot"></span></button>
       <div class="factpop" id="factPop" role="dialog" aria-label="Döner-Quiz" hidden><span class="k">Döner-Quiz<span class="qsc" id="qScore"></span></span><span class="t" id="qQuestion"></span><div class="qopts" id="qOpts"></div><p class="qres" id="qRes" hidden></p><button type="button" class="more" id="factCard" hidden>Mehr dazu ›</button></div>
     </section>
 
@@ -1045,6 +1062,13 @@ html[data-design="medieval"] .hero .num{fill:#3B2414;font-family:"MedievalSharp"
   </div>
 </div>
 
+<div class="game" id="game" role="dialog" aria-modal="true" aria-label="Döner-Run" hidden>
+  <canvas id="gameCv" width="180" height="100"></canvas>
+  <div class="gHud"><span id="gDoener">🥙 0</span><span id="gScore">0000</span><span id="gBest">BEST 0000</span></div>
+  <div class="gMsg" id="gMsg"><b>DÖNER-RUN</b><span>Tippen = springen · länger halten = höher</span><small>Sammle Döner, weich Mülltonnen, Hydranten und Tauben aus.</small><em>Zum Start tippen</em></div>
+  <button type="button" class="gClose" id="gClose" aria-label="Spiel schließen">✕</button>
+</div>
+
 <div class="layer" id="setSheet" role="dialog" aria-modal="true" aria-labelledby="setTitle">
   <div class="scrim" data-close></div>
   <div class="sheet">
@@ -1063,7 +1087,7 @@ html[data-design="medieval"] .hero .num{fill:#3B2414;font-family:"MedievalSharp"
       <button type="button" role="radio" data-m="antique"><i style="background:radial-gradient(circle,#E8D3A6,#B88F55)"></i><b>Alte Karte</b><small>Sepia wie eine antike Landkarte</small></button>
     </div>
     <button type="button" class="ghost setHelp" id="openHelp">So funktioniert's</button>
-    <p class="setVer">App-Stand: 24.11.2026 · Mittelalter-Design, Kartenstile</p>
+    <p class="setVer">App-Stand: 24.11.2026 · Mittelalter, Kartenstile, Döner-Run</p>
     <div class="arow"><button type="button" class="prim" data-close>Fertig</button></div>
   </div>
 </div>
@@ -1072,7 +1096,7 @@ html[data-design="medieval"] .hero .num{fill:#3B2414;font-family:"MedievalSharp"
   <div class="scrim" data-close></div>
   <div class="sheet">
     <h3 id="hTitle">So funktioniert's</h3>
-    <div class="hList"><details class="hItem" open><summary>Döner eintragen</summary><p>Tippe auf „Döner eintragen“. Laden, Döner oder Dürüm und Preis ausfüllen, fertig. Die Füllung (z. B. Halloumi, Seitan) ist optional und eingeklappt. Danach kannst du den Döner mit 1 bis 5 Döner-Symbolen bewerten.</p></details><details class="hItem"><summary>Zum Mitnehmen und Steckbrief</summary><p>Beim Eintragen „Zum Mitnehmen“ einschalten: Dann bewertest du später, die Startseite erinnert dich mit Schnell-Sternen. Während du wartest, kannst du im Laden-Steckbrief antippen, was es dort gibt (Füllungen, Soßen, Kartenzahlung). Den Steckbrief siehst du später im Laden-Popup auf der Karte und bei „Nächster Döner“.</p></details><details class="hItem"><summary>Nachtragen und Ändern</summary><p>Für einen späteren Eintrag „Wann“ auf die richtige Zeit stellen. Den Laden wählst du über „ändern“, auch direkt auf der Karte. Einen Eintrag im Verlauf antippen, um ihn zu bewerten, zu ändern oder zu löschen.</p></details><details class="hItem"><summary>Übersichtsdöner</summary><p>Die große Zahl zeigt alle Döner seit Beginn. Antippen dreht den Döner um: Auf der Rückseite steht der aktuelle Monat.</p></details><details class="hItem"><summary>Titel und Siegerkranz</summary><p>Pro Jahr gibt es alle 5 Döner einen neuen Titel und alle 10 Döner einen neuen Neon-Siegerkranz in einer neuen Farbe. Höhere Titel bleiben geheim, bis du sie erreichst. Tippe auf deinen Titel für die Vitrine und zum Teilen. Am 1. Januar beginnt alles neu.</p></details><details class="hItem"><summary>Döner-Quiz</summary><p>Unten links am Übersichtsdöner wartet nach jedem neuen Döner eine Quizfrage. Ein kleiner roter Punkt zeigt, wenn eine neue Frage da ist. „Mehr dazu“ zeigt den Fakt mit Quelle.</p></details><details class="hItem"><summary>Nächster Döner</summary><p>Unter dem Eintragen-Knopf steht der nächste Döner in deiner Nähe. „Route“ öffnet die Navigation, Antippen zeigt ihn auf der Karte.</p></details><details class="hItem"><summary>Karte</summary><p>Rote Punkte sind sichere Döner, hohle Punkte „vielleicht Döner“. Laden antippen: Route, ausblenden oder als Döner bestätigen. Lange auf die Karte drücken trägt einen neuen Laden ein. Im Menü (Ebenen-Symbol) kannst du die Gegend aktualisieren.</p></details><details class="hItem"><summary>Statistik</summary><p>Ausgaben, Durchschnittspreis, Bewertungen, Lieblingsläden und mehr, für 30 Tage, das Jahr oder alles.</p></details><details class="hItem"><summary>Deine Daten</summary><p>Alle Einträge bleiben auf deinem Handy. Bei einem Update die neue Version einfach über die alte installieren, nicht deinstallieren.</p></details></div>
+    <div class="hList"><details class="hItem" open><summary>Döner eintragen</summary><p>Tippe auf „Döner eintragen“. Laden, Döner oder Dürüm und Preis ausfüllen, fertig. Die Füllung (z. B. Halloumi, Seitan) ist optional und eingeklappt. Danach kannst du den Döner mit 1 bis 5 Döner-Symbolen bewerten.</p></details><details class="hItem"><summary>Zum Mitnehmen und Steckbrief</summary><p>Beim Eintragen „Zum Mitnehmen“ einschalten: Dann bewertest du später, die Startseite erinnert dich mit Schnell-Sternen. Während du wartest, kannst du im Laden-Steckbrief antippen, was es dort gibt (Füllungen, Soßen, Kartenzahlung). Den Steckbrief siehst du später im Laden-Popup auf der Karte und bei „Nächster Döner“.</p></details><details class="hItem"><summary>Nachtragen und Ändern</summary><p>Für einen späteren Eintrag „Wann“ auf die richtige Zeit stellen. Den Laden wählst du über „ändern“, auch direkt auf der Karte. Einen Eintrag im Verlauf antippen, um ihn zu bewerten, zu ändern oder zu löschen.</p></details><details class="hItem"><summary>Übersichtsdöner</summary><p>Die große Zahl zeigt alle Döner seit Beginn. Antippen dreht den Döner um: Auf der Rückseite steht der aktuelle Monat.</p></details><details class="hItem"><summary>Titel und Siegerkranz</summary><p>Pro Jahr gibt es alle 5 Döner einen neuen Titel und alle 10 Döner einen neuen Neon-Siegerkranz in einer neuen Farbe. Höhere Titel bleiben geheim, bis du sie erreichst. Tippe auf deinen Titel für die Vitrine und zum Teilen. Am 1. Januar beginnt alles neu.</p></details><details class="hItem"><summary>Döner-Quiz</summary><p>Unten links am Übersichtsdöner wartet nach jedem neuen Döner eine Quizfrage. Ein kleiner roter Punkt zeigt, wenn eine neue Frage da ist. „Mehr dazu“ zeigt den Fakt mit Quelle.</p></details><details class="hItem"><summary>Nächster Döner</summary><p>Unter dem Eintragen-Knopf steht der nächste Döner in deiner Nähe. „Route“ öffnet die Navigation, Antippen zeigt ihn auf der Karte.</p></details><details class="hItem"><summary>Karte</summary><p>Rote Punkte sind sichere Döner, hohle Punkte „vielleicht Döner“. Laden antippen: Route, ausblenden oder als Döner bestätigen. Lange auf die Karte drücken trägt einen neuen Laden ein. Im Menü (Ebenen-Symbol) kannst du die Gegend aktualisieren.</p></details><details class="hItem"><summary>Döner-Run (Spiel)</summary><p>Unten rechts am Übersichtsdöner (Gamepad-Symbol) startest du „Döner-Run“: Tippen lässt die Figur springen, länger halten springt höher. Sammle Döner, weiche Mülltonnen, Hydranten und Tauben aus. Alle 20 Döner wird es Nacht. Dein Rekord wird gespeichert, das Spiel zählt nicht für deine echten Döner.</p></details><details class="hItem"><summary>Statistik</summary><p>Ausgaben, Durchschnittspreis, Bewertungen, Lieblingsläden und mehr, für 30 Tage, das Jahr oder alles.</p></details><details class="hItem"><summary>Deine Daten</summary><p>Alle Einträge bleiben auf deinem Handy. Bei einem Update die neue Version einfach über die alte installieren, nicht deinstallieren.</p></details></div>
     <div class="arow"><button type="button" class="prim" data-close>Alles klar</button></div>
   </div>
 </div>
@@ -3961,6 +3985,96 @@ var qrcode = function() {
   // Web-App (iPhone/Browser): Offline-Speicher anmelden; in der Android-App nicht nötig
   if(!native&&"serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
   $("titleBar").onclick=openTitles;
+  // ---------- Döner-Run: kleines Pixel-Laufspiel (eigene Grafiken), Döner sammeln und Hindernissen ausweichen ----------
+  (()=>{
+    const cv=$("gameCv"),x=cv.getContext("2d"),H=100,GY=82;
+    let W=180;
+    // Hochformat: schmaleres Spielfeld, dafür größere Pixel; Fläche darüber und darunter in Himmels- und Bodenfarbe
+    function fit(){W=innerWidth<innerHeight?128:180;cv.width=W;cv.height=H;cv.style.aspectRatio=W+"/"+H;x.imageSmoothingEnabled=false}
+    addEventListener("resize",fit);fit();
+    const PAL={k:"#2B1D14",s:"#E8B48A",h:"#4A2C17",r:"#C8312B",R:"#8E1F1A",b:"#2E4A7A",B:"#1F3357",w:"#FFFFFF",
+      y:"#E3B66A",Y:"#B7843A",g:"#5BAA3C",t:"#7A4320",o:"#E0533D",G:"#7D8791",D:"#545C66",L:"#B9C2CA",p:"#9AA3AD",P:"#6E7680",e:"#F2C14E"};
+    const spr=(rows)=>{const c=document.createElement("canvas");c.width=rows[0].length;c.height=rows.length;const q=c.getContext("2d");
+      rows.forEach((r,y)=>[...r].forEach((ch,xx)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(xx,y,1,1)}}));return c};
+    const head=["....hhhh....","...hhhhhhh..","...hsssss...","...ssksksk..","...sssssss..","....ssss....","...rrwwrr...","..rrrwwrrr..","..srrrrrrs..","..srrrrrrs..","...RrrrrR..."];
+    const P1=spr([...head,"...bbbbbb...","...bb..bb...","..bb....bb..","..kk....kk.."]);
+    const P2=spr([...head,"...bbbbbb...","....bbbb....","....bBbb....","....kkkk...."]);
+    const PJ=spr([...head,"...bbbbbb...","..bbb..bbb..","..kk....kk..","............"]);
+    const DON=spr(["....gg.....","..gogtgo...",".gtgoggtgg.",".yyyyyyyyy.","..yYyyyYy..","...yyyyy..."]);
+    const BIN=spr(["..DDDDDD..",".GGGGGGGG.","..GLGGLG..","..GLGGLG..","..GLGGLG..","..GLGGLG..","..GLGGLG..","..GLGGLG..","..GGGGGG..","..DDDDDD.."]);
+    const HYD=spr(["..RR..",".rrrr.","rrrrrr",".rwwr.","rrrrrr",".rrrr.",".rrrr.",".rrrr.","RRRRRR"]);
+    const BRD1=spr(["...pp...","pp.pPpp.",".pppppPe","..pppp..","...kk..."]);
+    const BRD2=spr(["...pp...","...pPpp.","pppppPe.","pp.pp...","...kk..."]);
+    let st="idle",vy=0,py=GY-15,hold=0,speed=1.6,dist=0,don=0,obs=[],items=[],frame=0,raf=0,last=0,spawnIn=60,itemIn=40,best=0,skyX=0;
+    try{best=+localStorage.getItem("doener-run-best")||0}catch(e){}
+    const pad=n=>String(Math.floor(n)).padStart(4,"0");
+    function hud(){$("gDoener").textContent="🥙 "+don;$("gScore").textContent=pad(dist/6+don*10);$("gBest").textContent="BEST "+pad(best)}
+    function reset(){vy=0;py=GY-15;speed=1.6;dist=0;don=0;obs=[];items=[];spawnIn=70;itemIn=30;hud()}
+    function jump(){if(st!=="run"){start();return}if(py>=GY-15-.01){vy=-5.2;hold=10}}
+    function start(){reset();st="run";$("gMsg").hidden=true}
+    function over(){st="over";const sc=Math.floor(dist/6+don*10);if(sc>best){best=sc;try{localStorage.setItem("doener-run-best",best)}catch(e){}}
+      hud();try{navigator.vibrate&&navigator.vibrate(80)}catch(e){}
+      $("gMsg").innerHTML=`<b>GAME OVER</b><span>${don} Döner gesammelt · ${pad(sc)} Punkte</span><small>${sc>=best&&sc>0?"Neuer Rekord!":"Rekord: "+pad(best)}</small><em>Zum Neustart tippen</em>`;$("gMsg").hidden=false}
+    const hit=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
+    function step(){
+      frame++;if(st!=="run")return;
+      // Springen: länger halten = höher
+      if(hold>0&&pressing){vy-=.32;hold--}
+      vy+=.36;py+=vy;if(py>GY-15){py=GY-15;vy=0}
+      dist+=speed;speed=Math.min(4.2,speed+.0009);skyX+=speed*.25;
+      // Hindernisse und Döner erzeugen
+      if(--spawnIn<=0){const r=Math.random();
+        if(r<.45)obs.push({s:BIN,x:W+4,y:GY-10,w:10,h:10});
+        else if(r<.8)obs.push({s:HYD,x:W+4,y:GY-9,w:6,h:9});
+        else obs.push({s:BRD1,bird:true,x:W+4,y:GY-24-Math.floor(Math.random()*8),w:8,h:5});
+        spawnIn=Math.max(38,Math.floor(95-speed*12+Math.random()*50))}
+      if(--itemIn<=0){items.push({x:W+4,y:GY-8-[0,14,24][Math.floor(Math.random()*3)],w:11,h:6});itemIn=Math.floor(35+Math.random()*55)}
+      const me={x:22,y:py+1,w:9,h:14};
+      obs.forEach(o=>{o.x-=speed*(o.bird?1.25:1)});obs=obs.filter(o=>o.x>-12);
+      items.forEach(i=>i.x-=speed);
+      items=items.filter(i=>{if(hit(me,i)){don++;hud();return false}return i.x>-12});
+      if(obs.some(o=>hit({x:me.x+2,y:me.y+2,w:me.w-4,h:me.h-3},{x:o.x+1,y:o.y+1,w:o.w-2,h:o.h-2})))over();
+      if(frame%6===0)hud();
+    }
+    function draw(){
+      const night=Math.floor(don/20)%2===1;
+      const bg=night?"linear-gradient(#1B1636 50%,#3A3058 50%)":"linear-gradient(#BFE3F2 50%,#8A7A63 50%)";
+      if($("game").style.background!==bg)$("game").style.background=bg;
+      x.fillStyle=night?"#1B1636":"#BFE3F2";x.fillRect(0,0,W,H);
+      // Wolken bzw. Sterne
+      x.fillStyle=night?"#F7F2C8":"#FFFFFF";
+      for(let i=0;i<5;i++){const cx=((i*61-skyX*.5)%(W+40)+W+40)%(W+40)-20,cy=10+(i*17)%30;
+        if(night)x.fillRect(Math.floor(cx),cy,1,1);else{x.fillRect(Math.floor(cx),cy,14,3);x.fillRect(Math.floor(cx)+3,cy-2,8,2)}}
+      // Stadt-Silhouette (Parallaxe)
+      x.fillStyle=night?"#2C2550":"#9CC5D6";
+      for(let i=0;i<14;i++){const bw=10+(i*7)%12,bh=14+(i*13)%22,bx=((i*19-skyX)%(W+30)+W+30)%(W+30)-15;x.fillRect(Math.floor(bx),GY-bh,bw,bh)}
+      // Boden
+      x.fillStyle=night?"#3A3058":"#8A7A63";x.fillRect(0,GY,W,H-GY);
+      x.fillStyle=night?"#4C4170":"#A8977D";for(let i=0;i<W;i+=8)x.fillRect(Math.floor((i-dist)%W+W)%W,GY+4,4,1);
+      x.fillStyle="#2B1D14";x.fillRect(0,GY,W,1);
+      items.forEach(i=>x.drawImage(DON,Math.floor(i.x),Math.floor(i.y+Math.sin((frame+i.x)/8))));
+      obs.forEach(o=>x.drawImage(o.bird?(Math.floor(frame/8)%2?BRD1:BRD2):o.s,Math.floor(o.x),Math.floor(o.y)));
+      const pl=st!=="run"?P1:py<GY-15-.5?PJ:(Math.floor(frame/6)%2?P1:P2);
+      x.drawImage(pl,20,Math.floor(py));
+    }
+    function loop(t){raf=requestAnimationFrame(loop);if(t-last<15)return;last=t;step();draw()}
+    let pressing=false;
+    const down=e=>{if(e.target.closest&&e.target.closest("#gClose"))return;e.preventDefault();pressing=true;jump()};
+    const up=()=>{pressing=false};
+    $("game").addEventListener("pointerdown",down);$("game").addEventListener("pointerup",up);$("game").addEventListener("pointercancel",up);
+    addEventListener("keydown",e=>{if($("game").hidden)return;if(e.key===" "||e.key==="ArrowUp"){e.preventDefault();if(!pressing){pressing=true;jump()}}if(e.key==="Escape")closeGame()});
+    addEventListener("keyup",e=>{if(e.key===" "||e.key==="ArrowUp")pressing=false});
+    function openGame(){$("game").hidden=false;st="idle";reset();
+      $("gMsg").innerHTML=`<b>DÖNER-RUN</b><span>Tippen = springen · länger halten = höher</span><small>Sammle Döner, weich Mülltonnen, Hydranten und Tauben aus.</small><em>Zum Start tippen</em>`;
+      $("gMsg").hidden=false;cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+    function closeGame(){cancelAnimationFrame(raf);$("game").hidden=true;st="idle"}
+    $("openGame").onclick=e=>{e.stopPropagation();openGame()};$("gClose").onclick=closeGame;
+    document.addEventListener("visibilitychange",()=>{if(document.hidden&&st==="run"){st="pause";$("gMsg").innerHTML="<b>PAUSE</b><em>Zum Weiterspielen tippen</em>";$("gMsg").hidden=false}});
+    const oldJump=jump;
+    window.__doenerRun={open:openGame};
+    // Pause fortsetzen statt neu starten
+    $("game").addEventListener("pointerdown",()=>{if(st==="pause"){st="run";$("gMsg").hidden=true}},true);
+  })();
   // ---------- Laden-Steckbrief „Was gibt's hier?“ (pro Laden, nur auf dem Handy gespeichert) ----------
   const IKEY="doener-shopinfo-v1";
   const INFO=[
